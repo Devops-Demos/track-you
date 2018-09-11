@@ -61,13 +61,13 @@
     "startJobs": "cp config/env/console.heroku.js config/local.js && node startJobs.js",
     "test": "node test-data/seed-data && mocha test/bootstrap.test test/**/*",
     "migrate": "node test-data/seed-data",
-    "test:no-db": "mocha test/**/*.js",
+    "test:unit": "mocha test/unit/unitTests.js",
     "subtest": "mocha test/bootstrap.test test/services/custom/recursive-aggregators/*"
   },
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "github.com/devops-demos/track-you"
+    "url": "github.com/Devops-Demos/track-you"
   },
   "author": "ABC co",
   "license": "TBD",
