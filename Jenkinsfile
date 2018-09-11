@@ -26,7 +26,7 @@ pipeline {
                 stage('Unit testing') {
                     steps {
                         echo 'Executing Unit tests...'
-                        sh 'npm test'
+                        sh 'npm run test:unit'
                     }
                 }
                 stage('Integration testing') {
