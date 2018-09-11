@@ -1,0 +1,143 @@
+// bower: scss
+// endbower
+@import 'partials/mixins';
+@import 'partials/variable';
+@import 'partials/global';
+@import 'partials/rtl';
+@include font-face($secondary-font);
+@include font-face($primary-font);
+body,
+html {
+  font-family: $primary-font, sans-serif;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  // disable tap highlight
+  text-rendering: optimizeLegibility;
+  //better text rendering
+  -webkit-overflow-scrolling: touch;
+  //smooth scroll for ios devices
+  -webkit-appearance: none;
+  -webkit-text-size-adjust: 100%;
+  //fix for landscape mode zoom bug
+}
+input {
+  -webkit-appearance: none;
+  //remove input box default css
+}
+.pull-right {
+  float: right;
+}
+.pull-left {
+  float: left;
+}
+.container-wrap {
+  padding: 20px 0;
+  position: relative;
+  &:before {
+    background-color: $header-color;
+    content: '';
+    height: 165px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+}
+.container {
+  background-color: $container-bg-color;
+  border-radius: 5px;
+  box-shadow: 0 0 10px -2px rgba(0, 0, 0, .75);
+  margin: 0 auto;
+  min-height: 94vh;
+  position: relative;
+  width: 80%;
+}
+.pdfContainer {
+  width: 8.27in;
+}
+.view-container {
+  background-color: $container-bg-color;
+  width: 100%;
+}
+.view-container.mobile-view-container{
+  padding-bottom: 41px;
+}
+.f10 {
+  font-size: 10px;
+}
+.f12 {
+  font-size: 12px;
+}
+.f14 {
+  font-size: 14px;
+}
+.f16 {
+  font-size: 16px;
+}
+.f18 {
+  font-size: 18px;
+}
+.f20 {
+  font-size: 20px;
+}
+.f24 {
+  font-size: 24px;
+}
+.f36 {
+  font-size: 36px;
+}
+.spin-box {
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, .81);
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 100;
+}
+.spin-box:after {
+  background: url('../assets/images/spinner-svg.svg') no-repeat center;
+  background-size: 100px;
+  bottom: 0;
+  content: '';
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+.pointer {
+  cursor: pointer;
+}
+@media (max-width:1024px) {
+  .container {
+    border-radius: 0;
+    min-height: 100vh;
+    width: 100%;
+  }
+  .container-wrap {
+    padding: 0;
+  }
+}
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+  }
+  @page {
+    margin: 25px 0;
+    size: A4 portrait;
+  }
+  .edit-click, .user-dropdown {
+    display: none;
+  }
+}
+.no-scroll {
+  overflow: hidden;
+}
+.no-data {
+  text-align: center;
+}
+.highcharts-container {
+  direction: ltr;
+}
+// injector
+// endinjector

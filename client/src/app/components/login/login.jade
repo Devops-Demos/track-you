@@ -1,0 +1,29 @@
+.login-wrap(ng-controller="LoginController as login")
+  .login(rtl, data-is-rtl="{{main.isRtl}}")
+    .login-title.f36
+      h1.desktop-title {{login.page.title}}
+      .mobile-title.logo-name-container {{login.page.mobileTitle[0]}}
+      .mobile-title.f18 {{login.page.mobileTitle[1]}}
+  .image-and-login-container
+    .image-container
+      img(src="assets/images/itrack.png")
+    rtl.login-rtl(is-rtl="{{main.isRtl}}")
+      form.login-container(name="loginForm" novalidate ng-submit="login.loginAuth(login.username, login.password)")
+        label(for="username") {{ 'EMAIL' | translate }} *
+        br
+        .input-container
+          input.f20.username(ng-model="login.username" ngRequired type="email" name="email" id="username" placeholder="user@sample.com" required autocomplete="off")
+          img.input-container-icon(src="assets/images/username.svg")
+        br
+        label(for="password") {{ 'LOGIN.PASSWORD' | translate }} *
+        br
+        .input-container
+          input.f20.password(ng-model="login.password" ngRequired type="password" name="password" placeholder="*****" required autocomplete="off")
+          img.input-container-icon(src="assets/images/password-icon.svg")
+        .error-message {{login.errorMessage}}
+        button.f18(type="submit" ng-disabled="loginForm.$invalid" ng-class="{'btn-disable':loginForm.$invalid}")
+          span(ng-if="login.spinner.isVisibile")
+            img(src="assets/images/spinner-svg.svg" ng-class="'spin-button'")
+          span(ng-if="!login.spinner.isVisibile" translate="LOGIN.SIGN_IN")
+        .forgot__password
+          a(href="#/forgot-password" translate="LOGIN.FORGOT_RESET_PASSWORD")

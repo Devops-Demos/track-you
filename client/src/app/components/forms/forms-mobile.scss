@@ -1,0 +1,89 @@
+@media screen and (max-width: 736px) {
+  .body-tag {
+    .form-wrap {
+      padding: 10px;
+    }
+    .field-submit {
+      button {
+        width: 40vw;
+        margin-left: 0;
+        &:first-child {
+          margin-left: 10vw;
+        }
+      }
+    }
+    .delete-container{
+      margin: 20vh auto;
+      max-width: 80vw;
+      .delete-title{
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .buttom-wrap{
+        width: 100%;
+      }
+      .delete-form{
+        margin: 0;
+      }
+      .delete-field{
+        position: relative;
+      }
+    }
+    .dropdown {
+      background: #fff url('../assets/images/black-arrow.svg') no-repeat right 10px center;
+      background-size: 10px;
+      padding-right: 25px;
+    }
+    .multiSelect > button {
+      background: #fff url('../assets/images/black-arrow.svg') no-repeat right 10px center;
+      background-size: 10px;
+      padding-right: 25px;
+    }
+    .form-container {
+      margin: 40px 0 0;
+      font-size: 16px;
+      label {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 3vh;
+      }
+    }
+    .kpi-form {
+      .cross-btn {
+        padding: 0;
+        margin-top: 4px;
+        margin-left: 0;
+        img {
+          width: 15px;
+        }
+      }
+    }
+    .back {
+      margin-top: 5px;
+      font-size: 18px;
+    }
+
+    .field-submit .rtl {
+      button {
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+
+  .body-tag .rtl .dropdown{
+    background: #fff url("../assets/images/black-arrow.svg") no-repeat 10px center/16px;
+    padding-right: 10px;
+    padding-left: 20px;
+    background-size: 10px;
+  }
+
+  .body-tag .rtl .multiSelect > button{
+    padding-right: 8px;
+    padding-left: 25px;
+    background: #fff url("../assets/images/black-arrow.svg") no-repeat 10px center/16px;
+    background-size: 10px;
+  }
+}

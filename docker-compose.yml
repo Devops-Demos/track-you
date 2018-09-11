@@ -1,0 +1,32 @@
+version: '2'
+
+services:
+
+  app: &app
+    build:
+      context: .
+      dockerfile: Dockerfile.itrack
+    # Change ENV_NAME to development for local builds
+    environment:
+      - ENV_NAME=development
+    network_mode: 'bridge'
+    ports:
+      - "4999:4010"
+  app_test:
+    # This service inherits from "app" service. Used for running the tests.
+    <<: *app
+    command: ["npm", "test"]
+  mysqldb:
+    build:
+      context: .
+      dockerfile: Dockerfile.mysqldb
+    network_mode: 'bridge'
+    ports:
+      - 3306:3306
+  postgres:
+    build:
+      context: .
+      dockerfile: Dockerfile.postgresqldb
+    network_mode: 'bridge'
+    ports:
+      - 5432:5432

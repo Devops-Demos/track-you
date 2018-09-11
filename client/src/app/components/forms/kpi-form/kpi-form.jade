@@ -1,0 +1,150 @@
+rtl(is-rtl="{{main.isRtl}}")
+  .form-wrap.kpi-form(ng-controller="KpiFormController as kpiFC" ng-init="outputKpiFC.deleteModel=false; outputKpiFC.saveModel=false")
+    .back.pull-left.f20(ng-click="main.backTo()") < {{kpiFC.kpiLabel}}
+    form.form-container(name="KpiForm" novalidate rtl is-rtl="{{main.isRtl}}")
+      .parent-kpi
+        .field-full.clear-both.field-spacing
+            label {{kpiFC.parentLabel}}
+            input.f16(type="text" disabled='true' ng-model="kpiFC.initiative")
+
+        .field-full.clear-both.field-spacing
+          label {{kpiFC.kpiLabel}} {{'NAME' | translate}} *
+          input.f16(type="text" name="name" ng-model="kpiFC.kpiData.kpi" required ng-disabled="!main.isKpiEditable()")
+          p.error-message.f12(ng-show="KpiForm.name.$error.required  && !KpiForm.name.$pristine" translate="FORM.KPI_NAME_REQUIRED")
+
+        .field-full.clear-both.field-spacing(ng-show="kpiFC.parentKpi !== null")
+          label {{'FORM.PARENT' | translate}} {{kpiFC.kpiLabel}}
+          input.f16(type="text" disabled='true' ng-model="kpiFC.parentKpi")
+
+        .field-full.clear-both.field-spacing
+          label {{'FORM.DESCRIPTION' | translate}}
+          input.f16(type="text" ng-model="kpiFC.kpiData.description" ng-disabled="!main.isKpiEditable()")
+
+        .clearfix
+          .field-one-third.pull-left.field-spacing
+            label {{'FORM.UOM' | translate}}
+            input.f16(type="text" name="uom" ng-model="kpiFC.kpiData.uom" ng-disabled="!main.isKpiEditable()")
+            p.error-message.f12(ng-show="KpiForm.uom.$error.required  && !KpiForm.uom.$pristine" translate="FORM.UOM_REQUIRED")
+          .field-one-third.pull-left.field-spacing.field-one-third-padding
+            label {{'FORM.BASELINE' | translate}} *
+            input.f16(round-off type="number" name="baseline" ng-model="kpiFC.kpiData.baseline" required ng-disabled="!main.isKpiEditable() || (kpiFC.isOutput && kpiFC.isChildKpi)")
+            p.error-message.f12(ng-show="KpiForm.baseline.$error.required  && !KpiForm.baseline.$pristine" translate="FORM.BASELINE_REQUIRED")
+          .field-one-third.pull-left.field-spacing.field-one-third-padding
+            label {{'FINAL_TARGET' | translate}} *
+            input.f16(round-off type="number" name="target" ng-model="kpiFC.kpiData.target" required ng-disabled="!main.isKpiEditable() || (kpiFC.isOutput && kpiFC.isChildKpi)")
+            p.error-message.f12(ng-show="KpiForm.target.$error.required  && !KpiForm.target.$pristine" translate="FORM.TARGET_REQUIRED")
+
+        .clearfix(ng-if="!kpiFC.isOutput")
+          .field-half-width.pull-left.field-spacing
+            label {{'FORM.G_Y_DIFF' | translate}} (%) *
+            input.f16(round-off type="number" name="separator1" ng-model="kpiFC.kpiData.statusSeparator1" required ng-disabled="!main.isKpiEditable()" min="0" max="100")
+            p.error-message.f12(ng-show="KpiForm.separator1.$error.required  && !KpiForm.separator1.$pristine" translate="FORM.S_S_1_REQUIRED")
+            p.error-message.f12(ng-show="KpiForm.separator1.$error.min || KpiForm.separator1.$error.max" translate="FORM.SEPARATOR_VALUE_RANGE")
+          .field-half-width.pull-left.field-spacing.field-one-third-padding
+            label {{'FORM.Y_R_DIFF' | translate}} (%) *
+            input.f16(round-off type="number" name="separator2" ng-model="kpiFC.kpiData.statusSeparator2" required ng-disabled="!main.isKpiEditable()" min="0" max="100")
+            p.error-message.f12(ng-show="KpiForm.separator2.$error.required  && !KpiForm.separator2.$pristine" translate="FORM.S_S_2_REQUIRED")
+            p.error-message.f12(ng-show="KpiForm.separator2.$error.min || KpiForm.separator2.$error.max" translate="FORM.SEPARATOR_VALUE_RANGE")
+        .clearfix
+          .field-half-width.pull-left.field-spacing
+            label {{'FORM.WIDGET_TYPE' | translate}} *
+            select.dropdown.f16(name="widget" dropdown-name-mapper ng-model="kpiFC.kpiData.widget" required ng-options="widget as widget for widget in kpiFC.widgets", ng-disabled="!main.isKpiEditable()")
+            p.error-message.f12(ng-show="KpiForm.widget.$error.required  && !KpiForm.widget.$pristine" translate="FORM.WIDGET_TYPE_REQUIRED")
+        .checkbox-container(ng-if="main.isKpiEditable()")
+          .field-checkbox(ng-if="!kpiFC.isLastLevelInitiative")
+            input.pointer(id='has-children' type="checkbox" ng-model="kpiFC.hasChildren" ng-disabled="!main.isKpiEditable()")
+            label.pointer(for='has-children' translate="FORM.HAS_CHILDREN")
+          .field-checkbox(ng-if="kpiFC.hasChildren")
+            input.pointer(type="checkbox" id="calcFromChildren" ng-model="kpiFC.kpiData.isCalculated" ng-disabled="!main.isKpiEditable()")
+            label.pointer(for='calcFromChildren' translate="FORM.CALCULATED_FROM_CHILDREN")
+
+      .milestones(ng-if="!(kpiFC.kpiData.isCalculated && kpiFC.hasChildren)  && !kpiFC.kpiData.linkKpi")
+        hr
+        .add-new.pointer(ng-click="kpiFC.addMilestone()" disable-control="!main.isKpiEditable()")
+          img(src="assets/images/plus.svg", width="20px")
+          span(translate="FORM.ADD_MILESTONE")
+        .milestone-details(ng-repeat="milestones in kpiFC.totalMilestones | startFrom:(kpiFC.currentPage*5) | limitTo:5 track by $index ")
+          div.clearfix(ng-if="!milestones.deleted")
+            .field-one-third.pull-left.field-spacing
+              label {{'MILESTONE' | translate}} *
+              input.f16(type="date" name="milestone" ng-model="milestones.timePoint" required  ng-disabled="!main.isKpiEditable()")
+              p.error-message.f12(ng-show="KpiForm.milestone.$error.required  && !KpiForm.milestone.$pristine" translate="FORM.MILESTONE_REQUIRED")
+            .field-one-third.pull-left.field-spacing
+              label {{'TARGET' | translate}} *
+              input.f16(round-off type="number" name="targetM" ng-model="milestones.targetValue" required  ng-disabled="!main.isKpiEditable()")
+              p.error-message.f12(ng-show="KpiForm.targetM.$error.required  && !KpiForm.targetM.$pristine" translate="FORM.TARGET_REQUIRED")
+            .field-one-third.pull-left.field-spacing
+              label(translate="ACTUAL")
+              input.f16(round-off type="number" name="actual" ng-model="milestones.actualValue")
+            .cross-btn.pointer(ng-click="kpiFC.deleteMilestone(milestones)", ng-hide="kpiFC.milestonesNotDeleted === 1" disable-control="!main.isKpiEditable()")
+              img(src="assets/images/close-edit.svg", width="20px")
+        .pagination-wrapper.text-center(ng-if="kpiFC.milestonesNotDeleted>5")
+          button.button.button-white(ng-disabled='kpiFC.currentPage === 0', ng-click='kpiFC.currentPage=kpiFC.currentPage-1' translate="FORM.PREVIOUS")
+          span.pagination-status {{kpiFC.currentPage+1}}/{{(kpiFC.milestonesNotDeleted/5) | ceilFilter}}
+          button.button.button-white(ng-disabled='kpiFC.currentPage >= kpiFC.milestonesNotDeleted/5 - 1', ng-click='kpiFC.currentPage=kpiFC.currentPage+1' translate="FORM.NEXT")
+
+      .child-kpis(ng-if="kpiFC.hasChildren")
+        hr
+        div(translate="FORM.CHILD_KPIS")
+        .child-kpi-details(ng-repeat="childKpi in kpiFC.totalChildKpi track by $index", ng-if="!childKpi.deleted")
+          .field-full.field-spacing(ng-if="kpiFC.parentLabel === kpiFC.translations.INITIATIVE")
+            label {{'FORM.INITIATIVE_NAME' | translate}} *
+            select.dropdown.f16(name="childKpiInitiative" ng-init="childKpi.initiativeId" required ng-model="childKpi.initiativeId" ng-options="initiative.initiativeId as initiative.initiative for initiative in kpiFC.childInitiatives", ng-disabled="!main.isKpiEditable()")
+          .field-full.field-spacing
+            label {{'FORM.KPI_NAME' | translate}} *
+            input.input-80.f16(type="text" name="childName{{$index}}" ng-model="childKpi.kpi", required, ng-disabled="!main.isKpiEditable()")
+            p.error-message.f12(ng-show="KpiForm['childName{{$index}}'].$error.required && !KpiForm['childName{{$index}}'].$pristine" translate="FORM.CHILD_KPI_NAME_REQUIRED")
+            .edit-button.pointer(ng-click='kpiFC.editChild(childKpi)', ng-if='kpiFC.isEdit')
+              img(src="assets/images/edit.svg", width="20px")
+              span(translate="FORM.EDIT_KPI_DETAILS")
+          .field-one-third.pull-left.field-spacing
+            label {{'FORM.BASELINE' | translate}} *
+            input.f16(round-off type="number" name="baselineC" ng-model="childKpi.baseline" , required, ng-disabled="!main.isKpiEditable()")
+            p.error-message.f12(ng-show="KpiForm.baselineC.$error.required  && !KpiForm.baselineC.$pristine" translate="FORM.BASELINE_REQUIRED")
+          .field-one-third.pull-left.field-spacing.target
+            label {{'TARGET' | translate}} *
+            input.f16(round-off type="number" name="targetC" ng-model="childKpi.target" , required, ng-disabled="!main.isKpiEditable()")
+            p.error-message.f12(ng-show="KpiForm.targetC.$error.required  && !KpiForm.targetC.$pristine" translate="FORM.TARGET_REQUIRED")
+          .cross-btn.pointer(ng-click="kpiFC.deleteChildKpi($index)", ng-if="main.isKpiEditable()")
+            img(src="assets/images/close-edit.svg", ng-if="kpiFC.totalChildKpi.length > 1", width="20px")
+        .add-new.pointer(ng-click="kpiFC.addChildKpi()", ng-if="main.isKpiEditable()")
+          img(src="assets/images/plus.svg", width="20px")
+          span(translate="FORM.ADD_CHILD")
+
+      .field-submit
+        rtl(is-rtl="{{main.isRtl}}")
+          button.pull-right.form-submit.f16(type="submit" ng-disabled="KpiForm.$invalid" ng-click="kpiFC.addKpi()")
+            span(ng-if="!kpiFC.btnSpinner") {{kpiFC.buttonName}}
+            span(ng-if="kpiFC.btnSpinner")
+              img(src="assets/images/spinner-svg.svg" class="spin-button")
+          button.pull-right.form-submit.f16(ng-if="kpiFC.deleteCheck && main.isKpiEditable()", ng-click="kpiFC.deleteModel=true" translate="FORM.DELETE_KPI")
+
+    .delete-modal(ng-if="kpiFC.deleteModel")
+      .delete-container
+        .delete-title.f24(translate="FORM.DELETE_KPI")
+          span.f16 {{kpiFC.kpiData.kpi}}
+        form.delete-form(name="deleteForm" novalidate)
+          .warning-text(translate="FORM.WARNING_CANNOT_BE_UNDONE")
+          .status-update.f20 {{kpiFC.statusMsg}}
+          .delete-field
+            input(id='all-child' type="checkbox" ng-model="kpiFC.allChild" required)
+            label.f16(for='all-child' translate="FORM.ALL_CHILD_KPIS_CURRENT_KPI_DESTROYED")
+          .buttom-wrap(ng-if="!kpiFC.statusMsg")
+            button.delete-button.form-submit.f16(ng-click="kpiFC.deleteKpi()" ng-disabled="deleteForm.$invalid" ng-class="{'create-cursor': !deleteForm.$invalid}")
+              span(ng-if="!kpiFC.btnSpinner" translate="FORM.YES_DELETE_KPI")
+              span(ng-if="kpiFC.btnSpinner")
+                img(src="assets/images/spinner-svg.svg" class="spin-button")
+            button.cancel-button.f16(ng-click="kpiFC.deleteModel=false" translate="CANCEL")
+    .status-modal(ng-if="kpiFC.statusModel")
+      .delete-container
+        .status-update.f20(ng-class="{'error-msg': kpiFC.isError}") {{kpiFC.statusMsg}}
+        .button.status-button.f16(ng-click="main.backTo()" translate="FORM.CLOSE")
+    .status-modal(ng-if="kpiFC.errorModel")
+      .delete-container
+        .status-update.f20 {{kpiFC.targetMsg}}
+        .status-update.f20 {{kpiFC.baselineMsg}}
+        .status-update.f20 {{kpiFC.separatorMsg}}
+        .status-update.f20 {{kpiFC.targetMismatchError}}
+        .status-update.f20 {{kpiFC.actualMsg}}
+        .status-update.f20 {{kpiFC.errorMsg}}
+        .button.status-button.f16(ng-click="kpiFC.errorModel = false; kpiFC.btnSpinner = false" translate="FORM.CLOSE")

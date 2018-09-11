@@ -1,0 +1,76 @@
+FROM node:4.4.7
+
+MAINTAINER Braj Panda
+
+ARG version=1.0
+ARG tag=null
+ARG commit=null
+ARG build=null
+
+LABEL "image.tag"="${tag}" \
+     "image.commit"="${commit}" \
+     "image.build"="${build}" \
+     "image.version"="${version}"
+
+ENV APP_HOME /app
+ENV ENV_NAME production
+
+# Service Definition
+ENV PORT 4010
+ENV SERVICE_4010_NAME itrack
+ENV SERVICE_TAGS public
+
+# MySQL connection details
+# ENV DB_HOST=db
+# ENV DB_USER=root
+# ENV DB_PWD=root
+# ENV DB_PORT=3306
+# ENV DB_NAME=itrack_demo
+# ENV DB_SESSION_SECRET=810358dcc1f77f406c6af45d2925d7cc
+
+# PostgreSQL connection details
+ENV DB_HOST=postgres
+ENV DB_USER=postgres
+ENV DB_PWD=root
+ENV DB_PORT=5432
+ENV DB_NAME=itrack_demo
+ENV DB_SESSION_SECRET=810358dcc1f77f406c6af45d2925d7cc
+
+EXPOSE $PORT
+
+# apt-get update: Makes sure your list of packages from all repositories and PPA's is up to date
+# apt-get -y install mysql-client postgresql-client: To install clients for DBs to be able to seed test data
+# TODO: Move mysql client and pg client install to a new dockerfile for app_test
+RUN apt-get update && apt-get -y install mysql-client postgresql-client
+
+RUN mkdir ${APP_HOME}
+
+WORKDIR ${APP_HOME}
+
+# Install Bower globally. One time activity in image building
+RUN npm install -g bower
+
+# npm install will happen only when package.json changes
+ADD package.json .
+RUN npm install
+
+# npm install will happen only when package.json or bower.json change for client(frontend) folder
+WORKDIR ${APP_HOME}/client
+ADD client/package.json client/bower.json ./
+RUN npm install && bower install --allow-root
+
+WORKDIR ${APP_HOME}
+ADD . ${APP_HOME}
+
+CMD npm run migrate && npm start -- --userconfig._hookTimeout=30000
+
+# Reference commands - For the images built locally
+# docker build -t itrack/itrack -f Dockerfile.itrack .
+# For running app with mysql. Assumption: A MySQL DB container should be already running.
+# docker run -it -p 4999:4010 --rm --name itrack --link mysqldb:db itrack/itrack
+# For running app with postgres. Assumption: A PostgreSQL DB container should be already running.
+# docker run -it -p 4999:4010 --rm --name itrack --link postgresql:db itrack/itrack
+# For running test cases with mysql. Assumption: A MySQL DB container should be already running.
+# docker run -it --rm --name itracktest --link mysqldb:db itrack/itrack npm test
+# For running test cases with postgres. Assumption: A PostgreSQL DB container should be already running.
+# docker run -it --rm --name itracktest --link postgresqldb:db itrack/itrack npm test

@@ -1,0 +1,72 @@
+[{
+	"initiativeId": 3,
+	"kpi": "TestKpi3",
+  "achievementTargetRatio":0.9,
+	"sno": 3,
+	"createdAt": "2016-04-20T06:59:31.000Z",
+	"updatedAt": "2016-04-20T06:59:31.000Z",
+	"kpiType": "output"
+},{
+	"initiativeId": 4,
+	"kpi": "TestKpi4",
+  "achievementTargetRatio":0.49,
+	"sno": 4,
+	"createdAt": "2016-04-20T06:59:31.000Z",
+	"updatedAt": "2016-04-20T06:59:31.000Z",
+	"kpiType": "output"
+},{
+	"initiativeId": 5,
+	"kpi": "TestKpi5",
+  "achievementTargetRatio":1,
+	"sno": 5,
+	"createdAt": "2016-04-20T06:59:31.000Z",
+	"updatedAt": "2016-04-20T06:59:31.000Z",
+	"kpiType": "output"
+},{
+	"initiativeId": 5,
+	"kpi": "TestKpi5",
+	"sno": 5,
+	"createdAt": "2016-04-20T06:59:31.000Z",
+	"updatedAt": "2016-04-20T06:59:31.000Z",
+	"kpiType": "output"
+},{
+	"initiativeId": 1,
+	"kpi": "TestKpi1",
+  "achievementTargetRatio":0.35,
+	"sno": 1,
+	"createdAt": "2016-04-20T06:59:31.000Z",
+	"updatedAt": "2016-04-20T06:59:31.000Z",
+	"kpiType": "outcome",
+	"statusSeparator2": 30,
+	"statusSeparator1": 70
+},{
+	"initiativeId": 2,
+	"kpi": "TestKpi2",
+  "achievementTargetRatio":0.1,
+	"sno": 2,
+	"createdAt": "2016-04-20T06:59:31.000Z",
+	"updatedAt": "2016-04-20T06:59:31.000Z",
+	"kpiType": "outcome",
+	"statusSeparator1": 30,
+	"statusSeparator2": 70
+},{
+	"initiativeId": 1,
+	"kpi": "TestKpi1",
+  "achievementTargetRatio":0.8,
+	"sno": 1,
+	"createdAt": "2016-04-20T06:59:31.000Z",
+	"updatedAt": "2016-04-20T06:59:31.000Z",
+	"kpiType": "outcome",
+	"statusSeparator1": 30,
+	"statusSeparator2": 70
+},{
+	"initiativeId": 2,
+	"kpi": "TestKpi2",
+  "achievementTargetRatio":0.9,
+	"sno": 2,
+	"createdAt": "2016-04-20T06:59:31.000Z",
+	"updatedAt": "2016-04-20T06:59:31.000Z",
+	"kpiType": "outcome",
+	"statusSeparator1": null,
+	"statusSeparator2": 70
+}]

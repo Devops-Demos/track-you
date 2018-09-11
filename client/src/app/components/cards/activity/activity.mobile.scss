@@ -1,0 +1,17 @@
+@media screen and (max-width: 736px) {
+  .body-tag {
+    .activity__card{
+      .card__title__arrow{
+        width: 25%;
+      }
+    }
+    .card{
+      .owner{
+        width: 40%;
+      }
+      .owner.owner-priority {
+        width: 80%;
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+[
+  {
+    "right": "RIGHTS_FIXTURE.VIEW_ALL_PRIORITIES",
+    "isSelected": false,
+    "key": "viewAll"
+  },
+  {
+    "right": "RIGHTS_FIXTURE.UPDATE_ALL_OUTCOME_KPIS",
+    "isSelected": false,
+    "key": "updateAllOutComeKpis"
+  },
+  {
+    "right": "RIGHTS_FIXTURE.UPDATE_ALL_OUTPUT_KPIS",
+    "isSelected": false,
+    "key": "updateAllOutputKpis"
+  },
+  {
+    "right": "RIGHTS_FIXTURE.UPDATE_ALL_ISSUE_LOGS",
+    "isSelected": false,
+    "key": "updateAllIssueLogs"
+  },
+  {
+    "right": "RIGHTS_FIXTURE.UPDATE_ALL_PROGRESS_OF_ACTIVITIES",
+    "isSelected": false,
+    "key": "updateAllActivities"
+  },
+  {
+    "right": "RIGHTS_FIXTURE.UPDATE_EXEC_SUMMARY_PROGRESS_LOG",
+    "isSelected": false,
+    "key": "updateAllExecutiveSummaries"
+  },
+  {
+    "right": "RIGHTS_FIXTURE.ADD_EDIT_REMOVE_PRIORITIES_INITIATIVES_ACTIVITIES_OUTCOME_OUTPUT_KPIS",
+    "isSelected": false,
+    "key": "crudArtifacts"
+  },
+  {
+    "right": "RIGHTS_FIXTURE.ADD_EDIT_REMOVE_USERS",
+    "isSelected": false,
+    "key": "crudUsers"
+  },{
+    "right": "RIGHTS_FIXTURE.VIEW_PARENTAGE",
+    "isSelected": false,
+    "key": "viewParentage"
+  }
+]

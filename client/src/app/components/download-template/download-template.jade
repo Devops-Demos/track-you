@@ -1,0 +1,13 @@
+div(ng-controller="DownloadTemplateController as download")
+  .status-modal.download-modal(ng-if="download.showDownloadModal" rtl is-rtl="{{main.isRtl}}")
+    .delete-container
+      .pull-left.f20(translate="MILESTONE_TEMPLATE.DOWNLOAD_TEMPLATE")
+      img.pull-right.pointer(src="assets/images/close.svg", width="15px" ng-click="download.closeModal()")
+      .excel-info
+        img.excel-icon(src="assets/images/excel_ico.svg" width="60px")
+        div(translate="MILESTONE_TEMPLATE.TEMPLATE_NEW_MILESTONES")
+        div(translate="MILESTONE_TEMPLATE.UPDATE_UPLOAD")
+      form.delete-form
+        .button-wrap
+          button.status-button.f16(ng-click="download.closeModal()" translate="CANCEL")
+          button.delete-button.f16.pointer(ng-click="download.downloadTemplate()" translate="DOWNLOAD")

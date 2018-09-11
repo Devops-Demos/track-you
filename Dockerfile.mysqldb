@@ -1,0 +1,12 @@
+FROM mysql:5.6
+
+MAINTAINER Braj Panda
+
+ENV MYSQL_ROOT_PASSWORD root
+ENV MYSQL_DATABASE itrack_demo
+
+ENV SERVICE_3306_NAME db
+ENV SERVICE_TAGS private
+
+# docker build -t itrack/mysqldb -f Dockerfile.mysqldb .
+# docker run -it -p 3306:3306 --rm --name mysqldb itrack/mysqldb

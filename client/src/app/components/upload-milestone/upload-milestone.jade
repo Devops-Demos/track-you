@@ -1,0 +1,38 @@
+div(ng-controller="UploadMilestoneController as upload")
+  .status-modal.upload-modal(ng-if="upload.showUploadModal" rtl is-rtl="{{main.isRtl}}")
+    .delete-container
+      .pull-left.f20(translate="MILESTONE_TEMPLATE.UPLOAD_MILESTONES")
+      img.pull-right.pointer(src="assets/images/close.svg", width="15px" ng-click="upload.closeUploadModal()")
+      form.delete-form(name="addNewMilestones" novalidate)
+        div(translate="MILESTONE_TEMPLATE.SELECT_EXCEL")
+        input.input-file(type="file" id="milestoneData" name="milestoneData" fileread="upload.milestoneData" accept=".csv")
+        label.input-file-box(for="milestoneData")
+          .input-filename.pointer
+            .file-name.pull-left
+              img(src="assets/images/excel_ico.svg" width="30px")
+              span {{upload.milestoneData}}
+            .input-browse.pull-right(translate="MILESTONE_TEMPLATE.BROWSE")
+        .delete-field
+          input(id='new-milestone' ng-checked="upload.newMilestone" ng-disabled="upload.milestoneData === undefined" type="checkbox" ng-model="upload.newMilestone" required)
+          label.f16(for='new-milestone' translate="MILESTONE_TEMPLATE.MILESTONE_WARNING")
+        .button-wrap
+          button.status-button.f16(ng-click="upload.closeUploadModal()" translate="CANCEL")
+          button.delete-button.form-submit.f16(ng-click="upload.uploadTemplate()" ng-disabled="addNewMilestones.$invalid" ng-class="{'create-cursor': !addNewMilestones.$invalid}")
+            span(ng-if="!upload.btnSpinner" translate="UPLOAD")
+            span(ng-if="upload.btnSpinner")
+              img(src="assets/images/spinner-svg.svg" class="spin-button")
+  .status-modal.csv-error-modal(ng-if="upload.showErrorModal")
+    .delete-container
+      .pull-left.f20 KPI Milestone Errors
+      img.pull-right.pointer(src="assets/images/close.svg", width="15px" ng-click="upload.showErrorModal=false; upload.closeUploadModal()")
+      table.error-table
+        tr
+          th.cell-format(ng-repeat="heading in upload.errorHeadings") {{heading}}
+        tr.row-color(ng-repeat="row in upload.errorData")
+          td.cell-format {{row.sno}}
+          td.cell-format(title="{{row.details.error==='E_UNKNOWN'? row.details.raw.code : row.details.summary}}") {{row.error}}
+          td.cell-format(ng-repeat="key in upload.keys" title="{{row.details.invalidAttributes[key][0].message}}") {{row[key]}}
+  .status-modal.csv-success-modal(ng-if="upload.showSuccessModal")
+    .delete-container
+      img.pull-right.pointer(src="assets/images/close.svg", width="15px" ng-click="upload.showSuccessModal=false; upload.closeUploadModal()")
+      .success-message {{upload.modalMessage}}

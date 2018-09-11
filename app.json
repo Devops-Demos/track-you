@@ -1,0 +1,33 @@
+{
+  "name": "iTrack Review app",
+  "description": "Review App to test and validate Pull Requests before a merge",
+  "success_url": "/",
+  "repository": "https://github.com/mail2gauravkumar/itrack",
+  "scripts": {
+    "postdeploy": "npm run heroku:deploy-pr"
+  },
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-nodejs"
+    }
+  ],
+  "env": {
+    "APP_URL": "https://itrack-pr.herokuapp.com",
+    "BUILDPACK_URL": "https://github.com/heroku/heroku-buildpack-nodejs",
+    "ENV_NAME": "pr-heroku",
+    "LANG": "en_US.UTF-8",
+    "SESSION_KEY": "820348dfc1f55e406c3af45d2525d7xc",
+    "HEROKU_APP_NAME": {
+      "required": true
+    },
+    "HEROKU_PARENT_APP_NAME": {
+      "required": true
+    }
+  },
+  "addons": [
+    "heroku-postgresql:hobby-basic",
+    "papertrail:choklad",
+    "redistogo:nano",
+    "sendgrid:starter"
+  ]
+}

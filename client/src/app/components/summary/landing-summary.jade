@@ -1,0 +1,47 @@
+.block-container.summary-card.landing-summary
+  .block-title.f16.pointer(ng-click="isCollapsed=!isCollapsed", ng-class="isCollapsed ? 'summary--isCollapsed': ''")
+    .summary-title.f16(translate="APP_CONFIG.OVERALL_EXECUTIVE_SUMMARY")
+    .summary-handler.pull-right
+      .summary-arrow
+        img(src="assets/images/arrow.svg", width="15px", ng-class="isCollapsed ? 'card--isCollapsed': 'card--isNotCollapsed'")
+  .summary-edit.pointer(ng-show="!isCollapsed && main.getUserRights().updateAllExecutiveSummaries")
+    span.edit-click(ng-click="isSummaryEditable=true; isCollapsed = false; summary.setOldSummary()" ng-show="!isSummaryEditable")
+      img(src="assets/images/edit.png", width="15px")
+  ul.pointer.summary-save-close(ng-hide="!isSummaryEditable || isCollapsed")
+    li.close-icon(ng-click="isSummaryEditable=false; summary.getOldSummary()")
+    li.save-icon(ng-click="summary.setSummary(['keyPerformanceDrivers', 'majorIssues', 'proposedSolution', 'decisionsRequired']); isSummaryEditable=false")
+  .summary(ng-show="!isCollapsed")
+    .summary-last-updated.pull-right(ng-if="summary.lastUpdatedOn") {{ 'CARD.LAST_UPDATED' | translate }}: {{summary.lastUpdatedOn}}
+    .summary-full-block
+      .summary-subtitle.f18
+        | {{ 'SUMMARY.PROGRESS' | translate }}
+      div(ng-show="!isSummaryEditable && summary.progressData.length > 0") 
+        pre.f16.summary-description(ng-repeat="data in summary.progressData track by $index") {{data}}
+      div(ng-show="!isSummaryEditable && summary.progressData.length == 0")
+        pre.no-data.summary-description {{main.translations['ISSUE.NO_DATA_AVAILABLE']}}
+      textarea.textarea(ng-model="summary.summary.keyPerformanceDrivers" ng-show="isSummaryEditable")
+    .summary-full-block.issues-solutions.clearfix
+      .major-issues-container.pull-left
+        .summary-subtitle.f18
+          | {{ 'SUMMARY.MAJOR_ISSUES' | translate }}
+        div(ng-show="!isSummaryEditable && summary.majorData.length > 0")
+          pre.f16.summary-description(ng-repeat="data in summary.majorData track by $index") {{data}}
+        div(ng-show="!isSummaryEditable && summary.majorData.length == 0")
+          pre.no-data.summary-description {{main.translations['ISSUE.NO_DATA_AVAILABLE']}}
+        textarea.textarea(ng-model="summary.summary.majorIssues" ng-show="isSummaryEditable")
+      .proposed-solutions.pull-left
+        .summary-subtitle.f18
+          | {{ 'SUMMARY.PROPOSED_SOLUTION' | translate }}
+        div(ng-show="!isSummaryEditable && summary.proposedData.length > 0")
+          pre.f16.summary-description(ng-repeat="data in summary.proposedData track by $index") {{data}}
+        div(ng-show="!isSummaryEditable && summary.proposedData.length == 0")
+          pre.no-data.summary-description {{main.translations['ISSUE.NO_DATA_AVAILABLE']}}
+        textarea.textarea(ng-model="summary.summary.proposedSolution" ng-show="isSummaryEditable")
+    .summary-full-block
+      .summary-subtitle.f18
+        | {{ 'SUMMARY.DECISIONS_REQUIRED' | translate }}
+      div(ng-show="!isSummaryEditable && summary.decisionsData.length > 0")
+        pre.f16.summary-description(ng-repeat="data in summary.decisionsData track by $index") {{data}}
+      div(ng-show="!isSummaryEditable && summary.decisionsData.length == 0")
+        pre.no-data.summary-description {{main.translations['ISSUE.NO_DATA_AVAILABLE']}}
+      textarea.textarea(ng-model="summary.summary.decisionsRequired" ng-show="isSummaryEditable")

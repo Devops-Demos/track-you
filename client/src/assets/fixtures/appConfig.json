@@ -1,0 +1,254 @@
+{
+  "appName": "PUSH App 1.0",
+  "routeMap": {
+    "login": "loginPage",
+    "landing": "landingPage",
+    "initiative": "initiativePage",
+    "summary": "summaryPage",
+    "outcome": "outcomePage",
+    "issues": "issuesPage",
+    "kpis": "kpisPage",
+    "overall": "overallPage",
+    "output": "outputPage",
+    "admin": "userManagementPage",
+    "initiativeForm": "initiativeFormPage",
+    "activityForm": "activityFormPage",
+    "outputKpiForm": "outputKpiFormPage",
+    "search": "searchPage",
+    "admin": "userManagementPage",
+    "postponePriority": "postponePriority",
+    "activityNew": "activityNewPage",
+    "sync": "syncPage",
+    "resetPassword": "resetPassword",
+    "forgotPassword": "forgotPassword",
+    "appView": "appView"
+  },
+  "mobileMenu": {
+    "title": "ITRACK",
+    "subtitle": ""
+  },
+  "pages": {
+    "loginPage": {
+      "useNameAsTitle": false,
+      "title": "ITRACK",
+      "showHeader": false,
+      "headerMenu": []
+    },
+    "forgotPassword": {
+      "useNameAsTitle": false,
+      "title": "FORGOT_PASSWORD.FORGOT_PASSWORD",
+      "showHeader": false,
+      "headerMenu": []
+    },
+    "resetPassword": {
+      "useNameAsTitle": false,
+      "title": "FORGOT_PASSWORD.RESET_PASSWORD",
+      "showHeader": false,
+      "headerMenu": []
+    },
+    "landingPage": {
+      "useNameAsTitle": false,
+      "title": "ITRACK",
+      "showHeader": true,
+      "headerMenu": []
+    },
+    "syncPage": {
+      "useNameAsTitle": false,
+      "title": "APP_CONFIG.SYNC_REPORT",
+      "showHeader": true,
+      "headerMenu": []
+    },
+    "initiativePage": {
+      "useNameAsTitle": true,
+      "title": "",
+      "showHeader": true,
+      "headerMenu": [{
+        "icon": "executive-summary-icon-white.svg",
+        "link": "summary",
+        "context": "currentInitiativeId",
+        "label": "CARD.WEEKLY_REPORT"
+      }, {
+        "icon": "outcome-kpi-report-icon-white.svg",
+        "link": "outcome",
+        "context": "currentInitiativeId",
+        "label": "OUTCOME_KPI"
+      }, {
+        "icon": "implementation-tracker-icon-white.svg",
+        "link": "initiative",
+        "context": "currentInitiativeId",
+        "label": "CARD.IMP_TRACKER"
+      }]
+    },
+    "summaryPage": {
+      "useNameAsTitle": true,
+      "title": "",
+      "showHeader": true,
+      "headerMenu": [{
+        "icon": "executive-summary-icon-white.svg",
+        "link": "summary",
+        "context": "currentInitiativeId",
+        "label": "CARD.WEEKLY_REPORT"
+      }, {
+        "icon": "outcome-kpi-report-icon-white.svg",
+        "link": "outcome",
+        "context": "currentInitiativeId",
+        "label": "OUTCOME_KPI"
+      }, {
+        "icon": "implementation-tracker-icon-white.svg",
+        "link": "initiative",
+        "context": "currentInitiativeId",
+        "label": "CARD.IMP_TRACKER"
+      }]
+    },
+    "outcomePage": {
+      "useNameAsTitle": true,
+      "title": "",
+      "showHeader": true,
+      "headerMenu": [{
+        "icon": "executive-summary-icon-white.svg",
+        "link": "summary",
+        "context": "currentInitiativeId",
+        "label": "CARD.WEEKLY_REPORT"
+      }, {
+        "icon": "outcome-kpi-report-icon-white.svg",
+        "link": "outcome",
+        "context": "currentInitiativeId",
+        "label": "OUTCOME_KPI"
+      }, {
+        "icon": "implementation-tracker-icon-white.svg",
+        "link": "initiative",
+        "context": "currentInitiativeId",
+        "label": "CARD.IMP_TRACKER"
+      }]
+    },
+    "issuesPage": {
+      "useNameAsTitle": true,
+      "title": "",
+      "showHeader": true,
+      "headerMenu": [{
+        "icon": "executive-summary-icon-white.svg",
+        "link": "summary",
+        "context": "currentInitiativeId",
+        "label": "CARD.WEEKLY_REPORT"
+      }, {
+        "icon": "outcome-kpi-report-icon-white.svg",
+        "link": "outcome",
+        "context": "currentInitiativeId",
+        "label": "OUTCOME_KPI"
+      }, {
+        "icon": "implementation-tracker-icon-white.svg",
+        "link": "initiative",
+        "context": "currentInitiativeId",
+        "label": "CARD.IMP_TRACKER"
+      }]
+    },
+    "kpisPage": {
+      "useNameAsTitle": true,
+      "title": "",
+      "showHeader": true,
+      "headerMenu": [{
+        "icon": "executive-summary-icon-white.svg",
+        "link": "summary",
+        "context": "currentInitiativeId",
+        "label": "CARD.WEEKLY_REPORT"
+      }, {
+        "icon": "outcome-kpi-report-icon-white.svg",
+        "link": "outcome",
+        "context": "currentInitiativeId",
+        "label": "OUTCOME_KPI"
+      }, {
+        "icon": "implementation-tracker-icon-white.svg",
+        "link": "initiative",
+        "context": "currentInitiativeId",
+        "label": "CARD.IMP_TRACKER"
+      }]
+    },
+    "appView": {
+      "useNameAsTitle": true,
+      "title": "",
+      "showHeader": true,
+      "headerMenu": []
+    },
+    "overallPage": {
+      "useNameAsTitle": false,
+      "title": "APP_CONFIG.OVERALL_SUMMARY",
+      "showHeader": true,
+      "headerMenu": [{
+        "icon": "executive-summary-icon-white.svg",
+        "link": "summary",
+        "label": "APP_CONFIG.OVERALL_EXECUTIVE_SUMMARY"
+      }, {
+        "icon": "implementation-tracker-icon-white.svg",
+        "link": "initiative",
+        "label": "APP_CONFIG.OVERALL_TRACKER"
+      }]
+    },
+    "outputPage": {
+      "useNameAsTitle": true,
+      "title": "",
+      "showHeader": true,
+      "headerMenu": [{
+        "icon": "executive-summary-icon-white.svg",
+        "link": "summary",
+        "context": "currentInitiativeId",
+        "label": "CARD.WEEKLY_REPORT"
+      }, {
+        "icon": "outcome-kpi-report-icon-white.svg",
+        "link": "outcome",
+        "context": "currentInitiativeId",
+        "label": "OUTCOME_KPI"
+      }, {
+        "icon": "implementation-tracker-icon-white.svg",
+        "link": "initiative",
+        "context": "currentInitiativeId",
+        "label": "CARD.IMP_TRACKER"
+      }]
+    },
+    "searchPage": {
+      "useNameAsTitle": true,
+      "title": "APP_CONFIG.MONITORING_REPORT_SEARCH",
+      "showHeader": true
+    },
+    "userManagementPage": {
+      "useNameAsTitle": true,
+      "title": "APP_CONFIG.USER_MGMT",
+      "showHeader": true
+    },
+    "initiativeFormPage": {
+      "useNameAsTitle": true,
+      "title": "",
+      "showHeader": true
+    },
+    "outputKpiFormPage": {
+      "useNameAsTitle": true,
+      "title": "",
+      "showHeader": true
+    },
+    "postponePriority": {
+      "useNameAsTitle": true,
+      "title": "",
+      "showHeader": true,
+      "headerMenu": [{
+        "icon": "executive-summary-icon-white.svg",
+        "link": "summary",
+        "context": "currentInitiativeId",
+        "label": "CARD.WEEKLY_REPORT"
+      }, {
+        "icon": "outcome-kpi-report-icon-white.svg",
+        "link": "outcome",
+        "context": "currentInitiativeId",
+        "label": "OUTCOME_KPI"
+      }, {
+        "icon": "implementation-tracker-icon-white.svg",
+        "link": "initiative",
+        "context": "currentInitiativeId",
+        "label": "CARD.IMP_TRACKER"
+      }]
+    },
+    "activityFormPage": {
+      "useNameAsTitle": true,
+      "title": "",
+      "showHeader": true
+    }
+  }
+}

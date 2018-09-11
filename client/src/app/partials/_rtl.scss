@@ -1,0 +1,218 @@
+.rtl {
+  direction: rtl;
+  text-align: right;
+  .pull-right {
+    float: left;
+  }
+  .pull-left {
+    float: right;
+  }
+  .owner-details {
+    text-align: left;
+  }
+  .card__title__arrow {
+    text-align: left;
+  }
+  .edit-click,
+  .card__delay {
+    border-right: 0;
+    border-left: 1px solid rgb(255, 255, 255);
+    border-left: 1px solid rgba(255, 255, 255, .5);
+  }
+  .priority__property__text {
+    padding: 0 30px 0 0;
+  }
+  .priority__property__updated {
+    padding: 5px 30px 0 0;
+  }
+  .priority__property__link {
+    border-right: 0 solid #ccc;
+    border-left: 1px solid #ccc;
+  }
+  .login-container {
+    .input-container-icon {
+      left: 0;
+      right: 8px;
+      padding-left: 9px;
+      border-left: 1px solid #E3E3E3;
+      border-right: 0;
+      padding-right: 0;
+    }
+    input {
+      padding: 15px 60px 15px 15px;
+    }
+  }
+  // header
+  .primary-nav {
+    .logo {
+      border-left: 1px solid #fff;
+      border-left: 1px solid rgba(255, 255, 255, .5);
+      border-right: 0;
+      padding-right: 0;
+      padding-left: 20px;
+    }
+  }
+  .nav-bar {
+    .navigation {
+      min-width: 110px;
+      padding: 3px 0 0 15px;
+      .nav-images {
+        margin: 0 0 0 5px;
+      }
+    }
+  }
+  .add-card {
+    left: 55px;
+    right: auto;
+  }
+  .summary-edit {
+    right: auto;
+    left: 70px;
+  }
+  .summary-save-close {
+    right: auto;
+    left: 70px;
+    border-right: 0;
+    border-left: 1px solid rgb(255, 255, 255);
+    border-left: 1px solid rgba(255, 255, 255, .5);
+  }
+  .summary-card .summary-handler {
+    text-align: left;
+    min-width: 25%;
+  }
+  .user-dropdown {
+    right: auto;
+    left: 10px;
+  }
+  .arrow-box:after {
+    right: auto;
+    left: 6%;
+  }
+  .user:after {
+    right: auto;
+    left: 0;
+  }
+  .landing-title:after {
+    left: auto;
+    right: 15%;
+  }
+  .filed-first {
+    margin: 0 0 0 10%;
+  }
+  .field-submit button {
+    margin-left: 0;
+    margin-right: 15px;
+  }
+  .dropdown {
+    background: #fff url("../assets/images/black-arrow.svg") no-repeat 10px center/16px;
+    padding-left: 25px;
+  }
+  .multiSelect > button {
+    background: #fff url("../assets/images/black-arrow.svg") no-repeat 10px center/16px;
+    padding-right: 8px;
+    padding-left: 25px;
+  }
+  .multiSelect .helperButton {
+    min-width: 105px;
+  }
+  input[type=checkbox] + label:before {
+    margin-right: 0;
+    margin-left: 8px;
+  }
+  .filters-wrapper .filter {
+    margin-right: 0;
+    margin-left: 20px;
+    min-width: 150px;
+  }
+  .kpi-form {
+    .parent-kpi {
+      .field-one-third-padding {
+        padding-left: 0;
+        padding-right: 2%;
+      }
+    }
+    .child-kpis{
+      .target {
+        padding-left: 0;
+        padding-right: 20px;
+      }
+    }
+    .field-checkbox {
+      padding-right: 0;
+      padding-left: 30px;
+    }
+    .cross-btn {
+      left: 10px;
+    }
+    .milestones {
+      .field-one-third:not(:nth-child(3n+1)) {
+        padding-left: 0;
+        padding-right: 2%;
+      }
+    }
+  }
+  .output__kpi {
+    .kpi__chart {
+      border-right: 0;
+      border-left: 1px solid #ccc;
+    }
+  }
+  .major-title-subheading {
+    .subheading {
+      padding-right: 30px;
+      padding-left: 0;
+    }
+  }
+  .email__box__header {
+    .title {
+      background: url("../assets/images/mail.svg") right/35px 30px no-repeat;
+      padding: 5px 40px 5px 0;
+    }
+  }
+
+  .email__box .send__icon {
+    transform: rotate(180deg);
+  }
+  .create-form {
+    .field {
+      .rights-wrapper {
+        .rights {
+          input[type=checkbox] + label:before {
+            float: right;
+          }
+        }
+      }
+    }
+  }
+
+  .card {
+    .add-log {
+      min-width: 130px;
+      text-align: right;
+    }
+    .owner {
+      text-align: right;
+    }
+  }
+  .edit-container {
+    .save-close-container {
+      li:not(:last-child) {
+        border-right: none;
+      }
+      li:not(:last-child) {
+        border-left: solid 1px black;
+      }
+    }
+  }
+  .disclaimer{
+    ul {
+      padding-left: 0;
+      padding-right: 40px;
+    }
+  }
+  @media screen and (max-width: 736px) {
+    .landing-title:after {
+      right: 30%;
+    }
+  }
+}

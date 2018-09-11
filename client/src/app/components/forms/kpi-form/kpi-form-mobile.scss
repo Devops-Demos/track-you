@@ -1,0 +1,27 @@
+@media screen and (max-width: 500px){
+  .body-tag {
+    .kpi-form {
+      .field-half-width {
+        width: 100%;
+      }
+      .field-one-third {
+        width: 100%;
+      }
+      .parent-kpi, .milestones {
+        .field-one-third-padding, .field-one-third:not(:nth-child(3n+1)) {
+        padding-left: 0;
+        padding-right: 0;
+        }
+      }
+      .child-kpis .child-kpi-details {
+        .input-80 {
+          width: 100%;
+        }
+      }
+      .child-kpis .target {
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+  }
+}

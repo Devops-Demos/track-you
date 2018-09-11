@@ -1,0 +1,26 @@
+.postpone-container(ng-controller='PostponeController as postpone')
+  rtl(is-rtl="{{main.isRtl}}")
+    p.status-text(ng-if='postpone.statusText') {{postpone.statusText}}
+    .page-title.f20(translate="POSTPONE.SELECT_INITIATIVES_POSTPONE")
+    form.initiatives-container(name='postponeForm',ng-submit='postpone.modalVisibility = true;')
+      .initiative-name(ng-repeat='initiativeDetail in postpone.initiativeData track by $index')
+        input(id='initiative{{$index}}', name='initiative', type="checkbox", ng-model='initiativeDetail.isSelected')
+        label(for='initiative{{$index}}') {{initiativeDetail.initiative}}
+      label(for='days' translate="POSTPONE.DAYS_TO_POSTPONE")
+      input.input-box.days-picker(name='days', type='number',required='required', min='0', ng-model='postpone.daysToBeShifted')
+      br
+      label(for='days' translate="POSTPONE.DATE_TO_POSTPONE")
+      input.input-box.date-picker(name='days', type='date',required='required', ng-model='postpone.dateFromShift')
+      button.button.submit-button(ng-disabled='!postpone.isFormValid()' translate="SUBMIT")
+
+    .confirm-modal(ng-if='postpone.modalVisibility')
+      .modal-data
+        .modal-container
+          .f20(translate="CONFIRM")
+          p.confirm-text(translate="POSTPONE.SURE_TO_POSTPONE")
+          .btn-wrapper.pull-right
+            button.button(ng-click='postpone.modalVisibility = false' translate="NO")
+            button.button.highlight-btn(ng-click='postpone.submitForm()')
+              span(ng-if="postpone.spinnerVisibility")
+                img(src="assets/images/spinner-svg.svg" class="spin-button")
+              span(ng-if="!postpone.spinnerVisibility" translate="YES")

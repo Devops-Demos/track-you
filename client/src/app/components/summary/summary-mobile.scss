@@ -1,0 +1,61 @@
+@media screen and (max-width: 736px) {
+  .body-tag {
+    .landing-summary {
+      .summary-edit {
+        right: 45px;
+      }
+      .summary-save-close {
+        right: 55px;
+      }
+    }
+    .summary-edit {
+      right: 40px;
+    }
+    .summary-save-close {
+      right: 50px;
+    }
+    .last-updated-container{
+      padding: 0 5px 15px;
+    }
+    .major-title {
+      border-radius: 2px 2px 0 0;
+      padding: 20px 15px;
+    }
+    .description-container{
+      border-radius: 0 0 2px 2px;
+    }
+  }
+
+  .body-tag {
+    .rtl{
+      .landing-summary {
+        .summary-edit {
+          right: auto;
+          left: 50px;
+        }
+        .summary-save-close {
+          right: auto;
+          left: 50px;
+        }
+      }
+    }
+  }
+  .body-tag {
+    .rtl {
+      .summary-card {
+        .summary-edit {
+          right: auto;
+          left: 40px;
+        }
+        .edit-click {
+          margin: 0 10px;
+          padding-left: 20px;
+        }
+        .summary-save-close {
+          right: auto;
+          left: 50px;
+        }
+      }
+    }
+  }
+}

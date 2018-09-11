@@ -1,0 +1,31 @@
+.email(ng-controller="EmailController as email")
+  .email__box
+    .email__box__header(rtl is-rtl="{{main.isRtl}}")
+      .title.pull-left.f22(title="{{'EMAIL_OWNER.COMMENT_ON' | translate}} '{{initiativeController.emailInitiative.initiative}}'") {{'EMAIL_OWNER.COMMENT_ON' | translate}} "{{initiativeController.emailInitiative.initiative}}&#x200E;"
+      .close.pull-right
+        img.close__icon.pointer(src="assets/images/close.svg", ng-click="initiativeController.sendEmail=false; email.mailContent = '';")
+    .email__box__content.f18
+      .receiver {{'EMAIL_OWNER.TO' | translate}}&#x200E; {{initiativeController.emailInitiative.owner.name}}&#x200E; ({{initiativeController.emailInitiative.dept}}) [{{initiativeController.emailInitiative.owner.email}}] &#x200E;
+      form.other__receivers
+        .field-full.field-spacing
+          input.pointer.pull-left(id="mail-checkbox1", name="deptReceiver", type="checkbox", ng-model="email.emailToDept.parentOwners")
+          label(for="mail-checkbox1")
+          .department__receivers(translate="EMAIL_OWNER.SEND_TO_PARENT_INITIATIVE_OWNERS")
+        .field-full.field-spacing
+          input.pointer.pull-left(id="mail-checkbox2", name="participantReceiver", type="checkbox", ng-model="email.emailToDept.participants")
+          label(for="mail-checkbox2")
+          .department__receivers(translate="EMAIL_OWNER.SEND_TO_PARTICIPANTS")
+      div
+        div {{'EMAIL_OWNER.HELLO' | translate}} {{initiativeController.emailInitiative.owner.name}},
+        br
+        div {{'EMAIL_OWNER.MR/MS' | translate}} {{email.user}} {{'EMAIL_OWNER.HAS_LEFT_MSG' | translate}}
+          div(ng-repeat="hierarchy in initiativeController.fullParentChain track by $index")
+            span {{hierarchy.type}} &#x200E; "{{hierarchy.name}}"&#x200E;
+            span(ng-if="initiativeController.fullParentChain.length > 1 && $index!== initiativeController.fullParentChain.length -1") ,
+        br
+        textarea.textarea.f18(placeholder="{{'EMAIL_OWNER.TYPE_MSG_HERE' | translate}}", ng-model="email.mailContent")
+        br
+      br
+      .send.pull-right.pointer(ng-click="email.sendEmailTo(initiativeController.emailInitiative.owner, initiativeController.emailInitiative.initiativeId); initiativeController.sendEmail = false")
+        span.send__text(translate="EMAIL_OWNER.SEND")
+        img.send__icon(src="assets/images/send.svg")

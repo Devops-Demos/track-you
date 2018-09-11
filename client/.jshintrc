@@ -1,0 +1,28 @@
+{
+  "esnext": true,
+  "bitwise": true,
+  "curly": true,
+  "eqeqeq": true,
+  "forin": true,
+  "freeze": true,
+  "latedef": false,
+  "noarg": true,
+  "nonbsp": true,
+  "nonew": true,
+  "undef": true,
+  "unused": true,
+  "validthis": true,
+  "jasmine": true,
+  "maxparams": 15,
+  "maxstatements": 40,
+  "browser": true,
+  "globals": {
+    "angular": false,
+    "inject": false,
+    "module": false,
+    "_": true,
+    "$": true,
+    "console": true,
+    "loki": true
+  }
+}

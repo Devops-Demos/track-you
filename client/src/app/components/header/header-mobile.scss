@@ -1,0 +1,213 @@
+@media screen and (max-width: 736px) {
+  .body-tag {
+    overflow-x: hidden;
+    .body-disableScroll {
+      overflow-y: hidden;
+      height: 100vh;
+    }
+    .title-container {
+      display: none;
+    }
+    .title-container-mobile {
+      position: fixed;
+      width: 100vw;
+      box-sizing: border-box;
+      height: 50px;
+      display: inherit;
+      background: $mobile-header-color;
+      padding: 15px;
+      color: $secondary-font-color;
+      z-index: 100;
+      box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.14), 0 0 2px 2px rgba(0, 0, 0, 0.098), 0 0 5px 1px rgba(0, 0, 0, 0.084);
+      .three-dots {
+        background-position: 0 -104px;
+        width: 30px;
+        height: 100%;
+        .overflow-menu {
+          background-color: #fff;
+          color: #000;
+          right: 20px;
+          position: absolute;
+          top: 45px;
+          .overflow-menu-item {
+            line-height: 20px;
+            padding: 10px;
+            min-width: 150px;
+          }
+        }
+      }
+      .four-squares {
+        width: 30px;
+        height: 100%;
+        background: transparent url("../assets/images/four-squares.svg") center center no-repeat;
+      }
+      .menu-icon {
+        background-position: 0 -231px;
+        margin-top: -10px;
+        width: 42px;
+        height: 40px;
+        &:active {
+          transform: scale3d(0.9, 0.9, 1);
+        }
+      }
+      .title {
+        padding-left: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: calc(100% - 115px);
+        overflow: hidden;
+      }
+    }
+    .nav-menu-mobile {
+      position: fixed;
+      z-index: 10000;
+      top: 50px;
+      background: $mobile-menu-bg-color;
+      bottom: 0;
+      box-shadow: 0 2px 4px -1px rgba(0,0,0,.2),0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12);
+      &.ng-hide-add {
+        animation: slideOutLeft 0.5s;
+      }
+      &.ng-hide-remove {
+        animation: slideInLeft 0.5s;
+      }
+      .search-bar {
+        padding: 0;
+        text-align: center;
+        width: 85%;
+        bottom: 0;
+        position: fixed;
+        border-top: 1px solid rgba($mobile-header-color, .5);
+        .search-input {
+          background: rgba($mobile-header-color, .5) url("../assets/images/search.svg") right 5px center no-repeat;
+          background-size: 25px;
+          border: 0;
+          border-radius: 5px;
+          color: #fff;
+          line-height: 35px;
+          margin: 20px 0;
+          padding: 0 40px;
+          width: 65%;
+        }
+      }
+      .nav-item {
+        @include clearfix();
+        line-height: 45px;
+        .icon {
+          display: inline-block;
+          padding: 0 10px;
+          height: 35px;
+          width: 35px;
+        }
+        .home {
+          background: transparent url("../assets/images/home.svg") center center no-repeat;
+          background-size: 30px 30px;
+        }
+        .sync {
+          background: transparent url("../assets/images/sync.svg") center center no-repeat;
+          background-size: 30px 30px;
+          border-right: 0;
+        }
+        .manage-users {
+          background: transparent url("../assets/images/manage_users.svg") center center no-repeat;
+          background-size: 30px 30px;
+        }
+        .postpone {
+          background: transparent url("../assets/images/postpone.svg") center center no-repeat;
+          background-size: 30px 30px;
+        }
+        .logout {
+          background: transparent url("../assets/images/logout.svg") center center no-repeat;
+          background-size: 30px 30px;
+        }
+      }
+      .nav-item-text {
+        min-width: 125px;
+      }
+      .nav-menu-section {
+        width: 85vw;
+        color: $secondary-font-color;
+        height: calc(100% - 75px);
+        box-sizing: border-box;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        li {
+          padding: 15px;
+          border: none;
+        }
+      }
+      .nav-images {
+        height: 30px;
+      }
+    }
+    .mobile-navigation-container {
+      height: 100%;
+      overflow: hidden;
+      width: 100%;
+      box-shadow: 0 0 10px -2px rgba(0, 0, 0, .75);
+      background-color: rgb(0, 0, 0);
+      background-color: rgba(0, 0, 0, .81);
+      position: absolute;
+      top: 0;
+      z-index: 150;
+      .navigation-box {
+        margin: 30vh 5vw;
+        padding: 20px;
+        background-color: $mobile-menu-admin-color;
+        border-radius: 2px;
+        .nav-row {
+          color: white;
+          padding: 15px 0;
+          .circle {
+            width: 15px;
+            height: 15px;
+            margin: 2px 0;
+            box-sizing: content-box;
+            border: 5px solid white;
+            background-color: white;
+            border-radius: 50%;
+          }
+          .nav-images {
+            width: 30px;
+            margin: 0 15px;
+          }
+          .nav-text {
+            padding-left: 15px;
+            vertical-align: super;
+          }
+          .selected {
+            background-color: $mobile-menu-admin-color;
+          }
+          &:active {
+            .circle {
+              background-color: $mobile-menu-admin-color;
+            }
+          }
+        }
+      }
+    }
+  }
+  .body-tag {
+    .rtl {
+      .title-container-mobile .three-dots .overflow-menu {
+        left: 20px;
+        right: inherit;
+      }
+      .nav-menu-mobile {
+        &.ng-hide-add {
+          animation: slideOutRight 0.5s;
+        }
+        &.ng-hide-remove {
+          animation: slideInRight 0.5s;
+        }
+      }
+    }
+  }
+  .mobile-nav-overlay {
+    height: 100%;
+    position: fixed;
+    width: 100%;
+    z-index: 99;
+  }
+  
+}

@@ -1,0 +1,150 @@
+.highlighted {
+  background-color: rgb(105, 105, 105);
+  background-color: rgba(105, 105, 105, .6);
+  color: #fff;
+}
+
+.search-wrapper {
+  padding: 10px 20px;
+
+  .legends {
+    @include clearfix();
+    padding-top: 15px;
+  }
+}
+
+.search-box-container {
+  background-color: $header-color;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px -2px rgb(0, 0, 0);
+  box-shadow: 0 2px 10px -2px rgba(0, 0, 0, .75);
+  color: #fff;
+  padding: 15px;
+
+  .search-btn {
+    padding-bottom: 5px;
+    text-align: right;
+    width: 18%;
+
+    .search {
+      margin-top: 0;
+      min-height: 18px;
+    }
+  }
+
+  .search-input {
+    background: transparent;
+    border: 0;
+    color: #fff;
+    padding-bottom: 5px;
+    width: 80%;
+    &:focus {
+      border: 1px solid transparent;
+      outline: none;
+    }
+  }
+
+  ::-webkit-input-placeholder {
+    color: rgb(204, 204, 204);
+  }
+
+  :-moz-placeholder {
+    /* Firefox 18- */
+    color: rgb(204, 204, 204);
+  }
+
+  ::-moz-placeholder {
+    /* Firefox 19+ */
+    color: rgb(204, 204, 204);
+  }
+
+  :-ms-input-placeholder {
+    color: rgb(204, 204, 204);
+  }
+}
+
+.filters-wrapper {
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+
+  .filter {
+    display: inline-block;
+    margin-right: 20px;
+
+    input[type=checkbox] {
+      display: none;
+    }
+
+    input[type=checkbox] + label:before {
+      background-color: transparent;
+      border: 1px solid #fff;
+      border-radius: 4px;
+      content: '';
+      display: inline-block;
+      margin-right: 8px;
+      min-height: 15px;
+      min-width: 15px;
+      vertical-align: middle;
+    }
+
+    input[type=checkbox]:checked + label:before {
+      background-color: transparent;
+      color: #fff;
+      content: '\2713';
+      font-size: 12px;
+      line-height: 15px;
+      text-align: center;
+    }
+
+  }
+
+}
+
+.result-type {
+  padding: 0 0 10px;
+}
+
+.results-container {
+  -webkit-overflow-scrolling: touch;
+  margin-top: 20px;
+  overflow-y: scroll;
+}
+
+.result-list {
+  border-radius: 4px;
+  margin-bottom: 10px;
+  max-height: 20vh;
+  overflow-y: scroll;
+
+  .unknown {
+    background-color: #a6a6a6;
+  }
+
+  .onTrack {
+    background-color: $on-track-color;
+  }
+
+}
+
+.results {
+  @include clearfix();
+  border-radius: 5px;
+  color: #fff;
+  margin: 0 0 10px;
+  padding: 15px;
+
+  .found-name {
+    float: left;
+    width: 80%;
+  }
+
+  .found-owner {
+    float: left;
+    text-align: right;
+    width: 20%;
+  }
+}
+
+.search-requirement {
+    padding: 10px;
+}

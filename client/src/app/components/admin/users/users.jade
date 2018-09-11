@@ -1,0 +1,25 @@
+.users-container(ng-controller='UserController as user')
+  ul.nav-tabs(rtl is-rtl="{{main.isRtl}}")
+    li
+      a.button.nav-tab(ng-click='user.setView("list")', ng-class='{"active":user.checkView("list")}' translate="ADMIN.LIST_OF_USERS")
+    li
+      a.button.nav-tab(ng-click='user.setView("create")', ng-class='{"active":user.checkView("create")||user.checkView("update")}') {{user.mode}}
+  .status-modal(ng-if="user.statusText" rtl is-rtl="{{main.isRtl}}")
+    .delete-container
+      .status-update.f20 {{user.statusText}}
+      .button.status-button.f16(ng-click="user.statusText=''; user.setView('list')" translate="FORM.CLOSE")
+
+  ng-include(src="'app/components/admin/users/list.html'", ng-if='user.checkView("list")')
+  ng-include(src="'app/components/admin/users/create.html'", ng-if='user.checkView("create")||user.checkView("update")')
+
+  .confirm-modal(ng-show='user.deleteConfirmModal' rtl is-rtl="{{main.isRtl}}")
+    .modal-data
+      .modal-container
+        .f20(translate="CONFIRM")
+        p.confirm-text(translate="ADMIN.SURE_TO_DELETE")
+        .btn-wrapper.pull-right
+          button.button(ng-click='user.deleteConfirmModal = false' translate="NO")
+          button.button.highlight-btn(ng-click='user.deleteUser(row.entity)')
+            span(ng-if="user.spinnerVisibility")
+              img(src="assets/images/spinner-svg.svg" class="spin-button")
+            span(ng-if="!user.spinnerVisibility" translate="YES")

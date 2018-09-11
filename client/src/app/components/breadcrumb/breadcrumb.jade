@@ -1,0 +1,18 @@
+.bread-box
+  .bread-list
+    ul
+      li.closed-crumb(ng-if="!breadCrumb.isOpen")
+        .crumb
+          .bread-item.pull-left {{lastItem.name}} &#x200E;
+          .owner-details.pull-left.f14
+            .dept(title="{{dept}}") {{lastItem.owner.department}}
+            .owner(title="{{owner.email}}") {{lastItem.owner.email}}
+      li.open-crumb(ng-repeat="crumb in crumbs track by $index", ng-if="breadCrumb.isOpen")
+        a.crumb(href="{{crumb.url}}")
+          .bread-item.pull-left {{crumb.name}} &#x200E;
+          .owner-details.pull-left.f14
+            .dept(title="{{dept}}") {{crumb.owner.department}}
+            .owner(title="{{owner.email}}") {{crumb.owner.email}}
+  .arrow.clear-both(ng-click="breadCrumb.isOpen = !breadCrumb.isOpen", ng-show="!(crumbs.length === 1)")
+    img(src="assets/images/black-arrow.svg", ng-class="breadCrumb.isOpen ? 'bread-open' : 'bread-close'")
+.bread-background(ng-if="breadCrumb.isOpen", ng-click="breadCrumb.isOpen = !breadCrumb.isOpen")

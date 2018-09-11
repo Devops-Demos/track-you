@@ -1,0 +1,25 @@
+# circle.yml template for docker builds
+---
+machine:
+  pre:
+    - sudo curl -L -o /usr/bin/docker 'https://s3.amazonaws.com/circle-downloads/docker-1.9.1-circleci'
+    - sudo chmod 0755 /usr/bin/docker
+  services:
+    - docker
+
+dependencies:
+  override:
+    - make startPostgres
+    - make build
+
+test:
+  override:
+    - make runTestWithPostgres
+
+deployment:
+  registry:
+    branch: master
+    commands:
+      - make push
+
+

@@ -1,0 +1,51 @@
+.ui.visible.message(rtl is-rtl="{{main.isRtl}}")
+  form.ui.create-form(name='createForm' ng-submit='user.submitUser()')
+    .field
+      label(translate="NAME")
+      input.input-box(type="text",required, placeholder="{{'ADMIN.ENTER_NAME' | translate}}", ng-model='user.userName')
+    .field.department-field
+      p(translate="DEPARTMENT")
+      .button.dropdown-button(ng-click='user.dropdownStatus = !user.dropdownStatus')
+        span(ng-if='user.selectedDept') {{user.selectedDept}}
+        span(ng-if='!user.selectedDept' translate="ADMIN.SELECT_DEPARTMENT")
+      .dropdown-wrapper.scrollable-div(ng-show='user.dropdownStatus')
+        .add-department
+          .dept-text(ng-click='user.toggleAddDepartment()', ng-if='!user.isDepartmentAdded()' translate="ADMIN.ADD_DEPARTMENT")
+          .new-department-container(ng-if='user.isDepartmentAdded()')
+            span.action-btn.text-center(ng-click='user.toggleAddDepartment()')
+              span X
+            input.input-box.new-department(ng-model='user.newDepartment', ng-keyup="$event.keyCode == 13 ? user.addDepartment() : null" )
+            span.action-btn.text-center(ng-click='user.addDepartment()')
+              span &#10003;
+        .dropdown-option(ng-repeat='dept in user.getSortedDepts() track by $index' ng-click='user.selectDepartment(dept,createForm)') {{dept}}
+    .field
+      label(translate="EMAIL")
+      input.input-box(type="email",required,ng-disabled='!user.emailEditable' placeholder="{{'ADMIN.ENTER_EMAIL_ID' | translate}}", ng-model='user.userEmail')
+
+    .field
+      p(translate="ADMIN.RIGHTS")
+      .rights-wrapper
+        .rights.pull-left(ng-repeat='right in user.rights track by $index')
+          input(id='right{{$index}}', name='right', type="checkbox", ng-model='right.isSelected')
+          label(for='right{{$index}}') {{right.right | translate}}
+        .rights.pull-left
+          input(id='default-right', checked='checked', type="checkbox", value='true', disabled='disabled')
+          label(for='default-right' translate="ADMIN.DEFAULT_RIGHTS")
+    button.ui.button.pull-right(type="submit", ng-disabled='user.isForminvalid(createForm) || user.spinnerVisibility')
+      span(ng-if="user.spinnerVisibility")
+        img(src="assets/images/spinner-svg.svg" class="spin-button")
+      span(ng-if="!user.spinnerVisibility") {{user.mode}}
+    button.ui.button.pull-right(type="submit",ng-if='user.checkView("create")',ng-disabled='createForm.$pristine', ng-click='user.createUserInit();createForm.$setPristine()' translate="ADMIN.RESET")
+    .disclaimer
+      div {{'ADMIN.NOTE_FOLLOWING' | translate}}
+        div {{'ADMIN.PROVIDE_RIGHTS' | translate}}
+          ul
+            li(translate="ADMIN.GENERAL_USER")
+            li(translate="ADMIN.DELIVERY_UNIT")
+            li(translate="ADMIN.ADMIN_RIGHTS")
+        div {{'ADMIN.DEFAULT_RIGHTS_INCLUDE' | translate}}
+          ul
+            //- li(translate="ADMIN.VIEW_OWNED_PRIORITIES")
+            //- li(translate="ADMIN.UPDATE_LOGS_IN_PRIORITY")
+            li(translate="ADMIN.UPDATE_ACTIVITIES_OUTPUT_KPIS_OWNED")
+            li(translate="ADMIN.UPDATE_ACTIVITIES_OUTPUT_KPIS_WITHIN")

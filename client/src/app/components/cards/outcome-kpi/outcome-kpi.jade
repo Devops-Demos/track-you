@@ -1,0 +1,24 @@
+.card__title(ng-init="isCollapsed=true", ng-class="[{'card__title--collapsed': isCollapsed}, kpi.statusClass]", ng-click="isCollapsed=!isCollapsed; main.windowResize()" rtl is-rtl="{{main.isRtl}}")
+  .card__title__text.pull-left
+    span(title="{{kpi.kpi}}", ellipsis, ng-bind="kpi.kpi")
+  .card__title__arrow.pull-right
+    span.edit-click(ng-click="outcome.editKPI(kpi)", ng-if="(main.getUserRights().updateAllOutComeKpis || outcome.initiative.isEditable || main.getUserRights().crudArtifacts) && !isCollapsed && !kpi.isEditHidden")
+      img(src="assets/images/edit.png", width="15px")
+    span.card__title__arrow__icon
+      img(src="assets/images/arrow.svg", width="15px" ng-class="isCollapsed ? 'card--isCollapsed': 'card--isNotCollapsed'")
+.card__content(ng-if="!isCollapsed", ng-init="kpi.descIsHidden=true" rtl is-rtl="{{main.isRtl}}")
+  .card__wrap.f12
+    .chart-dir(ng-class="{'drilldown': kpi.hasDrillDown}", data-kpi="kpi", data-view="outcome.selectedPeriod", data-is-rtl="main.isRtl", chart)
+    .kpi-desc(ng-show="!kpi.descIsHidden")
+      span.f16(translate="CARD.KPI_DESC")
+      .kpi-desc-details {{kpi.description}}
+.card__footer.kpi-footer(ng-show="!isCollapsed" rtl is-rtl="{{main.isRtl}}")
+  .last__milestone-wrap.pull-left(ng-if="kpi.lastMilestone")
+    .f10(translate="MILESTONE")
+    .f12 {{kpi.lastMilestone}}
+  .kpi-desc-link.pointer(ng-click="kpi.descIsHidden = !kpi.descIsHidden")
+    img(ng-show="kpi.descIsHidden" src="assets/images/kpi_info.svg", width="30px")
+    img(ng-show="!kpi.descIsHidden" src="assets/images/close-footer.svg", width="30px")
+  .last__update-wrap.pull-right(ng-if="kpi.lastUpdate")
+    .f10(translate="ACTUAL")
+    .f12 {{kpi.lastUpdate}}

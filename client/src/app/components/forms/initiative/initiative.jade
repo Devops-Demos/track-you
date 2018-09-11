@@ -1,0 +1,75 @@
+.form-wrap(ng-controller="InitiativeFormController as initiativeFC" ng-init="initiativeFC.deleteModel=false; initiativeFC.statusModel=false")
+  rtl(is-rtl="{{main.isRtl}}")
+    .back.f20.pull-left(ng-click="main.backTo()") < {{initiativeFC.initiativeLabel}}
+  form.kpi-form.form-container(name="initiativeForm" novalidate rtl is-rtl="{{main.isRtl}}")
+    .clearfix
+      .field-full.field-spacing
+        label {{initiativeFC.initiativeLabel}} {{'NAME' | translate}} *
+        input.f16(type="text" name="name" ng-model="initiativeFC.initiative" required)
+        p.error-message.f12(ng-show="initiativeForm.name.$error.required  && !initiativeForm.name.$pristine") {{initiativeFC.initiativeLabel}} {{'FORM.NAME_REQUIRED' | translate}}
+      .field-full.field-spacing
+        label(translate="FORM.PARENT")
+        input.f16(type="text" disabled='true' ng-model="initiativeFC.parentName")
+      .field-half.field-spacing.pull-left.filed-first
+        label(translate="DEPARTMENT")
+        select.dropdown(ng-model="initiativeFC.selectedDept", ng-options="department as department for department in initiativeFC.deptList", ng-change="initiativeFC.selectDept(initiativeFC.selectedDept)")
+      .field-half.field-spacing.pull-left
+        label(translate="FORM.OWNER")
+        select.dropdown(ng-model="initiativeFC.selectedUser", ng-options="user as user.listLabel for user in initiativeFC.selectedUserList")
+      .field-half.field-spacing.pull-left
+        label(translate="FORM.PARTICIPANTS")
+        div(ng-if="initiativeFC.localLang" isteven-multi-select, input-model="initiativeFC.participantList", output-model="initiativeFC.selectedParticipants", button-label="name", item-label="info", tick-property="ticked", max-labels="2", translation="initiativeFC.localLang", max-height="200px", search-property="name email" on-open="initiativeFC.sortParticipantsList()")
+    div(ng-hide='initiativeFC.parentName==="master"')
+      hr      
+      div.evidence-heading.f20(translate="Evidence")    
+      div.evidence-heading(ng-repeat="evidence in initiativeFC.totalEvidences track by $index ")
+        div.clearfix(ng-if='evidence.type!=="remove"')
+          .field-one-third.field-spacing.filed-first.pull-left
+            label(translate="TITLE")
+            input.f16(type='text' ng-model="evidence.title" required)
+          .field-one-third.pull-left.field-spacing
+            label(translate="LINK")
+            input.f16(type='url' ng-model="evidence.link" required)
+          .cross-btn.pointer.pull(ng-click="initiativeFC.deleteEvidence(evidence)")
+            img(src="assets/images/close-edit.svg", width="20px")    
+      .add-new.pointer(ng-click="initiativeFC.addEvidence()")
+       img(src="assets/images/plus.svg", width="15px")
+       span.add-new-evidence.f14(translate="ADD_NEW_EVIDENCE")          
+    .field-submit
+      rtl(is-rtl="{{main.isRtl}}")
+        button.pull-right.form-submit.f16(type="submit" ng-disabled="initiativeForm.$invalid" ng-click="initiativeFC.addInitiative()" )
+          span(ng-if="!initiativeFC.btnSpinner") {{initiativeFC.buttonName}}
+          span(ng-if="initiativeFC.btnSpinner")
+            img(src="assets/images/spinner-svg.svg" class="spin-button")
+        button.pull-right.form-submit.f16(ng-if="initiativeFC.deleteCheck" ng-click="initiativeFC.deleteModel=true")
+          span(ng-if="!initiativeFC.btnSpinner") {{'FORM.DELETE' | translate}} {{initiativeFC.initiativeLabel}}
+          span(ng-if="initiativeFC.btnSpinner")
+            img(src="assets/images/spinner-svg.svg" class="spin-button")
+  .delete-modal(ng-if="initiativeFC.deleteModel" rtl is-rtl="{{main.isRtl}}")
+    .delete-container
+      .delete-title.f24 {{'FORM.DELETE' | translate}} {{initiativeFC.initiativeLabel}}
+        span.f16 {{initiativeFC.initiative}}
+      form.delete-form(name="deleteForm" novalidate)
+        .warning-text(translate="FORM.WARNING_CANNOT_BE_UNDONE")
+        .delete-field
+          input(id='all-initiative' type="checkbox" ng-model="initiativeFC.allInitiative" required)
+          label.f16(for='all-initiative' translate="FORM.ALL_I_A_UNDER_I_DESTROYED")
+        .delete-field
+          input(id='all-kpis' type="checkbox" ng-model="initiativeFC.allKpis" required)
+          label.f16(for='all-kpis' translate="FORM.ALL_KPIS_ASSOCIATED_DELETED")
+        .delete-field
+          input(id='all-issues' type="checkbox" ng-model="initiativeFC.allIssues" required)
+          label.f16(for='all-issues' translate="FORM.ALL_ISSUES_ASSOCIATED_DELETED")
+        .buttom-wrap
+          button.delete-button.f16(ng-click="initiativeFC.deleteInitiative()" ng-disabled="deleteForm.$invalid" ng-class="{'create-cursor': !deleteForm.$invalid}")
+            span(ng-if="!initiativeFC.btnSpinner") {{'FORM.YES_DELETE' | translate}} {{initiativeFC.initiativeLabel}}
+            span(ng-if="initiativeFC.btnSpinner")
+              img(src="assets/images/spinner-svg.svg" class="spin-button")
+          button.cancel-button.f16(ng-click="initiativeFC.deleteModel=false")
+            span(ng-if="!initiativeFC.btnSpinner" translate="CANCEL")
+            span(ng-if="initiativeFC.btnSpinner")
+              img(src="assets/images/spinner-svg.svg" class="spin-button")
+  .status-modal(ng-if="initiativeFC.statusModel")
+    .delete-container
+      .status-update.f20(ng-class="{'error-msg': initiativeFC.isError}") {{initiativeFC.statusMsg}}
+      .button.status-button.f16(ng-click="main.backTo()" translate="FORM.CLOSE")

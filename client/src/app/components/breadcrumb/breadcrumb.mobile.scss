@@ -1,0 +1,22 @@
+@media screen and (max-width: 736px) {
+  .body-tag {
+    .breadcrumbs {
+      .bread-box {
+        margin: 0;
+      }
+      .owner-details {
+        display: none;
+      }
+      .bread-background {
+        top: 50px;
+      }
+      .bread-item {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 100%;
+        line-height: normal;
+      }
+    }
+  }
+}

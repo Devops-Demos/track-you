@@ -1,0 +1,37 @@
+.cards__container(ng-controller="OutputController as output")
+  rtl(is-rtl="{{main.isRtl}}")
+    .breadcrumbs(breadcrumb data-crumbs="output.breadCrumb" ng-if="output.breadCrumb" data-is-rtl="main.isRtl")
+  .legend.output-legends.clearfix(rtl is-rtl="{{main.isRtl}}" ng-class="output.breadCrumb ? (output.breadCrumb.length > 1 ? 'top-padding' : 'top-padding-less'): ''")
+    ul.tabs.f16.pointer.clearfix
+      li.tab.pull-left(ng-class="{'tab--active': output.isSelectedPeriod('current')}", ng-click="output.setSelectedPeriod('current')" translate="CURRENT")
+      li.tab.pull-left(ng-class="{'tab--active': output.isSelectedPeriod('trend')}", ng-click="output.setSelectedPeriod('trend')" translate="TRENDLINE")
+    span
+      ul.legend-container.f12.pull-right
+        li.add-card.pointer(ng-click="output.addCards()", ng-if="main.getUserRights().crudArtifacts && !output.isDrillDown && main.isOnline()" translate="OUTPUT_KPI")
+        li.target-legend.hidden-xs
+        li.mobile-legend.target-mobile(translate="TARGET")
+        li.actual-legend.hidden-xs
+        li.mobile-legend.actual-mobile(translate="ACTUAL")
+        li.completed-legend
+        li(translate="COMPLETED")
+        li.on-track-legend
+        li(translate="ON_TRACK")
+        li.delayed-legend
+        li(translate="DELAYED")
+        li.unknown-legend
+        li(translate="UNKNOWN")
+    h2.legend-heading(translate="INITIATIVE_PAGE.INITIATIVE_OUTPUT_KPIS")
+  .no-data(ng-if="!output.initiative" translate="INITIATIVE_PAGE.NO_INITIATIVE_FOUND")
+  .cards
+    .cards-full
+      .card.card-half(ng-repeat="kpi in output.fullWidthkpis track by $index")
+        .card__container
+          div(ng-include="'app/components/cards/output-kpi/output-kpi.html'")
+    .cards-left.pull-left
+      .card.card-half(ng-repeat="kpi in output.leftKpis track by $index")
+        .card__container
+          div(ng-include="'app/components/cards/output-kpi/output-kpi.html'")
+    .cards-right.pull-right
+      .card.card-half(ng-repeat="kpi in output.rightKpis track by $index")
+        .card__container
+          div(ng-include="'app/components/cards/output-kpi/output-kpi.html'")

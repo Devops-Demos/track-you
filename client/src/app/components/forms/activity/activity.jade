@@ -1,0 +1,85 @@
+.form-wrap(ng-controller="ActivityFormController as activity" ng-init="activity.deleteModel=false; activity.statusModel=false")
+  rtl(is-rtl="{{main.isRtl}}")
+    .back.pull-left.f20(ng-click="main.backTo()") < {{'ACTIVITY' | translate}}
+  form.kpi-form.form-container(name="activityForm" novalidate rtl is-rtl="{{main.isRtl}}")
+    .clearfix
+      .field-full.field-spacing
+        label {{'FORM.ACTIVITY_NAME' | translate}} *
+        input.f16(type="text" name="name" ng-model="activity.activity" required ng-disabled="!main.isActivityEditable()")
+        p.error-message.f12(ng-show="activityForm.name.$error.required  && !activityForm.name.$pristine" translate="FORM.ACTIVITY_NAME_REQUIRED")
+      .field-full.field-spacing
+        label(translate="FORM.SUB_INITIATIVE")
+        input.f16(type="text" disabled='true' ng-model="activity.parentName")
+      .field-half.field-spacing.pull-left.filed-first
+        label(translate="DEPARTMENT")
+        select.dropdown(ng-model="activity.selectedDept", ng-options="department as department for department in activity.deptList", ng-change="activity.selectDept(activity.selectedDept)" disable-control="!main.isActivityEditable()")
+      .field-half.field-spacing.pull-left
+        label(translate="FORM.OWNER")
+        select.dropdown(ng-model="activity.selectedUser", ng-options="user as user.listLabel for user in activity.selectedUserList" disable-control="!main.isActivityEditable()")
+      .field-half.field-spacing.filed-first.pull-left
+        label {{'FORM.PLANNED_START_DATE' | translate}} *
+        input(type='date' name="planned-start" ng-model="activity.plannedStartDate" required="required", ng-disabled="!main.isActivityEditable()")
+        p.error-message.f12(ng-show="activityForm.planned-start.$error.required  && !activityForm.planned-start.$pristine" translate="FORM.REQ_PLANNED_START_DATE")
+      .field-half.field-spacing.pull-left
+        label(translate="FORM.PLANNED_END_DATE")
+        input(type='date' name="planned-end" min="{{activity.plannedStartDate | date :'yyyy-MM-dd'}}" ng-model="activity.plannedEndDate", ng-disabled="!main.isActivityEditable()")
+      .field-half.field-spacing.filed-first.pull-left
+        label(translate="FORM.ACTUAL_START_DATE")
+        input(type='date' ng-model="activity.actualStartDate" date-validator-hack)
+      .field-half.field-spacing.pull-left
+        label(translate="FORM.ACTUAL_END_DATE")
+        input(type='date' min="{{activity.actualStartDate | date :'yyyy-MM-dd'}}" ng-model="activity.actualEndDate" date-validator-hack)
+      .field-half.field-spacing.pull-left(disable-control="!main.isActivityEditable()")
+        label(translate="FORM.PARTICIPANTS")
+        div(ng-if="activity.localLang" isteven-multi-select, input-model="activity.participantList", output-model="activity.selectedParticipants", button-label="name", item-label="info", tick-property="ticked", max-labels="3", translation="activity.localLang", max-height="200px", search-property="name email" on-open="activity.sortParticipantsList()")
+    hr      
+    div.evidence-heading.f20(translate="Evidence")    
+    div.evidence-heading(ng-repeat="evidence in activity.totalEvidences track by $index ")
+      div.clearfix(ng-if='evidence.type!=="remove"')
+        .field-one-third.field-spacing.filed-first.pull-left
+          label(translate="TITLE")
+          input.f16(type='text' ng-model="evidence.title" required)
+        .field-one-third.pull-left.field-spacing
+          label(translate="LINK")
+          input.f16(type='url' ng-model="evidence.link" required)
+        .cross-btn.pointer.pull(ng-click="activity.deleteEvidence(evidence)")
+          img(src="assets/images/close-edit.svg", width="20px")    
+    .add-new.pointer(ng-click="activity.addEvidence()")
+     img(src="assets/images/plus.svg", width="15px")
+     span.add-new-evidence.f14(translate="ADD_NEW_EVIDENCE")      
+    .field-submit
+      rtl(is-rtl="{{main.isRtl}}")
+        button.form-submit.f16.pull-right(type="submit" ng-disabled="activityForm.$invalid" ng-click="activity.addActivity()" ng-if="activity.addButton")
+          span(ng-if="!activity.btnSpinner" translate="FORM.ADD_ACTIVITY")
+          span(ng-if="activity.btnSpinner")
+            img(src="assets/images/spinner-svg.svg" class="spin-button")
+        button.form-submit.f16.pull-right(type="submit" ng-disabled="activityForm.$invalid" ng-click="activity.editActivity()" ng-if="activity.editButton")
+          span(ng-if="!activity.btnSpinner" translate="FORM.SAVE_ACTIVITY")
+          span(ng-if="activity.btnSpinner")
+            img(src="assets/images/spinner-svg.svg" class="spin-button")
+        button.form-submit.f16.pull-right(ng-click="activity.deleteModel=true" ng-if="activity.editButton && main.getUserRights().crudArtifacts")
+          span(ng-if="!activity.btnSpinner" translate="FORM.DELETE_ACTIVITY")
+          span(ng-if="activity.btnSpinner")
+            img(src="assets/images/spinner-svg.svg" class="spin-button")                  
+  .delete-modal(ng-if="activity.deleteModel" rtl is-rtl="{{main.isRtl}}") 
+    .delete-container
+      .delete-title.f24(translate="FORM.DELETE_ACTIVITY")
+        span.f16 {{activity.activity}}
+      form.delete-form(name="deleteForm" novalidate)
+        .warning-text(translate="FORM.WARNING_CANNOT_BE_UNDONE")
+        .buttom-wrap
+          button.delete-button.f16(ng-click="activity.deleteActivities()" ng-disabled="deleteForm.$invalid" ng-class="{'create-cursor': !deleteForm.$invalid}")
+            span(ng-if="!activity.btnSpinner" translate="FORM.YES_DELETE_ACTIVITIES")
+            span(ng-if="activity.btnSpinner")
+              img(src="assets/images/spinner-svg.svg" class="spin-button")
+          button.cancel-button.f16(ng-click="activity.deleteModel=false")
+            span(ng-if="!activity.btnSpinner" translate="CANCEL")
+            span(ng-if="activity.btnSpinner")
+              img(src="assets/images/spinner-svg.svg" class="spin-button")
+  .status-modal(ng-if="activity.statusModel")
+    .delete-container
+      .status-update.f20(ng-class="{'error-msg': activity.isError}") {{activity.statusMsg}}
+      .button.status-button.f16(ng-click="main.backTo()" translate="FORM.CLOSE")
+
+ 
+    

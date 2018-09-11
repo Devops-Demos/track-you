@@ -1,0 +1,25 @@
+.number-container {
+  box-sizing: border-box;
+  min-height: 400px;
+  padding: 140px 0 0;
+
+  .kpi-uom {
+    color: #999999;
+  }
+
+  .number-val {
+    font-size: 100px;
+  }
+
+}
+
+.output__kpi {
+  .number-container {
+    padding: 35px 0 0;
+  }
+
+}
+
+.dial-unit {
+  color: #bbb;
+}

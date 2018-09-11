@@ -1,0 +1,88 @@
+.initiative.card__title(ng-init="isCollapsed=true", ng-class="[{'card__title--collapsed': isCollapsed}, initiative.statusClass]", ng-click="isCollapsed=!isCollapsed; main.windowResize(); initiative.listIsHidden=false; initiative.evidenceListIsHidden=false")
+  .card__title__text.pull-left
+    span(title="{{initiative.initiative}}") {{initiative.initiative}}&#x200E;
+  .card__title__arrow.pull-right
+    span.card__title__arrow__issue(ng-if="isCollapsed && initiative.Issues.length !== 0")
+      img(src="assets/images/issue.svg", width="15px")
+    span.card__title__arrow__issue(ng-if="isCollapsed && initiative.Issues.length === 0 && initiative.Risk.length !== 0 ")
+      img(src="assets/images/issue.svg", width="15px")
+    span.edit-click(ng-click="initiativeController.editCards(initiative,'initiative')", ng-if="(main.getUserRights().crudArtifacts) && !isCollapsed")
+      img(src="assets/images/edit.png", width="15px")
+    span.card__title__arrow__icon
+      img(src="assets/images/arrow.svg", width="15px" ng-class="isCollapsed ? 'card--isCollapsed': 'card--isNotCollapsed'")
+.card__spinner(ng-if="initiative.showSpinner")
+.card__content(ng-if="!isCollapsed")
+  .card__wrap
+    .participant-list(ng-show="initiative.listIsHidden")
+      img.pull-right(ng-click="initiative.listIsHidden=!initiative.listIsHidden" src="assets/images/close-footer.svg", width="30px")  
+      span.f16(translate="FORM.PARTICIPANTS")  
+      table.participant-table(ng-if="initiative.participants.length > 0")
+        thead
+          td(translate="PARTICIPANT")
+          td(translate="DEPARTMENT")
+        tr(ng-repeat="participant in initiative.participants")
+          td {{participant.name}}
+          td {{participant.department}}
+      .no-participant(ng-if="initiative.participants.length === 0" translate="CARD.NO_PARTICIPANTS")
+    .participant-list(ng-show="initiative.evidenceListIsHidden") 
+      img.pull-right(ng-click="initiative.evidenceListIsHidden = !initiative.evidenceListIsHidden" src="assets/images/close-footer.svg", width="30px") 
+      span.f16(translate="EVIDENCE") 
+      div(ng-if="initiative.evidence.length > 0")
+        div.evidence-links.pull-left.half(ng-repeat="evidence in initiative.evidence track by $index" ng-click="main.openLink(evidence.link)") {{evidence.title}}
+         img.mail.pull-right(src="assets/images/link-arrow.svg" width="25px")
+      .no-participant(translate="NO_EVIDENCE" ng-if="initiative.evidence.length === 0")  
+    .activity.f12.pull-left(ng-class="{'drilldown': initiative.hasChart}")
+      .activity__chart.pointer(pie-chart, data-id="initiative.initiativeId", data-value="initiative.activityCount", ng-if="initiative.hasChart", data-has-child="initiative.hasChild", ng-click="initiativeController.onActivityChartClick(initiative)")
+      .activity--no-data(ng-if="!initiative.hasChart")
+        img.no-data__image(src="assets/images/dummy-graph.svg", width="50px")
+        p.no-data__text(translate="CARD.NO_ACTIVITIES")
+        a.no-data__link(href="#/initiative/{{initiative.initiativeId}}", ng-if="initiative.hasChild" translate="VIEW_NEXT_LAYER")
+        a.no-data__link__add(href="#/initiative/{{initiative.initiativeId}}/form/new/", ng-if="!initiative.hasChild && main.getUserRights().crudArtifacts")
+          img.add-icon.pull-left(src="assets/images/plus.svg" width="15px")
+          | {{'INITIATIVE' | translate}}
+        a.no-data__link__add(href="#/activity/{{initiative.initiativeId}}/form/new/", ng-if="!initiative.hasChild && main.getUserRights().crudArtifacts")
+          img.add-icon.pull-left(src="assets/images/plus.svg" width="15px")
+          | {{'ACTIVITY' | translate}}
+      .activity__heading.f14(translate="CARD.ACTIVITY_LEVEL")
+    .kpi.f12.pull-left(ng-class="{'drilldown': initiative.hasKpi}")
+      .kpi__inner
+        .kpi__chart.pointer(ng-if="initiative.KpiAchievementToTarget", speedometer-chart, data-initiative="initiative", ng-click="initiativeController.speedometerNavigate(initiative.initiativeId)")
+      .kpi--no-data(ng-if="!initiative.KpiAchievementToTarget")
+        img.no-data__image(src="assets/images/dummy-graph.svg", width="50px")
+        p.no-data__text(ng-if="!initiative.hasKpi" translate="CARD.NO_OUTPUT_KPI")
+        p.no-data__text(ng-if="initiative.hasKpi" translate="INCOMPLETE_DATA")
+        a.no-data__link(href="#/initiative/{{initiative.initiativeId}}/output", ng-if="initiative.hasKpi" translate="VIEW_KPI")
+        a.no-data__link__add(href="#/output/{{initiative.initiativeId}}/form/new/output/0", ng-if="main.getUserRights().crudArtifacts && !initiative.hasKpi")
+          img.add-icon(src="assets/images/plus.svg" width="15px")
+          | {{'KPI' | translate}}
+      .kpi__heading.f14(title="{{'CARD.AVG_KPI' | translate}}" translate="CARD.AVG_KPI")
+
+.card__footer(ng-show="!isCollapsed")
+  .owner.pull-left
+    img.mail.pull-left.pointer(src="assets/images/mail.svg", ng-if="initiative.owner && initiative.owner.email", width="25px", ng-click="initiativeController.canSendMail(initiative)")
+    img.mail.pull-left(src="assets/images/no-mail.svg", ng-if="!(initiative.owner && initiative.owner.email)", width="25px")
+    .dept.f10(title="{{initiative.owner.department}}") {{initiative.owner.department}}
+    .person.f14(title="{{initiative.owner.name}}") {{initiative.owner.name}}
+  .owner.pull-left   
+    a.issue-log.pull-right(ng-href="#/issues/{{initiative.initiativeId}}", ng-if="initiative.Issues.length > 0")
+      img.issue-icon.pull-left(width="20px", src="assets/images/issue.svg")
+      .issue-label.pull-left(translate="CARD.ISSUE_LOG")
+    a.issue-log.pull-right(ng-href="#/issues/{{initiative.initiativeId}}", ng-if="initiative.Issues.length === 0 && initiative.Risk.length > 0")
+      img.issue-icon.pull-left(width="20px", src="assets/images/issue.svg")
+      .issue-label.pull-left(translate="CARD.RISK_LOG")
+    a.add-log.pull-right(ng-href="#/issues/{{initiative.initiativeId}}", ng-if="(initiative.Issues.length === 0 && initiative.Risk.length === 0) && (initiative.isEditable || main.getUserRights().updateAllIssueLogs)")
+      img.plus-icon.pull-left(width="20px", src="assets/images/add issues.svg")
+      .add-label.f10.pull-left(translate="CARD.NO_LOG")  
+      div.f14(translate="CARD.ADD_NEW")          
+  .three-dots.three-dots-footer.pull-right(ng-click="main.toggleFooterMenu(initiative.initiativeId); $event.stopPropagation()")
+      ul.overflow-menu(ng-show="main.toggleFooter[initiative.initiativeId]")
+        li.overflow-menu-item(ng-click="initiative.listIsHidden=true; initiative.evidenceListIsHidden=false")
+          .participant-link.participant-link-activity.pointer
+            img.pull-left(src="assets/images/participants.svg", width="30px")
+            span.person.viewers-text.f14.pointer(translate="VIEWERS") 
+        li.overflow-menu-item(ng-click="initiative.evidenceListIsHidden=true; initiative.listIsHidden=false")
+          .evidence-link.pointer
+            img.evidence.pull-left(ng-show="initiative.evidence.length!==0" src="assets/images/evidence.svg", width="25px")
+            img.evidence.pull-left(ng-show="initiative.evidence.length===0" src="assets/images/evidence_nill.svg", width="25px") 
+            span.person.f14.f14.pointer(translate="EVIDENCE")  
+div(ng-include="'app/components/email/email.html'" ng-if="initiativeController.sendEmail && (initiative.initiativeId === initiativeController.emailInitiativeId)")

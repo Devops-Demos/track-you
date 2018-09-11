@@ -1,0 +1,73 @@
+.upload-modal {
+  .delete-form {
+    clear: both;
+    margin: 0 0 0 0;
+    padding-top: 60px;
+    .delete-field {
+      padding: 20px 0;
+    }
+  }
+}
+
+.csv-error-modal {
+  .delete-container {
+    margin: 10vh auto;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow: scroll;
+    box-sizing: border-box;
+  }
+  .error-table {
+    clear: both;
+    margin-top: 45px;
+    .cell-format {
+      padding: 5px;
+      border: 1px solid #666666;
+      text-align: center;
+    }
+    .row-color:nth-child(2n) {
+      background-color: #F1F1F1;
+    }
+  }
+}
+
+.csv-success-modal {
+  .success-message {
+    padding: 40px 20px;
+    text-align: center;
+  }
+}
+
+.input-file {
+  display: none;
+}
+
+.input-file-box {
+  .input-filename {
+    border: 1px solid $form-button-color;
+    overflow: hidden;
+    margin-top: 10px;
+    .file-name{
+      padding: 5px;
+      img{
+        opacity: 0.4;
+      }
+      span{
+        max-width: 440px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: inline-block;
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .input-browse {
+    color: $secondary-font-color;
+    background-color: $form-button-color;
+    padding: 13px;
+    min-width: 80px;
+    text-align: center;
+  }
+}

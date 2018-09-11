@@ -1,0 +1,42 @@
+{
+  "name": "Current initiatives",
+  "options": {
+    "async": false,
+    "defer": true,
+    "delay": 0.005,
+    "initCount": 1,
+    "maxTime": 5,
+    "minSamples": 5,
+    "minTime": 0.05
+  },
+  "async": false,
+  "defer": true,
+  "delay": 0.005,
+  "initCount": 1,
+  "maxTime": 5,
+  "minSamples": 5,
+  "minTime": 0.05,
+  "id": 1,
+  "stats": {
+    "moe": 2.3200145313942087,
+    "rme": 86.22870773530772,
+    "sem": 0.8357401049690955,
+    "deviation": 1.8687716862337074,
+    "mean": 2.6905361246,
+    "sample": [1.9104334299999999, 1.8640998180000001, 1.8304844729999998, 1.8148092, 6.032853702],
+    "variance": 3.492307615268774
+  },
+  "times": {
+    "cycle": 2.6905361246,
+    "elapsed": 13.814,
+    "period": 2.6905361246,
+    "timeStamp": 1453715933784
+  },
+  "events": {
+    "complete": [null]
+  },
+  "running": false,
+  "count": 1,
+  "cycles": 1,
+  "hz": 0.3716731363897481
+}

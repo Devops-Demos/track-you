@@ -1,0 +1,68 @@
+.last-updated-container(ng-if="summary.lastUpdatedOn") {{'CARD.LAST_UPDATED' | translate}}: {{summary.lastUpdatedOn}}
+.block-container.summary-card(ng-init="isCollapsedSector = false")
+  .block-title.pointer.f16(ng-click="isCollapsedSector=!isCollapsedSector", ng-class="isCollapsedSector ? 'summary--isCollapsed': ''")
+    h2.summary-title(translate="SUMMARY.PROGRESS")
+    .summary-handler.pull-right
+      .summary-arrow
+        img(src="assets/images/arrow.svg", width="15px", ng-class="isCollapsedSector ? 'card--isCollapsed': 'card--isNotCollapsed'")
+  .summary-edit.pointer(ng-show="!isCollapsedSector && (main.getUserRights().updateAllExecutiveSummaries || summary.initiative.isEditable)")
+    span.edit-click(ng-click="summary.isProgressEditable.sector=true" ng-show="!summary.isProgressEditable.sector")
+      img(src="assets/images/edit.png", width="15px")
+  ul.save-close-container.pointer.summary-save-close(ng-hide="!summary.isProgressEditable.sector || isCollapsedSector")
+    li.close-icon(ng-click="summary.summary.sectorSummary = summary.sectorSummary; summary.isProgressEditable.sector=false")
+    li.save-icon(ng-click="summary.setSummary(['sectorSummary']); summary.isProgressEditable.sector=false")
+  .description-container(ng-show="!isCollapsedSector")
+    div(ng-show="!summary.isProgressEditable.sector && summary.sectorData.length > 0") 
+      pre.f16.summary-description(ng-repeat="data in summary.sectorData track by $index") {{data}} 
+    div(ng-show="!summary.isProgressEditable.sector && summary.sectorData.length == 0")
+      pre.no-data.summary-description {{main.translations['ISSUE.NO_DATA_AVAILABLE']}}
+    textarea.textarea(ng-model="summary.summary.sectorSummary" ng-show="summary.isProgressEditable.sector")
+
+.block-container.summary-card(ng-init = "isCollapsedDecisions = false")
+  .block-title.pointer.f16(ng-click="isCollapsedDecisions=!isCollapsedDecisions", ng-class="isCollapsedDecisions ? 'summary--isCollapsed': ''")
+    h2.summary-title(translate="SUMMARY.DECISIONS_REQUIRED")
+    .summary-handler.pull-right
+      .summary-arrow
+        img(src="assets/images/arrow.svg", width="15px", ng-class="isCollapsedDecisions ? 'card--isCollapsed': 'card--isNotCollapsed'")
+  .summary-edit.pointer(ng-show="!isCollapsedDecisions && (main.getUserRights().updateAllExecutiveSummaries || summary.initiative.isEditable)")
+    span.edit-click(ng-click="summary.isProgressEditable.decisions=true" ng-show="!summary.isProgressEditable.decisions")
+      img(src="assets/images/edit.png", width="15px")
+  ul.pointer.summary-save-close(ng-hide="!summary.isProgressEditable.decisions || isCollapsedDecisions")
+    li.close-icon(ng-click="summary.summary.decisionsRequired = summary.decisionsRequired; summary.isProgressEditable.decisions=false")
+    li.save-icon(ng-click="summary.setSummary(['decisionsRequired']); summary.isProgressEditable.decisions=false")
+  .description-container(ng-show="!isCollapsedDecisions")
+    div(ng-show="!summary.isProgressEditable.decisions && summary.decisionsData.length > 0") 
+      pre.f16.summary-description(ng-repeat="data in summary.decisionsData track by $index") {{data}} 
+    div(ng-show="!summary.isProgressEditable.decisions && summary.decisionsData.length == 0")
+      pre.no-data.summary-description {{main.translations['ISSUE.NO_DATA_AVAILABLE']}}
+    textarea.textarea(ng-model="summary.summary.decisionsRequired" ng-show="summary.isProgressEditable.decisions")
+
+.block-container.summary-card(ng-init = "isCollapsedIssues = false")
+  .major-title.pointer.f16(ng-click="isCollapsedIssues=!isCollapsedIssues", ng-class="isCollapsedIssues ? 'summary--isCollapsed': ''")
+    .summary-title
+      .major-title-subheading.pull-left
+        h2.summary-title(translate="SUMMARY.MAJOR_ISSUES")
+      .major-title-subheading.pull-left
+        h2.subheading.summary-title(translate="SUMMARY.PROPOSED_SOLUTION")
+    .summary-handler.pull-right
+      .summary-arrow
+        img(src="assets/images/arrow.svg", width="15px", ng-class="isCollapsedIssues ? 'card--isCollapsed': 'card--isNotCollapsed'")
+  .summary-edit.pointer(ng-show="!isCollapsedIssues && (main.getUserRights().updateAllExecutiveSummaries || summary.initiative.isEditable)")
+    span.edit-click(ng-click="summary.isProgressEditable.issues=true" ng-show="!summary.isProgressEditable.issues")
+      img(src="assets/images/edit.png", width="15px")
+  ul.pointer.summary-save-close(ng-hide="!summary.isProgressEditable.issues || isCollapsedIssues")
+    li.close-icon(ng-click="summary.summary.majorIssues = summary.majorIssues; summary.summary.proposedSolution = summary.proposedSolution; summary.isProgressEditable.issues=false")
+    li.save-icon(ng-click="summary.setSummary(['majorIssues','proposedSolution']); summary.isProgressEditable.issues=false")
+  .issues-solutions.description-container.clearfix(ng-show="!isCollapsedIssues")
+    .major-issues-container.pull-left
+      div(ng-show="!summary.isProgressEditable.issues && summary.majorData.length > 0") 
+        pre.f16.summary-description(ng-repeat="data in summary.majorData track by $index") {{data}} 
+      div(ng-show="!summary.isProgressEditable.issues && summary.majorData.length == 0")
+        pre.no-data.summary-description {{main.translations['ISSUE.NO_DATA_AVAILABLE']}}
+      textarea.textarea(ng-model="summary.summary.majorIssues" ng-show="summary.isProgressEditable.issues")
+    .proposed-solutions.pull-left
+      div(ng-show="!summary.isProgressEditable.issues && summary.proposedData.length > 0") 
+        pre.f16.summary-description(ng-repeat="data in summary.proposedData track by $index") {{data}} 
+      div(ng-show="!summary.isProgressEditable.issues && summary.proposedData.length == 0")
+        pre.no-data.summary-description {{main.translations['ISSUE.NO_DATA_AVAILABLE']}}
+      textarea.textarea(ng-model="summary.summary.proposedSolution" ng-show="summary.isProgressEditable.issues")

@@ -1,0 +1,78 @@
+.cards__container(ng-controller="InitiativeController as initiativeController")
+  rtl(is-rtl="{{main.isRtl}}")
+    .breadcrumbs(breadcrumb, data-crumbs="initiativeController.breadCrumb", ng-if="initiativeController.breadCrumb", data-is-rtl="main.isRtl")
+  .legend(rtl, data-is-rtl="{{main.isRtl}}" ng-class="initiativeController.breadCrumb ? (initiativeController.breadCrumb.length > 1 ? 'top-padding' : 'top-padding-less'): ''")
+    .tabs-container.pull-left(ng-if="initiativeController.isLandingPage")
+      ul.tabs.f20.pointer.landing-tabs.clearfix
+        li.tab.pull-left(ng-class="{'tab--active': initiativeController.selectedTab === 'overall'}", ng-click="initiativeController.selectedTab = 'overall'" translate="INITIATIVE_PAGE.OVERALL" ng-if="(initiativeController.landingPriorities && initiativeController.landingPriorities.length > 0) || (initiativeController.initiatives && initiativeController.initiatives.length > 0)")
+        li.tab.pull-left(ng-class="{'tab--active': initiativeController.selectedTab === 'my-projects'}", ng-click="initiativeController.selectedTab = 'my-projects'", ng-if="initiativeController.isMyProject" translate="INITIATIVE_PAGE.MY_PROJECTS")
+    ul.legend-container.f12.pull-right
+      li.add-card.pointer(ng-click="initiativeController.addCards()", ng-if="main.getUserRights().crudArtifacts && main.isOnline()") {{(initiativeController.heading.toUpperCase() | translate) || ('INITIATIVE' | translate)}}
+      li.completed-legend
+      li {{'COMPLETED' | translate}}
+      li.on-track-legend
+      li {{'ON_TRACK' | translate}}
+      li.delayed-legend
+      li {{'DELAYED' | translate}}
+      li.unknown-legend
+      li(translate="UNKNOWN")
+  .overall(ng-if="initiativeController.selectedTab==='overall' || !initiativeController.isLandingPage")
+    div(ng-include="'app/components/summary/summary.html'" ng-if="initiativeController.initiativeid == 0 || initiativeController.isLandingPage")
+    .no-data(ng-if="initiativeController.initiatives.length === 0" translate="INITIATIVE_PAGE.NO_INITIATIVE_FOUND")
+    .cards(rtl, data-is-rtl="{{main.isRtl}}")
+      .cards-left.pull-left
+        .card.card-half(ng-repeat="initiative in initiativeController.leftInitiatives track by $index")
+          .card__container
+            div(ng-include="'app/components/cards/'+initiative.cardType+'/'+initiative.cardType+'.html'")
+      .cards-right.pull-right
+        .card.card-half(ng-repeat="initiative in initiativeController.rightInitiatives track by $index")
+          .card__container
+            div(ng-include="'app/components/cards/'+initiative.cardType+'/'+initiative.cardType+'.html'")
+
+  .my-projects(ng-if="initiativeController.selectedTab==='my-projects' && initiativeController.isLandingPage")
+    .cards(rtl, data-is-rtl="{{main.isRtl}}")
+      .cards-landing(ng-show="initiativeController.landingPriorities && initiativeController.landingPriorities.length > 0")
+        h3.landing-title.f18.pointer(ng-init="isPriorityVisible=true", ng-click="isPriorityVisible=!isPriorityVisible") {{'PRIORITIES' | translate}}
+          span.category__title__arrow__icon.pull-right
+            img(src="assets/images/arrow.svg", width="15px" ng-class="!isPriorityVisible ? 'card--isCollapsed': 'card--isNotCollapsed'")
+        div(ng-show="isPriorityVisible")
+          .cards-left.pull-left
+            .card.card-half(ng-repeat="initiative in initiativeController.leftPriorities track by $index")
+              .card__container
+                div(ng-include="'app/components/cards/'+initiative.cardType+'/'+initiative.cardType+'.html'")
+          .cards-right.pull-right
+            .card.card-half(ng-repeat="initiative in initiativeController.rightPriorities track by $index")
+              .card__container
+                div(ng-include="'app/components/cards/'+initiative.cardType+'/'+initiative.cardType+'.html'")
+      .cards-landing(ng-show="initiativeController.landingInitiatives && initiativeController.landingInitiatives.length > 0")
+        h3.landing-title.f18.pointer(ng-init="isInitiativeVisible=true", ng-click="isInitiativeVisible=!isInitiativeVisible") {{'INITIATIVES' | translate}}
+          span.category__title__arrow__icon.pull-right
+            img(src="assets/images/arrow.svg", width="15px" ng-class="!isInitiativeVisible ? 'card--isCollapsed': 'card--isNotCollapsed'")
+        div(ng-show="isInitiativeVisible")
+          .cards-left.pull-left
+            .card.card-half(ng-repeat="initiative in initiativeController.leftLandingInitiatives track by $index")
+              .card__container
+                div(ng-include="'app/components/cards/'+initiative.cardType+'/'+initiative.cardType+'.html'")
+          .cards-right.pull-right
+            .card.card-half(ng-repeat="initiative in initiativeController.rightLandingInitiatives track by $index")
+              .card__container
+                div(ng-include="'app/components/cards/'+initiative.cardType+'/'+initiative.cardType+'.html'")
+      .cards-landing(ng-show="initiativeController.landingActivities && initiativeController.landingActivities.length > 0")
+        h3.landing-title.f18.pointer(ng-init="isActivitiesVisible=true", ng-click="isActivitiesVisible=!isActivitiesVisible") {{'ACTIVITIES' | translate}}
+          span.category__title__arrow__icon.pull-right
+            img(src="assets/images/arrow.svg", width="15px" ng-class="!isActivitiesVisible ? 'card--isCollapsed': 'card--isNotCollapsed'")
+        div(ng-show="isActivitiesVisible")
+          .cards-left.pull-left
+            .card.card-half(ng-repeat="initiative in initiativeController.leftActivities track by $index")
+              .card__container
+                div(ng-include="'app/components/cards/'+initiative.cardType.toLowerCase()+'/'+initiative.cardType.toLowerCase()+'.html'")
+          .cards-right.pull-right
+            .card.card-half(ng-repeat="initiative in initiativeController.rightActivities track by $index")
+              .card__container
+                div(ng-include="'app/components/cards/'+initiative.cardType.toLowerCase()+'/'+initiative.cardType.toLowerCase()+'.html'")
+  .logout__prompt.abs0(ng-if="initiativeController.onlineRequiredPopup")
+    .inner__prompt
+      .logout__desc {{header.promptMessage}}
+      .logout__desc(translate="CONNECT")
+      form(ng-submit="header.logoutHandler()")
+        button(ng-click="initiativeController.onlineRequiredPopup = false" translate="HEADER.OK")

@@ -1,0 +1,72 @@
+header(ng-controller="HeaderController as header", ng-show="header.page.showHeader")
+  .title-container(rtl is-rtl="{{main.isRtl}}")
+    .primary-nav
+      a.logo.pull-left(href="#/landing")
+        img.itrack.pull-left(src='assets/images/itrack.png')
+      .title-wrap.pull-left
+        .app-title.f22 {{ header.page.title | translate }}&#x200E;
+      .user-inner-wrap.pull-right
+        .last-synced(ng-show="!header.isOnline()") {{'HEADER.LAST_SYNC_TIME' | translate}}<br/>{{header.lastSyncTime}}
+        .user.f12(ng-click="header.isDropOpen = !header.isDropOpen; $event.stopPropagation()") {{'HEADER.HI' | translate}} {{header.currentUser()}}
+        .user-dropdown(ng-if="header.isDropOpen")
+          ul.arrow-box.f12
+            li(ng-click="main.navigateTo('/sync')" translate="HEADER.SYNC_DATA")
+            li(ng-click="main.navigateTo('/admin/users')", ng-if="main.getUserRights().crudUsers && main.isOnline()" translate="HEADER.MANAGE_USERS")
+            li(ng-if="header.isInitiativeView() && main.getUserRights().crudArtifacts && main.isOnline()", ng-click="header.postPoneInitiatives()" translate="HEADER.POSTPONE_PRIORITY")
+            li(ng-click="main.print()" translate="HEADER.PRINT")
+            li(ng-click="header.isPromptRequired() ? header.logoutPrompt = true : header.logoutHandler()" translate="HEADER.LOGOUT")
+    .navbar.f12.pull-left
+      ul.nav-bar.pull-left
+        li.navigation(ng-repeat="item in header.page.headerMenu track by $index" ng-class="{'navigation--active': header.currentRoute() === item.link}")
+          a(ng-href="{{header.getMenuLink(item)}}")
+            img.nav-images.pull-left(ng-src="assets/images/{{item.icon}}")
+            span.nav-text {{item.label | translate}}
+      .action-item.pull-right.search.pointer(ng-click="main.navigateTo('search')", ng-if='header.currentRoute()!=="search" && main.isOnline()' translate="HEADER.SEARCH")
+    .logout__prompt.abs0(ng-if="header.logoutPrompt")
+      .inner__prompt
+        .inner__prompt__heading.f20(translate="HEADER.LOGOUT")
+        .logout__desc {{header.promptMessage}}
+        .logout__desc(translate="HEADER.PRESS_OK_TO_LOGOUT")
+        form(ng-submit="header.logoutHandler()")
+          button.pull-right(type="submit" translate="HEADER.OK")
+          button.pull-right(ng-click="header.logoutPrompt = false" translate="CANCEL")
+  .mobile-menu-container(ng-swipe-left="main.onSidebarSwipe('left')" rtl is-rtl="{{main.isRtl}}" ng-swipe-right="main.onSidebarSwipe('right')")
+    .title-container-mobile(ng-show="header.page.showHeader")
+      .sprite-mobile.menu-icon.pull-left(ng-click="main.toggleMenu()")
+      .title.f18.pull-left {{header.page.title | translate}} &#x200E;
+      .three-dots.sprite-mobile.pull-right(ng-click="main.toggleOverflowMenu()" ng-show="main.isAddCardsVisible() && !header.isAddingDisabled()")
+        ul.overflow-menu(ng-show="main.isOverflowMenuVisible")
+          li.overflow-menu-item(ng-click="main.addCards()") {{ main.getAddCardTitle() }}
+      .four-squares.pull-right(ng-click="header.mobile.showNavbar=true; main.closeMobileMenu()" ng-show="header.page.headerMenu.length>0")
+    .mobile-nav-overlay(ng-show="main.sidebarVisibility" ng-click="main.closeMobileMenu(); $event.stopPropagation()")
+    .nav-menu-mobile(ng-show="main.sidebarVisibility")
+      ul.nav-menu-section
+        li.nav-item.logged-in-user.f24 {{header.currentUser()}}
+        li.nav-item(ng-click="main.navigateTo('/'); main.closeMobileMenu()")
+          span.home.icon.pull-left
+          span.pull-left.nav-item-text(translate="HEADER.HOME")
+        li.nav-item(ng-click="main.navigateTo('/sync'); main.closeMobileMenu()")
+          span.sync.icon.pull-left
+          span.pull-left.nav-item-text(translate="HEADER.SYNC")
+        li.nav-item(ng-if="main.getUserRights().crudUsers && main.isOnline()" ng-click="main.navigateTo('/admin/users'); main.closeMobileMenu()")
+          span.manage-users.icon.pull-left
+          span.pull-left.nav-item-text(translate="HEADER.MANAGE_USERS")
+        li.nav-item(ng-if="header.isInitiativeView() && main.getUserRights().crudArtifacts && main.isOnline()", ng-click="header.postPoneInitiatives(); main.closeMobileMenu()")
+          span.postpone.icon.pull-left
+          span.pull-left.nav-item-text(translate="HEADER.POSTPONE_PRIORITY")
+        li.nav-item(ng-click="header.isPromptRequired() ? header.logoutPrompt = true : header.logoutHandler(); main.closeMobileMenu()")
+          span.logout.icon.pull-left
+          span.pull-left.nav-item-text(translate="HEADER.LOGOUT")
+      .search-bar.pointer(ng-click="main.navigateTo('search'); main.closeMobileMenu()", ng-if='header.currentRoute()!=="search" && main.isOnline()')
+        input.search-input.f20(type="text" placeholder="{{ 'HEADER.SEARCH' | translate }}")
+    .mobile-navigation-container(ng-show="header.mobile.showNavbar", ng-click="header.mobile.showNavbar=false")
+      .navigation-box
+        .nav-row(ng-repeat="item in header.page.headerMenu track by $index" ng-click="header.mobile.changeNav(item)")
+          .circle.pull-left(ng-class="{'selected':header.currentRoute() === item.link}")
+          img.nav-images(ng-src="assets/images/{{item.icon}}")
+          span.nav-text(translate="{{item.label}}")
+  .mobile-footer(ng-show="main.isMobile")
+    .footer-back(ng-click="main.backTo()")
+    .footer-home(ng-click="main.navigateTo('/')")
+  div(ng-include="'app/components/upload-milestone/upload-milestone.html'" ng-if="header.uploadMilestonesModal")
+  div(ng-include="'app/components/download-template/download-template.html'" ng-if="header.downloadTemplateModal")

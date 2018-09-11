@@ -1,0 +1,26 @@
+div(ng-controller="SyncController as sync")
+  .sync-wrap(rtl is-rtl="{{main.isRtl}}")
+    .sync-container
+      .sub-title.f18(translate="SYNC.SYNC_STATUS")
+      div {{ 'SYNC.CHANGES_AFTER_LAST_SYNC' | translate }}: {{sync.pendingRequests.length}}
+    .sync-links
+      .sync-upload.pull-left(disable-control="sync.pendingRequests.length < 1 || !sync.isOnline", ng-click="sync.syncToServer()")
+        img(src="assets/images/upload.svg")
+        div(translate="UPLOAD")
+        div.f12(translate="SYNC.SEND_DATA_TO_SERVER")
+      .sync-download.pull-right(disable-control="!sync.isOnline", ng-click="sync.checkUnsynced()")
+        img(src="assets/images/download.svg")
+        div(translate="DOWNLOAD")
+        div.f12(translate="SYNC.GET_DATA_FROM_SERVER")
+
+  .status-modal(ng-if="sync.messageModal" rtl is-rtl="{{main.isRtl}}")
+    .delete-container
+      .pointer.pull-right(ng-click="sync.messageModal=false") X
+      .status-update.f20 {{sync.message}}
+  .status-modal(ng-if="sync.downloadModal")
+    .delete-container
+      .pointer.pull-right(ng-click="sync.downloadModal=false") X
+      .status-update.f20 {{ 'SYNC.NO_OF_UNSYNCED_CHANGES' | translate }}: {{sync.pendingRequests.length}}
+      .button-wrap
+        .button.status-button.highlight.f16(ng-click="sync.syncToServer()" translate="HEADER.SYNC")
+        .button.status-button.f16(ng-click="sync.syncFromServer()" translate="DOWNLOAD")

@@ -1,0 +1,72 @@
+.card__title.pointer(ng-init="isCollapsed=false; listIsHidden=true", ng-class="[{'card__title--collapsed': isCollapsed}, initiative.statusClass]", ng-click="isCollapsed=!isCollapsed")
+  .card__title__text.pull-left
+    span(title="{{initiative.initiative}}") {{initiative.initiative}}&#x200E;
+  .card__title__arrow.pull-right
+    span.edit-click(ng-click="initiativeController.editCards(initiative,'priority')", ng-if="(main.getUserRights().crudArtifacts) && !isCollapsed")
+      img(src="assets/images/edit.png", width="15px")
+    span.card__title__arrow__icon
+      img(src="assets/images/arrow.svg", width="15px" ng-class="isCollapsed ? 'card--isCollapsed': 'card--isNotCollapsed'")
+.card__spinner(ng-if="initiative.showSpinner")
+.card__content.priority-content(ng-if="!isCollapsed")
+  .participant-list(ng-show="!listIsHidden")
+    span.f16(translate="FORM.PARTICIPANTS")
+    table.participant-table(ng-if="initiative.participants.length > 0")
+      thead.f20
+        td(translate="PARTICIPANT")
+        td(translate="DEPARTMENT")
+      tr(ng-repeat="participant in initiative.participants")
+        td {{participant.name}}
+        td {{participant.department}}
+    .no-participant(ng-if="initiative.participants.length === 0" translate="CARD.NO_PARTICIPANTS")
+  .card__wrap__priority
+    .activity.f12.pull-left(ng-class="{'drilldown': !initiativeController.isNaN(initiative.activityShedule)}")
+      .activity__schedule(ng-if="initiative.hasChart")
+        .activity__schedule__data(ng-if="!initiativeController.isNaN(initiative.activityShedule)")
+          a(href="#/initiative/{{initiative.initiativeId}}" ng-class="initiative.statusClass+'-text'") {{initiative.activityShedule}}
+            span %
+        .activity--no-data(ng-if="initiativeController.isNaN(initiative.activityShedule)")
+          img.no-data__image(src="assets/images/dummy-graph.svg", width="50px")
+          p.no-data__text.f12(translate="CARD.NO_ACTIVITIES")
+      .activity--no-data(ng-if="!initiative.hasChart")
+        img.no-data__image(src="assets/images/dummy-graph.svg", width="50px")
+        .no-data__text(ng-if="initiative.hasChild")
+          p(translate="CARD.NO_ACTIVITIES")
+          a.no-data__link(href="#/initiative/{{initiative.initiativeId}}" translate="VIEW_NEXT_LAYER")
+        .no-data__text(ng-if="!initiative.hasChild")
+          p(translate="CARD.NO_ACTIVITIES")
+          a.no-data__link__add(ng-if="main.getUserRights().crudArtifacts" href="#/initiative/{{initiative.initiativeId}}/form/new/")
+            img.add-icon.pull-left(src="assets/images/plus.svg" width="15px")
+            | {{'INITIATIVE' | translate}}
+      .activity__heading.f14(translate="CARD.ACTIVITIES_SCHEDULE")
+    .kpi.f12.pull-left(ng-class="{'drilldown': initiative.KpiAchievementToTarget}")
+      .kpi__inner
+        .kpi__chart.pointer(ng-if="initiative.KpiAchievementToTarget", speedometer-chart, data-initiative="initiative", ng-click="main.navigateTo('/initiative/'+initiative.initiativeId)")
+      .kpi--no-data(ng-if="!initiative.KpiAchievementToTarget")
+        img.no-data__image(src="assets/images/dummy-graph.svg", width="50px")
+        p.no-data__text(translate="INCOMPLETE_DATA")
+      .kpi__heading.f14(title="{{'CARD.AVG_KPI' | translate}}" translate="CARD.AVG_KPI")
+  ul.priority__property__list
+    li.priority__property.pull-left
+      a.priority__property__link(ng-href="#/summary/{{initiative.initiativeId}}")
+        img.priority__property__icon.pull-left(width="25", height="25" src="assets/images/executive-summary-icon.svg" alt="{{'CARD.WEEKLY_REPORT' | translate}}")
+        .priority__property__text.f12(ng-class="{'line-height-hack': initiative.executiveSummary.lastUpdatedOn}" translate="CARD.WEEKLY_REPORT")
+        .priority__property__updated.f10(ng-if="initiative.executiveSummary.lastUpdatedOn") {{initiative.executiveSummary.lastUpdatedOn}}
+    li.priority__property.pull-left
+      a.priority__property__link(ng-href="#/initiative/{{initiative.initiativeId}}/outcome/0")
+        img.priority__property__icon.pull-left(width="25", height="25" src="assets/images/outcome-kpi-report-icon.svg" alt="{{'OUTCOME_KPI' | translate}}")
+        .priority__property__text.f12(ng-class="{'line-height-hack': initiative.outcomeKpi.lastUpdatedOn}" translate="OUTCOME_KPI")
+        .priority__property__updated.f10(ng-if="initiative.outcomeKpi.lastUpdatedOn") {{initiative.outcomeKpi.lastUpdatedOn}}
+    li.priority__property.pull-left
+      a.priority__property__link(ng-href="#/initiative/{{initiative.initiativeId}}")
+        img.priority__property__icon.pull-left(width="25", height="25" src="assets/images/implementation-tracker-icon.svg" alt="{{'CARD.IMP_TRACKER' | translate}}")
+        .priority__property__text.f12(translate="CARD.IMP_TRACKER")
+.card__footer(ng-show="!isCollapsed")
+  .owner.owner-priority.pull-left
+    img.mail.pull-left.pointer(src="assets/images/mail.svg", ng-if="initiative.owner && initiative.owner.email", width="25px", ng-click="initiativeController.canSendMail(initiative)")
+    img.mail.pull-left(src="assets/images/no-mail.svg", ng-if="!(initiative.owner && initiative.owner.email)", width="25px")
+    .dept.f10(title="{{initiative.owner.department}}") {{initiative.owner.department}}
+    .person.f14(title="{{initiative.owner.name}}") {{initiative.owner.name}}
+  .participant-link.pointer(ng-click="listIsHidden = !listIsHidden")
+    img(ng-show="listIsHidden" src="assets/images/participants.svg", width="30px")
+    img(ng-show="!listIsHidden" src="assets/images/close-footer.svg", width="30px")
+div(ng-include="'app/components/email/email.html'" ng-if="initiativeController.sendEmail && (initiative.initiativeId === initiativeController.emailInitiativeId)")

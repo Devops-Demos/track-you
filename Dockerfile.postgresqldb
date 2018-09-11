@@ -1,0 +1,13 @@
+FROM postgres
+
+MAINTAINER Braj Panda
+
+ENV POSTGRES_DB itrack_demo
+ENV POSTGRES_USER postgres
+ENV POSTGRES_PASSWORD root
+
+ENV SERVICE_5432_NAME postgresqldb
+ENV SERVICE_TAGS private
+
+# docker build -t itrack/postgresqldb -f Dockerfile.postgresqldb .
+# docker run -it -p 5431:5432 --rm --name postgresqldb itrack/postgresqldb

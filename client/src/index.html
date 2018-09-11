@@ -1,0 +1,83 @@
+<!doctype html>
+<html ng-app="pushApp" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title translate="ITRACK"></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="iTrack">
+  <meta name="apple-mobile-web-app-title" content="iTrack">
+  <meta name="theme-color" content="#002B5C">
+  <meta name="msapplication-navbutton-color" content="#002B5C">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="msapplication-starturl" content="/">
+
+  <link rel="icon" type="image/png" sizes="120X120" density="1" href="assets/images/appIcon.png">
+  <link rel="apple-touch-icon" type="image/png" sizes="120X120" density="1" href="assets/images/appIcon.png">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <link rel="icon" href="assets/images/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/images/app-icon.png" />
+  <!-- <link rel="apple-touch-startup-image" href="assets/images/splash.png"/> -->
+
+  <!-- build:css({.tmp/serve,src}) styles/vendor.css -->
+  <!-- bower:css -->
+  <!-- run `gulp inject` to automatically populate bower styles dependencies -->
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:css({.tmp/serve,src}) styles/app.css -->
+  <!-- inject:css -->
+  <!-- css files will be automatically insert here -->
+  <!-- endinject -->
+  <!-- endbuild -->
+</head>
+
+<body ng-controller="MainController as main" class="body-tag" ng-swipe-left="main.onBodySwipe('left')" ng-swipe-right="main.onBodySwipe('right')">
+
+  <div class="container-wrap" ng-class="{'body-disableScroll':main.sidebarVisibility, 'ios-overlay': main.iPhoneNotFullscreen}">
+    <div class="container" ng-swipe-right="main.showMobileMenu()" ng-class="{'login-background':main.isView('/login'),pdfContainer: main.isPdfPage}">
+      <ng-include src="'app/components/header/header.html'"></ng-include>
+      <div class="view-container" ng-class="{'mobile-view-container': main.isMobile}">
+        <div ng-if="main.spinner.isVisibile" class="spin-box">
+        </div>
+        <div ng-view autoscroll></div>
+      </div>
+    </div>
+  </div>
+
+  <div ng-class="{'show-alert':main.iPhoneNotFullscreen}" class="add-to-home">
+    <div class="pull-right text-right browser-preview f12" ng-click="main.iPhoneNotFullscreen=false" translate="PREVIEW"></div>
+    <div class="logo-name-container">
+      <span class="left-logo" translate="ITRACK"></span>
+    </div>
+    <div class="f20 homescreen-text">{{'IPHONE.TO_INSTALL_TAP' | translate}}
+      <div class="icon-addToHome sprite-mobile"></div>{{'IPHONE.AND_CHOOSE' | translate}}
+      <br/> "{{'IPHONE.ADD_TO_HOME_SCREEN' | translate}}"</div>
+      <div class="icon-homePointer sprite-mobile"></div>
+  </div>
+
+  <!-- build:js(src) scripts/vendor.js -->
+  <!-- bower:js -->
+  <!-- run `gulp inject` to automatically populate bower script dependencies -->
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:js({.tmp/serve,.tmp/partials}) scripts/app.js -->
+  <!-- inject:js -->
+  <!-- js files will be automatically insert here -->
+  <!-- endinject -->
+
+  <!-- inject:partials -->
+  <!-- angular templates will be automatically converted in js and inserted here -->
+  <!-- endinject -->
+  <!-- endbuild -->
+
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+{
+  "type" : "array",
+  "items" : {
+    "type" : "object",
+    "required" : [
+      "timePoint",
+      "targetValue",
+      "actualValue",
+      "initiativeId",
+      "parentId"
+    ],
+    "properties" : {
+      "timePoint" : {
+        "type" : "string",
+        "required" : true
+      },
+      "targetValue" : {
+        "type" : ["string","number"],
+        "required" : true
+      },
+      "actualValue" : {
+        "type" : ["string","number"],
+        "required" : true
+      },
+      "initiativeId" : {
+        "type" : "integer",
+        "required" : true
+      },
+      "parentId" : {
+        "type" : "integer",
+        "required" : true
+      }
+    }
+  }
+}

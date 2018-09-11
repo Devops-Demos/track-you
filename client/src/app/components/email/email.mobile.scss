@@ -1,0 +1,28 @@
+@media screen and (max-width: 736px) {
+  .body-tag {
+    .email {
+      &__box {
+        margin: 5px auto;
+        width: 90%;
+        &__header {
+          padding: 10px;
+        }
+        &__content {
+          padding: 10px;
+        }
+        .title{
+          font-size: 18px;
+          padding-left: 40px;
+          margin: 0;
+          max-width: 78%;
+        }
+      }
+    }
+  }
+
+  .body-tag .email__box .rtl {
+    .title {
+      padding-left: 0;
+    }
+  }
+}

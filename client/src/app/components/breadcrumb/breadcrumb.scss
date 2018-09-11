@@ -1,0 +1,75 @@
+.bread-box {
+  @include clearfix();
+  background: $breadcrumb-bg;
+  margin: 0 20px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  border-radius: 0 0 2px 2px;
+  box-shadow: 0 2px 6px 0 rgba(0,0,0,0.5);
+}
+.arrow {
+  border-radius: 0 0 2px 2px;
+  text-align: center;
+  cursor: pointer;
+  display: block;
+  padding: 10px;
+  img {
+    width: 15px;
+  }
+  .bread-open {
+    transform: rotate(180deg);
+  }
+}
+.bread-list {
+  width: 100%;
+}
+.owner-details {
+  text-align: right;
+  width: 30%;
+  .dept {
+    padding-bottom: 5px;
+  }
+  .owner,
+  .dept {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: $secondary-font;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+}
+.bread-box ul li {
+  border-radius: 0 0 2px 2px;
+  overflow: hidden;
+  .crumb {
+    box-sizing: border-box;
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    color: $primary-font-color;
+  }
+  .bread-item {
+    width: 70%;
+  }
+}
+.open-crumb:not(:last-child) {
+  box-shadow: 0 2px 6px 0 rgba(0,0,0,0.5);
+}
+.open-crumb:last-child {
+  a {
+    cursor: default;
+  }
+}
+.bread-background {
+  background-color: rgba(255, 255, 255, 0.3);
+  position: absolute;
+  top: 114px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}

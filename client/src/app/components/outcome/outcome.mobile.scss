@@ -1,0 +1,46 @@
+@media screen and (max-width: 992px) {
+  .chart-container .chart {
+    width: 100%;
+    &:nth-child(odd) {
+      margin-right: 0;
+    }
+  }
+  .legend-heading {
+    float: none;
+  }
+  .legend-container {
+    .hidden-xs {
+      display: none;
+    }
+    .mobile-legend {
+      padding-bottom: 2px;
+    }
+    .actual-mobile {
+      border-bottom: 2px solid #33ace0;
+    }
+    .target-mobile {
+      border-bottom: 2px solid #808080;
+    }
+    .rolling-mobile {
+      border-bottom: 2px dashed #666666;
+    }
+    .completed-legend,
+    .on-track-legend,
+    .delayed-legend,
+    .unknown-legend {
+      height: 12px;
+      width: 12px;
+      margin-right: 2px;
+      vertical-align: middle;
+    }
+  }
+}
+@media screen and (max-width: 736px) {
+  .body-tag {
+    .kpi-container{
+      .legend-container {
+        margin-top: 0;
+      }
+    }
+  }
+}

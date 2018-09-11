@@ -1,0 +1,103 @@
+.card__content {
+  padding: 10px 0;
+  .kpi__unit {
+    color: #b3b3b3;
+    margin-top: -5px;
+    text-transform: capitalize;
+  }
+  .output__kpi__unit {
+    bottom: -5px;
+    position: absolute;
+    text-align: center;
+    width: 70%;
+  }
+}
+.priority-content {
+  padding: 10px 0 0;
+}
+.card__wrap__priority {
+  @include clearfix();
+  padding: 0 0 10px;
+  .no-data__image {
+    width: 50px;
+  }
+}
+.activity__schedule {
+  min-height: 205px;
+  &--no-data {
+    font-size: 0;
+  }
+  &__data {
+    font-size: 110px;
+    margin-top: -5px;
+    padding: 50px 10px 0;
+    text-align: center;
+    a {
+      text-decoration: none;
+    }
+    span {
+      font-size: 60px;
+    }
+  }
+}
+.priority__property__list {
+  @include clearfix();
+  border-top: 1px solid #ccc;
+  opacity: 0.6;
+  padding: 6px 0 0;
+  min-height: 45px;
+}
+.priority__property {
+  @include clearfix();
+  width: 33%;
+  &__link {
+    border-right: 1px solid #ccc;
+    color: $primary-font-color;
+    display: block;
+    min-height: 40px;
+    padding: 0 10px 0 20px;
+    text-decoration: none;
+    word-wrap: break-word;
+  }
+  &:last-child a {
+    border: 0;
+  }
+  &__text {
+    padding-left: 30px;
+  }
+  &__updated {
+    font-family: $secondary-font;
+    padding-left: 30px;
+    padding-top: 5px;
+  }
+}
+@media (max-width:1200px) {
+  .activity__schedule__data {
+    font-size: 100px;
+  }
+}
+@media (max-width:950px) {
+  .activity__schedule__data {
+    font-size: 70px;
+  }
+}
+@media (max-width:760px) {
+  .activity__schedule__data {
+    font-size: 60px;
+  }
+  .priority__property {
+    float: none;
+    width: 100%;
+    &__link {
+      border-bottom: 1px solid #ccc;
+      border-right: 0;
+      padding: 5px 20px;
+    }
+  }
+  .rtl .priority__property__link {
+    border-left: 0;
+  }
+}
+.owner.owner-priority {
+  width: 90%;
+}

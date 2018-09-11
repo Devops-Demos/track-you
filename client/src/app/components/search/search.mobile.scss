@@ -1,0 +1,23 @@
+@media screen and (max-width: 736px) {
+  .body-tag {
+    .search-wrapper {
+      padding: 5px;
+      .filters-wrapper {
+        .filter {
+          width: 100%;
+        }
+      }
+      .legends{
+        padding: 10px 0;
+        .legend-container {
+          margin: 0;
+        }
+      }
+      .search-box-container {
+        .search-input {
+          width: 75%;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1469 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.5.0
+-- Dumped by pg_dump version 9.5.0
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET search_path = public, pg_catalog;
+
+DROP INDEX IF EXISTS public.kpi_sno;
+DROP INDEX IF EXISTS public.kpi_parentkpi;
+DROP INDEX IF EXISTS public.kpi_initiativeid;
+DROP INDEX IF EXISTS public.initiative_parentid;
+DROP INDEX IF EXISTS public.initiative_owner;
+DROP INDEX IF EXISTS public.initiative_initiativeid;
+DROP INDEX IF EXISTS public.evidence_sno;
+DROP INDEX IF EXISTS public.evidence_initiativeid;
+DROP INDEX IF EXISTS public."appViews_sno";
+DROP INDEX IF EXISTS public."KPI Milestone_parentid";
+DROP INDEX IF EXISTS public."KPI Milestone_initiativeid";
+ALTER TABLE IF EXISTS ONLY public."user" DROP CONSTRAINT IF EXISTS user_pkey;
+ALTER TABLE IF EXISTS ONLY public."user" DROP CONSTRAINT IF EXISTS user_email_key;
+ALTER TABLE IF EXISTS ONLY public.sessions DROP CONSTRAINT IF EXISTS sessions_pkey;
+ALTER TABLE IF EXISTS ONLY public.sails_session_store DROP CONSTRAINT IF EXISTS sails_session_store_pkey;
+ALTER TABLE IF EXISTS ONLY public.post DROP CONSTRAINT IF EXISTS post_pkey;
+ALTER TABLE IF EXISTS ONLY public.kpi DROP CONSTRAINT IF EXISTS kpi_pkey;
+ALTER TABLE IF EXISTS ONLY public.initiative DROP CONSTRAINT IF EXISTS initiative_pkey;
+ALTER TABLE IF EXISTS ONLY public.initiative_participants__user_participatedinitiatives DROP CONSTRAINT IF EXISTS initiative_participants__user_participatedinitiatives_pkey;
+ALTER TABLE IF EXISTS ONLY public.executivesummary DROP CONSTRAINT IF EXISTS executivesummary_pkey;
+ALTER TABLE IF EXISTS ONLY public.evidence DROP CONSTRAINT IF EXISTS evidence_pkey;
+ALTER TABLE IF EXISTS ONLY public."appViews" DROP CONSTRAINT IF EXISTS "appViews_pkey";
+ALTER TABLE IF EXISTS ONLY public.activitycount DROP CONSTRAINT IF EXISTS activitycount_pkey;
+ALTER TABLE IF EXISTS ONLY public."Risk" DROP CONSTRAINT IF EXISTS "Risk_pkey";
+ALTER TABLE IF EXISTS ONLY public."KPI Milestone" DROP CONSTRAINT IF EXISTS "KPI Milestone_pkey";
+ALTER TABLE IF EXISTS ONLY public."Issues" DROP CONSTRAINT IF EXISTS "Issues_pkey";
+ALTER TABLE IF EXISTS ONLY public."Budget" DROP CONSTRAINT IF EXISTS "Budget_pkey";
+ALTER TABLE IF EXISTS ONLY public."AppView" DROP CONSTRAINT IF EXISTS "AppView_pkey";
+ALTER TABLE IF EXISTS ONLY public."Activites" DROP CONSTRAINT IF EXISTS "Activites_pkey";
+ALTER TABLE IF EXISTS public."user" ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE IF EXISTS public.post ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE IF EXISTS public.kpi ALTER COLUMN sno DROP DEFAULT;
+ALTER TABLE IF EXISTS public.initiative_participants__user_participatedinitiatives ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE IF EXISTS public.initiative ALTER COLUMN initiativeid DROP DEFAULT;
+ALTER TABLE IF EXISTS public.executivesummary ALTER COLUMN sno DROP DEFAULT;
+ALTER TABLE IF EXISTS public.evidence ALTER COLUMN sno DROP DEFAULT;
+ALTER TABLE IF EXISTS public.activitycount ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE IF EXISTS public."Risk" ALTER COLUMN sno DROP DEFAULT;
+ALTER TABLE IF EXISTS public."KPI Milestone" ALTER COLUMN sno DROP DEFAULT;
+ALTER TABLE IF EXISTS public."Issues" ALTER COLUMN sno DROP DEFAULT;
+ALTER TABLE IF EXISTS public."Budget" ALTER COLUMN sno DROP DEFAULT;
+ALTER TABLE IF EXISTS public."Activites" ALTER COLUMN sno DROP DEFAULT;
+DROP SEQUENCE IF EXISTS public.user_id_seq;
+DROP TABLE IF EXISTS public."user";
+DROP TABLE IF EXISTS public.sessions;
+DROP TABLE IF EXISTS public.sails_session_store;
+DROP SEQUENCE IF EXISTS public.post_id_seq;
+DROP TABLE IF EXISTS public.post;
+DROP SEQUENCE IF EXISTS public.kpi_sno_seq;
+DROP TABLE IF EXISTS public.kpi;
+DROP SEQUENCE IF EXISTS public.initiative_participants__user_participatedinitiatives_id_seq;
+DROP TABLE IF EXISTS public.initiative_participants__user_participatedinitiatives;
+DROP SEQUENCE IF EXISTS public.initiative_initiativeid_seq;
+DROP TABLE IF EXISTS public.initiative;
+DROP SEQUENCE IF EXISTS public.executivesummary_sno_seq;
+DROP TABLE IF EXISTS public.executivesummary;
+DROP SEQUENCE IF EXISTS public.evidence_sno_seq;
+DROP TABLE IF EXISTS public.evidence;
+DROP TABLE IF EXISTS public."appViews";
+DROP SEQUENCE IF EXISTS public.activitycount_id_seq;
+DROP TABLE IF EXISTS public.activitycount;
+DROP SEQUENCE IF EXISTS public."Risk_sno_seq";
+DROP TABLE IF EXISTS public."Risk";
+DROP SEQUENCE IF EXISTS public."KPI Milestone_sno_seq";
+DROP TABLE IF EXISTS public."KPI Milestone";
+DROP SEQUENCE IF EXISTS public."Issues_sno_seq";
+DROP TABLE IF EXISTS public."Issues";
+DROP SEQUENCE IF EXISTS public."Budget_sno_seq";
+DROP TABLE IF EXISTS public."Budget";
+DROP TABLE IF EXISTS public."AppView";
+DROP SEQUENCE IF EXISTS public."Activites_sno_seq";
+DROP TABLE IF EXISTS public."Activites";
+DROP FUNCTION IF EXISTS public.sails_session_store_set(sid_in text, data_in json);
+DROP FUNCTION IF EXISTS public.sails_session_store_length(OUT length integer);
+DROP FUNCTION IF EXISTS public.sails_session_store_get(sid_in text, OUT data_out json);
+DROP FUNCTION IF EXISTS public.sails_session_store_destroy(sid_in text);
+DROP FUNCTION IF EXISTS public.sails_session_store_clear();
+DROP EXTENSION IF EXISTS plpgsql;
+DROP SCHEMA IF EXISTS public;
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA public;
+
+
+--
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON SCHEMA public IS 'standard public schema';
+
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+--
+-- Name: sails_session_store_clear(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION sails_session_store_clear() RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  DELETE FROM sails_session_store;
+END;
+$$;
+
+
+--
+-- Name: sails_session_store_destroy(text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION sails_session_store_destroy(sid_in text) RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  DELETE FROM sails_session_store WHERE sid = sid_in;
+END;
+$$;
+
+
+--
+-- Name: sails_session_store_get(text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION sails_session_store_get(sid_in text, OUT data_out json) RETURNS json
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  SELECT data FROM sails_session_store WHERE sid = sid_in INTO data_out;
+END;
+$$;
+
+
+--
+-- Name: sails_session_store_length(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION sails_session_store_length(OUT length integer) RETURNS integer
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  SELECT count(*) FROM sails_session_store INTO length;
+END;
+$$;
+
+
+--
+-- Name: sails_session_store_set(text, json); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION sails_session_store_set(sid_in text, data_in json) RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  -- delete current session data if it exists so the next insert succeeds
+  DELETE FROM sails_session_store WHERE sid = sid_in;
+  INSERT INTO sails_session_store(sid, data) VALUES(sid_in, data_in);
+END;
+$$;
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: Activites; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE "Activites" (
+    activity text,
+    status text,
+    dept text,
+    owner text,
+    sno integer NOT NULL,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    plannedstartdate text,
+    plannedenddate text,
+    actualstartdate text,
+    actualenddate text,
+    levelofachievment text,
+    initiativeid integer
+);
+
+
+--
+-- Name: Activites_sno_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE "Activites_sno_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: Activites_sno_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE "Activites_sno_seq" OWNED BY "Activites".sno;
+
+
+--
+-- Name: AppView; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE "AppView" (
+    "kpiId" character varying(510) DEFAULT NULL::character varying,
+    sno integer NOT NULL,
+    "viewName" character varying(510) DEFAULT NULL::character varying,
+    emphasis integer,
+    sequence integer,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone
+);
+
+
+--
+-- Name: Budget; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE "Budget" (
+    currency text,
+    comments text,
+    sno integer NOT NULL,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    upfrontcost text,
+    permonthcost text,
+    initiativeid integer
+);
+
+
+--
+-- Name: Budget_sno_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE "Budget_sno_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: Budget_sno_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE "Budget_sno_seq" OWNED BY "Budget".sno;
+
+
+--
+-- Name: Issues; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE "Issues" (
+    issue text,
+    sno integer NOT NULL,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    nextsteps text,
+    keymilestones text,
+    initiativeid integer
+);
+
+
+--
+-- Name: Issues_sno_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE "Issues_sno_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: Issues_sno_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE "Issues_sno_seq" OWNED BY "Issues".sno;
+
+
+--
+-- Name: KPI Milestone; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE "KPI Milestone" (
+    sno integer NOT NULL,
+    timepoint date,
+    targetvalue text,
+    actualvalue text,
+    initiativeid integer,
+    parentid integer
+);
+
+
+--
+-- Name: KPI Milestone_sno_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE "KPI Milestone_sno_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: KPI Milestone_sno_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE "KPI Milestone_sno_seq" OWNED BY "KPI Milestone".sno;
+
+
+--
+-- Name: Risk; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE "Risk" (
+    risk text,
+    sno integer NOT NULL,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    nextsteps text,
+    keymilestones text,
+    initiativeid integer
+);
+
+
+--
+-- Name: Risk_sno_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE "Risk_sno_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: Risk_sno_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE "Risk_sno_seq" OWNED BY "Risk".sno;
+
+
+--
+-- Name: activitycount; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE activitycount (
+    "initiativeId" integer,
+    completed integer,
+    delayed integer,
+    id integer NOT NULL,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    ontrack integer
+);
+
+
+--
+-- Name: activitycount_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE activitycount_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: activitycount_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE activitycount_id_seq OWNED BY activitycount.id;
+
+
+--
+-- Name: appViews; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE "appViews" (
+    "kpiId" integer,
+    sno integer NOT NULL,
+    emphasis boolean,
+    sequence integer,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    viewname text
+);
+
+
+--
+-- Name: evidence; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE evidence (
+    title text,
+    link text,
+    sno integer NOT NULL,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    initiativeid integer
+);
+
+
+--
+-- Name: evidence_sno_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE evidence_sno_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: evidence_sno_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE evidence_sno_seq OWNED BY evidence.sno;
+
+
+--
+-- Name: executivesummary; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE executivesummary (
+    accomplishments text,
+    sno integer NOT NULL,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    sectorsummary text,
+    decisionsrequired text,
+    majorissues text,
+    proposedsolution text,
+    plannedactivities text,
+    keyperformancedrivers text,
+    sectorreformactivities text,
+    initiativeid integer
+);
+
+
+--
+-- Name: executivesummary_sno_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE executivesummary_sno_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: executivesummary_sno_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE executivesummary_sno_seq OWNED BY executivesummary.sno;
+
+
+--
+-- Name: initiative; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE initiative (
+    description text,
+    details text,
+    dept text,
+    owner integer,
+    "artifactsUpdatedAt" timestamp with time zone,
+    status text,
+    type text,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    initiativeid integer NOT NULL,
+    parentid integer,
+    title text,
+    avgachievmentlevel text,
+    plannedstartdate text,
+    plannedenddate text,
+    actualstartdate text,
+    actualenddate text,
+    activitycount integer,
+    priorityachievementtargetratio text
+);
+
+
+--
+-- Name: initiative_initiativeid_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE initiative_initiativeid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: initiative_initiativeid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE initiative_initiativeid_seq OWNED BY initiative.initiativeid;
+
+
+--
+-- Name: initiative_participants__user_participatedinitiatives; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE initiative_participants__user_participatedinitiatives (
+    id integer NOT NULL,
+    initiative_participants integer,
+    "user_participatedInitiatives" integer
+);
+
+
+--
+-- Name: initiative_participants__user_participatedinitiatives_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE initiative_participants__user_participatedinitiatives_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: initiative_participants__user_participatedinitiatives_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE initiative_participants__user_participatedinitiatives_id_seq OWNED BY initiative_participants__user_participatedinitiatives.id;
+
+
+--
+-- Name: kpi; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE kpi (
+    kpi text,
+    uom text,
+    baseline text,
+    target text,
+    widget text,
+    status text,
+    sno integer NOT NULL,
+    description text,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    kpitype text,
+    parentkpi integer,
+    hasdrilldown boolean,
+    iscalculated boolean,
+    statusseparator1 real,
+    statusseparator2 real,
+    initiativeid integer
+);
+
+
+--
+-- Name: kpi_sno_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE kpi_sno_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: kpi_sno_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE kpi_sno_seq OWNED BY kpi.sno;
+
+
+--
+-- Name: post; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE post (
+    id integer NOT NULL,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    mainfield text
+);
+
+
+--
+-- Name: post_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE post_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: post_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE post_id_seq OWNED BY post.id;
+
+
+--
+-- Name: sails_session_store; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE sails_session_store (
+    sid text NOT NULL,
+    data json NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: sessions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE sessions (
+    session_id character varying(510) NOT NULL,
+    expires integer NOT NULL,
+    data text
+);
+
+
+--
+-- Name: user; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE "user" (
+    email text,
+    name text,
+    department text,
+    role text,
+    password text,
+    id integer NOT NULL,
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    ispasswordreset boolean,
+    temppassword text,
+    viewall boolean,
+    updatealloutcomekpis boolean,
+    updatealloutputkpis boolean,
+    updateallissuelogs boolean,
+    updateallactivities boolean,
+    updateallexecutivesummaries boolean,
+    crudartifacts boolean,
+    crudusers boolean,
+    viewparentage boolean
+);
+
+
+--
+-- Name: user_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE user_id_seq OWNED BY "user".id;
+
+
+--
+-- Name: sno; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "Activites" ALTER COLUMN sno SET DEFAULT nextval('"Activites_sno_seq"'::regclass);
+
+
+--
+-- Name: sno; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "Budget" ALTER COLUMN sno SET DEFAULT nextval('"Budget_sno_seq"'::regclass);
+
+
+--
+-- Name: sno; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "Issues" ALTER COLUMN sno SET DEFAULT nextval('"Issues_sno_seq"'::regclass);
+
+
+--
+-- Name: sno; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "KPI Milestone" ALTER COLUMN sno SET DEFAULT nextval('"KPI Milestone_sno_seq"'::regclass);
+
+
+--
+-- Name: sno; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "Risk" ALTER COLUMN sno SET DEFAULT nextval('"Risk_sno_seq"'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY activitycount ALTER COLUMN id SET DEFAULT nextval('activitycount_id_seq'::regclass);
+
+
+--
+-- Name: sno; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY evidence ALTER COLUMN sno SET DEFAULT nextval('evidence_sno_seq'::regclass);
+
+
+--
+-- Name: sno; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY executivesummary ALTER COLUMN sno SET DEFAULT nextval('executivesummary_sno_seq'::regclass);
+
+
+--
+-- Name: initiativeid; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY initiative ALTER COLUMN initiativeid SET DEFAULT nextval('initiative_initiativeid_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY initiative_participants__user_participatedinitiatives ALTER COLUMN id SET DEFAULT nextval('initiative_participants__user_participatedinitiatives_id_seq'::regclass);
+
+
+--
+-- Name: sno; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY kpi ALTER COLUMN sno SET DEFAULT nextval('kpi_sno_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY post ALTER COLUMN id SET DEFAULT nextval('post_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "user" ALTER COLUMN id SET DEFAULT nextval('user_id_seq'::regclass);
+
+
+--
+-- Data for Name: Activites; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY "Activites" (activity, status, dept, owner, sno, "createdAt", "updatedAt", plannedstartdate, plannedenddate, actualstartdate, actualenddate, levelofachievment, initiativeid) FROM stdin;
+\.
+
+
+--
+-- Name: Activites_sno_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('"Activites_sno_seq"', 1, false);
+
+
+--
+-- Data for Name: AppView; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY "AppView" ("kpiId", sno, "viewName", emphasis, sequence, "createdAt", "updatedAt") FROM stdin;
+\.
+
+
+--
+-- Data for Name: Budget; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY "Budget" (currency, comments, sno, "createdAt", "updatedAt", upfrontcost, permonthcost, initiativeid) FROM stdin;
+\N	\N	1	2016-06-21 20:17:07+05:30	2016-06-21 20:17:07+05:30	\N	\N	\N
+\.
+
+
+--
+-- Name: Budget_sno_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('"Budget_sno_seq"', 9, true);
+
+
+--
+-- Data for Name: Issues; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY "Issues" (issue, sno, "createdAt", "updatedAt", nextsteps, keymilestones, initiativeid) FROM stdin;
+\.
+
+
+--
+-- Name: Issues_sno_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('"Issues_sno_seq"', 8, true);
+
+
+--
+-- Data for Name: KPI Milestone; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY "KPI Milestone" (sno, timepoint, targetvalue, actualvalue, initiativeid, parentid) FROM stdin;
+2	2016-06-20	10.4	22.1	1	19
+3	2016-06-20	61.1	90.3	2	9
+4	2016-06-20	61	98.7	12	24
+5	2016-06-20	27	21.7	8	1
+6	2016-06-20	86.7	51.8	8	1
+7	2016-06-20	45.4	78.3	10	28
+8	2016-06-20	82.4	14.6	10	28
+9	2016-06-20	17.7	21.7	9	23
+11	2016-06-20	45.6	21.2	5	20
+12	2016-06-20	22.6	2.9	4	29
+13	2016-06-20	89.2	85.2	5	20
+14	2016-06-20	20.7	2.4	5	18
+15	2016-06-20	12.3	72.4	10	30
+16	2016-06-20	4.1	71.1	3	16
+17	2016-06-20	23.5	87.5	1	4
+18	2016-06-20	36.1	70.9	8	1
+19	2016-06-20	79.1	51.9	5	26
+20	2016-06-20	33.1	82.9	12	14
+21	2016-06-20	69.8	25	1	22
+22	2016-06-20	41.1	44.3	12	14
+23	2016-06-20	77.1	36.6	13	11
+24	2016-06-20	84.2	57.8	13	11
+25	2016-06-20	19.5	69.2	10	30
+26	2016-06-20	18.6	55.7	4	3
+27	2016-06-20	11.9	17.4	1	12
+28	2016-06-20	47.1	71.3	2	2
+29	2016-06-20	43.7	28.4	4	21
+30	2016-06-20	7.4	44.2	12	7
+31	2016-06-20	77.9	2.2	2	2
+32	2016-06-20	52.2	60.2	4	3
+33	2016-06-20	7.1	70.9	2	9
+34	2016-06-20	78.7	46.4	13	5
+35	2016-06-20	21	27	4	29
+36	2016-06-20	63.7	58.6	3	16
+37	2016-06-20	62.6	1.6	10	30
+38	2016-06-20	7.6	23.6	1	22
+39	2016-06-20	0.1	29.3	13	27
+41	2016-06-20	57	52.9	5	26
+42	2016-06-20	99.3	37.1	10	10
+43	2016-06-20	22.3	11.7	5	18
+44	2016-06-20	1.7	4.8	5	18
+45	2016-06-20	75.3	93	4	21
+46	2016-06-20	42.7	0.2	13	11
+47	2016-06-20	53.3	75.6	4	15
+48	2016-06-20	38.5	50.5	1	12
+49	2016-06-20	80.3	79.3	4	29
+50	2016-06-20	76.6	17.4	3	16
+51	2016-06-20	25.2	31.8	13	27
+52	2016-06-20	70	42.9	8	13
+53	2016-06-20	59.8	57.3	10	28
+54	2016-06-20	67.8	38.7	4	21
+55	2016-06-20	64.9	0.2	1	4
+56	2016-06-20	81.4	79.1	2	9
+57	2016-06-20	85.6	76.6	4	29
+58	2016-06-20	51.5	2.3	8	25
+59	2016-06-20	47.9	1.2	8	25
+60	2016-06-20	0.6	79.8	10	30
+64	2026-04-03	10	20	5	18
+65	2026-03-31	12	30	5	18
+1	2016-06-20	85.4	80.8	12	7
+93	\N	123456	\N	1	1
+10	2016-06-20	96.9	71.3	1	1
+94	\N	123456	\N	1	1
+79	\N	\N	\N	-100	\N
+40	2016-06-19	28.1	60.9	4	86
+\.
+
+
+--
+-- Name: KPI Milestone_sno_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('"KPI Milestone_sno_seq"', 88, true);
+
+
+--
+-- Data for Name: Risk; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY "Risk" (risk, sno, "createdAt", "updatedAt", nextsteps, keymilestones, initiativeid) FROM stdin;
+\.
+
+
+--
+-- Name: Risk_sno_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('"Risk_sno_seq"', 1, false);
+
+
+--
+-- Data for Name: activitycount; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY activitycount ("initiativeId", completed, delayed, id, "createdAt", "updatedAt", ontrack) FROM stdin;
+\N	\N	\N	1	2016-07-19 12:28:32+05:30	2016-07-28 15:49:53+05:30	\N
+\N	\N	\N	2	2016-07-19 12:28:32+05:30	2016-07-28 15:49:53+05:30	\N
+\N	\N	\N	3	2016-07-19 12:28:32+05:30	2016-07-28 15:49:53+05:30	\N
+\N	\N	\N	4	2016-07-19 12:28:32+05:30	2016-07-28 15:49:53+05:30	\N
+\N	\N	\N	5	2016-07-19 12:28:32+05:30	2016-07-28 15:49:53+05:30	\N
+\.
+
+
+--
+-- Name: activitycount_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('activitycount_id_seq', 5, true);
+
+
+--
+-- Data for Name: appViews; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY "appViews" ("kpiId", sno, emphasis, sequence, "createdAt", "updatedAt", viewname) FROM stdin;
+\.
+
+
+--
+-- Data for Name: evidence; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY evidence (title, link, sno, "createdAt", "updatedAt", initiativeid) FROM stdin;
+test2		14	2016-07-19 12:34:07+05:30	2016-07-19 12:34:07+05:30	1
+test3		15	2016-07-19 12:34:09+05:30	2016-07-19 12:34:09+05:30	2
+test1		16	2016-07-19 12:39:44+05:30	2016-07-19 12:39:44+05:30	1
+test2		17	2016-07-19 12:39:44+05:30	2016-07-19 12:39:44+05:30	1
+test3		18	2016-07-19 12:39:48+05:30	2016-07-19 12:39:48+05:30	2
+test1		19	2016-07-19 12:42:02+05:30	2016-07-19 12:42:02+05:30	1
+test2		20	2016-07-19 12:42:02+05:30	2016-07-19 12:42:02+05:30	1
+test3		21	2016-07-19 12:42:06+05:30	2016-07-19 12:42:06+05:30	2
+test1		22	2016-07-28 15:07:42+05:30	2016-07-28 15:07:42+05:30	1
+test2		23	2016-07-28 15:07:42+05:30	2016-07-28 15:07:42+05:30	1
+test3		24	2016-07-28 15:07:46+05:30	2016-07-28 15:07:46+05:30	2
+test1		25	2016-07-28 15:49:19+05:30	2016-07-28 15:49:19+05:30	1
+test2		26	2016-07-28 15:49:19+05:30	2016-07-28 15:49:19+05:30	1
+test3		27	2016-07-28 15:49:23+05:30	2016-07-28 15:49:23+05:30	2
+test1		28	2016-07-28 15:49:47+05:30	2016-07-28 15:49:47+05:30	1
+test2		29	2016-07-28 15:49:47+05:30	2016-07-28 15:49:47+05:30	1
+test3		30	2016-07-28 15:49:51+05:30	2016-07-28 15:49:51+05:30	2
+test3u	http://test3u.com	13	2016-07-19 12:34:07+05:30	2016-07-28 15:49:53+05:30	1
+\.
+
+
+--
+-- Name: evidence_sno_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('evidence_sno_seq', 24, true);
+
+
+--
+-- Data for Name: executivesummary; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY executivesummary (accomplishments, sno, "createdAt", "updatedAt", sectorsummary, decisionsrequired, majorissues, proposedsolution, plannedactivities, keyperformancedrivers, sectorreformactivities, initiativeid) FROM stdin;
+\.
+
+
+--
+-- Name: executivesummary_sno_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('executivesummary_sno_seq', 7, true);
+
+
+--
+-- Data for Name: initiative; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY initiative (description, details, dept, owner, "artifactsUpdatedAt", status, type, "createdAt", "updatedAt", initiativeid, parentid, title, avgachievmentlevel, plannedstartdate, plannedenddate, actualstartdate, actualenddate, activitycount, priorityachievementtargetratio) FROM stdin;
+Sekciso kewesuzav fotutle ib gushevoc eh jifdo rih iktir su sicureete igewudez ope awalo toccon jag foj.	Otditfu huc ze wijmitgu valofev wu jefiho jazepne cankadoh opboir bititwes ne.	B	4	\N	\N	Initiative	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	6	2	Initiative 6 (Revij Turnpike)	\N	\N	\N	\N	\N	\N	NaN
+Or ji oghaler fagi atenemi ukme umha boogo nogul mileih ca linje bewhu.	Riukemi it vihpaszah jogeva til ja kunej eke ed jegvikle sevjinmow winorot wohpo niv.	A	3	\N	\N	initiative	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	11	6	Initiative 11 (Pelu Avenue)	\N	\N	\N	\N	\N	\N	NaN
+Dokapis ipwo vicok vehrik guv ih oniriz podeab fu jibite muaf dekoc fodu nofloke luh vuj jug.	Hidwi aha uviv kuzdi juhfulik obikukbur bu cahbi cosju de fifujdab wa ib komlon ka uzah.	C	11	2016-07-28 15:49:46+05:30	\N	initiative	2016-06-21 20:17:07+05:30	2016-07-28 15:49:46+05:30	4	2	Initiative 4 (Refuh River)	\N	\N	\N	\N	\N	3	0.7079062623007955
+Rati apconrik kol ijsob repet girud widsi zuzowo taf aci pohgak cucrekac za apca kozu he.	Zanafo owiut ehire gedladza ava dozifbi rawi ce ja luvaw jondo bol si.	A	9	2016-07-28 15:49:54+05:30	\N	Priority	2016-06-21 20:17:07+05:30	2016-07-28 15:49:54+05:30	1	0	Priority 1 (Evicid Extension)	\N	\N	\N	\N	\N	4	\N
+Judtudu gugzi hucu jabaizu refoojo mutuj ra cafarik he zadvo doz ujohen huozhuz.	Baguhu jimikgad casullo jathakag fuzuza ila ug egwo gacguce gililu ejabam evoaz di vi tutpo gog cutep.	B	10	2016-07-19 12:25:32+05:30	\N	initiative	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	13	5	Initiative 13 (Jembik Plaza)	\N	\N	\N	\N	\N	\N	0.06955053405892084
+Obupaf rurhebfa raj ci uzo zernit jucije vof co aztudjot jamon zegi.	Fejugwof vulor guf uvi bauwa nimwu mev vi fag ki odudegen omci pa ozfenoni hav zod ruwwo.	A	4	\N	\N	initiative	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	7	2	Initiative 7 (Zasup Heights)	\N	\N	\N	\N	\N	\N	NaN
+\N	\N	\N	6	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	14	10	Acitvity 14 (Zope Turnpike)	\N	06/28/16	07/07/16	06/16/16	05/28/16	\N	\N
+\N	\N	\N	2	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	15	7	Acitvity 15 (Sacek Lane)	\N	07/18/16	09/08/16	08/21/16	08/28/16	\N	\N
+\N	\N	\N	5	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	16	12	Acitvity 16 (Wuji Boulevard)	\N	07/17/16	08/30/16	08/31/16	09/19/16	\N	\N
+\N	\N	\N	7	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	17	13	Acitvity 17 (Idfo Square)	\N	07/14/16	09/18/16	09/17/16	10/29/16	\N	\N
+\N	\N	\N	5	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	18	13	Acitvity 18 (Kodi Mill)	\N	06/25/16	07/19/16	07/05/16	07/11/16	\N	\N
+\N	\N	\N	8	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	19	7	Acitvity 19 (Emufuj Ridge)	\N	07/18/16	08/31/16	07/25/16	07/05/16	\N	\N
+\N	\N	\N	11	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	20	4	Acitvity 20 (Galwir Turnpike)	\N	07/14/16	09/17/16	08/23/16	09/09/16	\N	\N
+\N	\N	\N	7	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	21	13	Acitvity 21 (Kolem Ridge)	\N	06/05/16	06/24/16	05/18/16	05/16/16	\N	\N
+\N	\N	\N	8	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	22	7	Acitvity 22 (Netheg Center)	\N	07/06/16	08/27/16	08/07/16	08/24/16	\N	\N
+\N	\N	\N	14	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	23	11	Acitvity 23 (Unowe Street)	\N	05/30/16	06/16/16	06/25/16	08/12/16	\N	\N
+\N	\N	\N	1	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	24	9	Acitvity 24 (Zovi Way)	\N	06/20/16	07/17/16	06/03/16	05/18/16	\N	\N
+\N	\N	\N	5	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	25	7	Acitvity 25 (Pofito Terrace)	\N	07/08/16	08/16/16	08/19/16	09/13/16	\N	\N
+\N	\N	\N	3	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	26	10	Acitvity 26 (Wosrow Boulevard)	\N	07/06/16	08/24/16	08/25/16	09/29/16	\N	\N
+\N	\N	\N	10	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	27	10	Acitvity 27 (Eloku Court)	\N	06/06/16	06/28/16	05/23/16	05/24/16	\N	\N
+\N	\N	\N	13	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	28	13	Acitvity 28 (Binjew Pass)	\N	06/21/16	07/21/16	07/24/16	08/26/16	\N	\N
+\N	\N	\N	6	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	29	7	Acitvity 29 (Mitez Ridge)	\N	06/11/16	07/03/16	05/21/16	05/10/16	\N	\N
+\N	\N	\N	1	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	30	13	Acitvity 30 (Papem Way)	\N	07/17/16	08/16/16	08/16/16	08/20/16	\N	\N
+\N	\N	\N	10	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	31	4	Acitvity 31 (Kulob Highway)	\N	05/22/16	05/12/16	04/19/16	04/16/16	\N	\N
+\N	\N	\N	3	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	32	9	Acitvity 32 (Giod Street)	\N	06/29/16	08/09/16	08/13/16	09/19/16	\N	\N
+\N	\N	\N	3	\N	\N	activity	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	33	12	Acitvity 33 (Hucu Plaza)	\N	07/06/16	08/10/16	07/02/16	06/13/16	\N	\N
+\N	\N	\N	\N	\N	\N	\N	2016-06-21 21:23:46+05:30	2016-07-19 12:25:32+05:30	35	\N	\N	\N	\N	\N	\N	\N	\N	\N
+\N	\N	\N	1	\N	\N	\N	2016-06-22 10:03:23+05:30	2016-07-19 12:25:32+05:30	36	\N	\N	\N	\N	\N	\N	\N	\N	\N
+\N	\N	\N	\N	\N	\N	master	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	0	-1	Master	\N	\N	\N	\N	\N	\N	\N
+Beraco ku fi firpicri nojsup uplecol gu guovsaf cis pa jidowgub poc burwilaz gaggebo.	Resu ega mamuwaha gi ap zi taguw niduz siho awi kivdiztu dibmisbu ceh ov oti.	C	8	2016-07-19 12:25:32+05:30	\N	initiative	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	9	8	Initiative 9 (Fetnuv Way)	\N	\N	\N	\N	\N	\N	0.796437659033079
+To zetvu agoikkat co kika od irutoblos fapi hijejaomo onuzikbon civasev apcapji naajihoz habtomjud ur abeafo.	Iza alani gas wunbu zajadbuw dob kafefje nazic vo ikidalec nesciweg de logcili.	B	9	2016-07-19 12:25:32+05:30	\N	Priority	2016-06-21 20:17:07+05:30	2016-07-28 15:49:53+05:30	2	0	Priority 2 (Beodu Boulevard)	\N	\N	\N	\N	\N	5	0.2434334322864698
+Vuf cusoda cej makku nuvarari awizu silziw ho badum mamaluk ijidi namaij.	Egeg meklilu ode norwih lesga afwam irejaji pi ucueg fobjiveg wamadat tin tuvlisci.	A	14	2016-07-28 15:49:53+05:30	\N	initiative	2016-06-21 20:17:07+05:30	2016-07-28 15:49:53+05:30	8	2	Initiative 8 (Wiow Pass)	\N	\N	\N	\N	\N	\N	-0.4988390550018456
+Zanakjem gumvobza ojmi da uluvelur goco jivfuiv zi wi ubrilmu jet occogegi ruef fu pareku aboissi hurribo.	Woheba vibogpij larbo ser hif kak zo lororap pi ornul kugbecki wadrowib buhfe ze.	A	8	2016-07-19 12:25:32+05:30	\N	Priority	2016-06-21 20:17:07+05:30	2016-07-19 12:28:32+05:30	3	0	Priority 3 (Odsak Plaza)	\N	\N	\N	\N	\N	1	\N
+Sugaj udabesu pa noaw pa makuzoj sirnesbav jafjij revva mouku emguc kadse supfilko tuctuom lawaz ufauro hovragfu kiwgih.	Mumak sulodwi du sezeg suzi pachuzbe vu cuslorep to adego neasgut nullezod cerpo fugo.	B	6	2016-07-19 12:25:32+05:30	\N	initiative	2016-06-21 20:17:07+05:30	2016-07-19 12:28:32+05:30	5	2	Initiative 5 (Cacbon View)	\N	\N	\N	\N	\N	2	-0.12384145216194457
+\N	\N	\N	\N	\N	\N	\N	2016-07-19 12:38:45+05:30	2016-07-19 12:38:45+05:30	37	\N	\N	\N	\N	\N	\N	\N	\N	\N
+Pamapcus fu mijtackuw nehga co kewivte mes ke be diw fin meilno fa zoszo usta wu mujajo.	Geki fa oco kezeg vodukmi omipohko vufusu zu elgum zanep gob oz ugeozag vifo.	C	2	2016-07-19 12:25:32+05:30	\N	initiative	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	10	8	Initiative 10 (Nudut Court)	\N	\N	\N	\N	\N	\N	1.3359100852327241
+Tukwipuze hebidpod ma osoju vace vaz huhvekter do ehuum bafescu teonu vutfipi iviwot.	Jig camihelis pa kuh wiloh ciz ise evirekha zijutuvi rioh ohodekej fiok pubej tivif ihduk nu.	A	2	2016-07-19 12:25:32+05:30	\N	initiative	2016-06-21 20:17:07+05:30	2016-07-19 12:25:32+05:30	12	5	Initiative 12 (Cehsi Drive)	\N	\N	\N	\N	\N	\N	-0.276933599722607
+\.
+
+
+--
+-- Name: initiative_initiativeid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('initiative_initiativeid_seq', 40, true);
+
+
+--
+-- Data for Name: initiative_participants__user_participatedinitiatives; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY initiative_participants__user_participatedinitiatives (id, initiative_participants, "user_participatedInitiatives") FROM stdin;
+1	6	11
+2	2	9
+\.
+
+
+--
+-- Name: initiative_participants__user_participatedinitiatives_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('initiative_participants__user_participatedinitiatives_id_seq', 1, false);
+
+
+--
+-- Data for Name: kpi; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY kpi (kpi, uom, baseline, target, widget, status, sno, description, "createdAt", "updatedAt", kpitype, parentkpi, hasdrilldown, iscalculated, statusseparator1, statusseparator2, initiativeid) FROM stdin;
+KPI sno (3) gimjeak	opb	39.55	18.6	bignumber	\N	3	Adji hoz okaivnu kote kivih pozujve tobutek we uksicti ehugoko uwofe bojaaba zanuf zupomfo vohisewag bo.	2016-06-21 20:17:10+05:30	2016-07-28 15:49:46+05:30	output	\N	t	f	6.30000019	48.4500008	4
+KPI sno (4) ha	jow	35.15	38	bignumber	\N	4	Peztos fevhi tobvudo rukze cedpej um moj puh undusabo osevod fuwjufoz avocu uc beno igwun opu.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	outcome	\N	\N	\N	33.3499985	10.6000004	1
+KPI sno (6) mufu	fae	48.3	47.2	bignumber	\N	6	Adu debpisen joveppep taimu rawonov hojrurfo urane hok furto duribal decdaezu razdukti ug duzakku sepfo goluow zanipu.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	outcome	\N	\N	\N	39.2999992	45.9000015	3
+KPI sno (5) homfeti	ged	47.7	18.65	bignumber	\N	5	Ega hahikpum errulob je ga rilizu veeklep aletisog ka avicozjuc bijujatu miugizeg.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	1.14999998	45.2999992	13
+KPI sno (8) fowum	jor	40.85	4.45	barometer	\N	8	Uran buj zu ef hovumwa ezahe ti coble vezlamle fetretfeh lir in om.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	outcome	\N	\N	\N	9.94999981	12.1499996	3
+KPI sno (2) le	mu	0.55	48.85	dial	\N	2	Ala bopfalwap ne ve peil wif dapilos fiiju jasfa feziobi ner samdimel efuawuubo samtuni baiki ugoni.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	outcome	\N	\N	\N	31.2999992	44.0999985	2
+KPI sno (3) gimjeak	\N	39.55	18.6	\N	\N	86	\N	2016-07-28 15:49:46+05:30	2016-07-28 15:49:46+05:30	output	\N	t	f	6.30000019	48.4500008	4
+KPI sno (11) suoke	awe	30.4	38.1	bignumber	\N	11	Biron ihiet tu ehhar tis zagda gekvoj gi ofofiffa vubueri ec bug ecfa babewaz vupnojar.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	19	32.5999985	13
+KPI sno (12) ovmovjo	lam	2.6	32.95	dial	\N	12	Fuzhav ajave uzici tone tetlesugo loja zir fum novdavew fuz ipi evu weskaj babvugar.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	outcome	\N	\N	\N	0.949999988	15.5500002	1
+KPI sno (13) tat	apu	10	2.1	barometer	\N	13	Ran fehopu howikini netwi le giwon mob dobotru mu jisapi tapob kefi ubcov zicata desor hem kem gerge.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	37.5499992	36.2000008	8
+KPI sno (7) lac	agf	26.65	15.95	bignumber	\N	7	Za te nooboefi bagelu si iti hi bem at pudgosul coj zuv zoj coj bafege doze zoca mumbus.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	6.1500001	26.5	12
+KPI sno (14) gudtup	sik	43.45	47.15	dial	\N	14	Mame mif agumo ja kahkeh zumouhu pivulek bi gew tita ucoik mam co.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	36.4500008	50.2999992	12
+KPI sno (15) wukbocmir	ud	10.6	23.75	bignumber	\N	15	Pebopav waz ewu ju juclus uluzu balu hew ar ginar aftalot savrok vuwu jamih do nimirju kotgiv vofaru.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	18.2999992	43.4500008	4
+KPI sno (16) zopeh	ro	21.85	15.05	bignumber	\N	16	Gihtojnul lezfib pi ko piuk lowzam mihredapu uf letin ukabi enifed tiwipegog.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	outcome	\N	\N	\N	39.1500015	20.6000004	3
+KPI sno (18) kotun	noh	38.2	15.3	dial	\N	18	Kimsome gat rowapji in kepsikpor umufeto latlabpar kospo ihve tobe voci be roloripa lagcimrud bag hovicsop ji.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	44.1500015	24.0499992	5
+KPI sno (19) hu	jig	46.55	49.1	dial	\N	19	Jizpowkep irle ijepog mo ke vandu lis lirwicso ni bihevsiw fowu gapo.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	outcome	\N	\N	\N	8.44999981	49.5499992	1
+KPI sno (21) moaz	ota	26.05	6.35	dial	\N	21	Vejoc boj dof bom lew wutriklut zu hecvum ep suhido hegbamor wa pe ovasemah ced ha.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	8.05000019	36.9000015	4
+KPI sno (23) pewo	ima	37.35	39.45	bignumber	\N	23	Tufudfaj modo nivok rojdeer kof laszizog efolene kinajroj rulpirar ipesulen giji bu keg akorigcaf gu pifleg oredofo.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	46.1500015	43.3499985	9
+KPI sno (17) tionce	ver	18.2	44.05	barometer	\N	17	Poja folweren dem ilinizpoh huhin di zenruteno fe woj jopfof zi pekza zudad.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	19.6000004	1.35000002	12
+KPI sno (24) ijoco	dom	12.8	23.7	dial	\N	24	Sac kaf nohvinmol cog fud he ifolu cagda casembo adeffi afoko tapaj olo.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	45.9500008	48.5	12
+KPI sno (25) olne	lok	37.15	1.9	dial	\N	25	Fejuz ketali ofeabbew faz lewihhi ma un ra wawi wocfiil suphic sube.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	46	30.5499992	8
+KPI sno (20) etefi	pih	39.55	26.1	dial	\N	20	Cancipmit rowze nedmuk zori nasifbed gumiwe mizufol asropuwi ehi hivlofa cev alo fakim horda zar tede.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	29.0499992	39.4500008	5
+KPI sno (22) dutuj	koz	37.95	25.35	dial	\N	22	Julmek pacavi gor gobiw dirog nulicja bevel junitar pezobo wu dupnoleh bak posuawu raafuv pak tugmav hiel.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	outcome	\N	\N	\N	21.9500008	11.6499996	1
+KPI sno (27) jehijona	vab	33.2	5.75	barometer	\N	27	Epi veciwpon nosdebwu ha adwevaha mohav inji za gokowhu id wo pobbenhad ruhwetu uhzot pimihcu mipmo waumo gadowof.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	22.8500004	7.94999981	13
+KPI sno (28) pogig	pou	30	31.4	barometer	\N	28	Zizogfak duvlivku zijevfa gehig nonaj kekavuj ipuetanoz haha jatoh ugur fevta lagholoj es jivippo fihwadis.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	29.2000008	4.75	10
+KPI sno (29) mejfovwo	ol	43.4	30.65	bignumber	\N	29	Naded vo uvu ce ej cewmimla wadoro umakunpiv ewoked fotlake eku ninitenu miztipika zekoz hoil zasavgi topuh.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	2.45000005	28.6499996	4
+KPI sno (26) je	ara	8.3	35.85	barometer	\N	26	Osecizuk kugu gopitoboc tew ujuzopoj hif asostu kagah retavdi deaca gifef kemzuguw heviri kez upi.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	19.5499992	6.25	5
+KPI sno (30) gin	dav	40.1	30.55	dial	\N	30	Jevzibpo cobosaro nisufekib onfe vilet wivos okuojezak mebasi daheduw isu jofa mu usugam.	2016-06-21 20:17:10+05:30	2016-06-21 20:17:10+05:30	output	\N	\N	\N	44.2999992	9.05000019	10
+abc	\N	10	20	\N	\N	9	Cu olepi gop sufagri fogvokhok ekfenic imipatot jaze wul vapu at oh vapsujag funjufta esligi.	2016-06-21 20:17:10+05:30	2016-07-28 15:49:46+05:30	outcome	86	\N	\N	28.4500008	32.4000015	1
+KPI sno (1) bogup	mah	18.4	2.45	bignumber	\N	1	Gizor ri hourume apu ho jivpuw ivirunvuk ruk jajmi olkuduvi nikwozja rebiw dikjo kasjedpo nu.	2016-06-21 20:17:10+05:30	2016-07-28 15:49:53+05:30	output	\N	\N	\N	3.75	12.1000004	8
+KPI sno (3) gimjeak	\N	39.55	18.6	\N	\N	31	\N	2016-07-19 12:28:28+05:30	2016-07-19 12:28:28+05:30	output	\N	t	f	6.30000019	48.4500008	4
+KPI sno (10) bo	count	7.55	9.3	barometer	\N	10	Zirulfo ha ibu igvutgif citvukon oje fa bebifag sopik hubjodris sovu labukmor.	2016-06-21 20:17:10+05:30	2016-07-28 15:49:53+05:30	output	1	\N	\N	17.5499992	6.3499999	\N
+test	count	\N	\N	\N	\N	89	\N	2016-07-28 15:49:53+05:30	2016-07-28 15:49:53+05:30	\N	1	\N	\N	\N	\N	\N
+KPI sno (3) gimjeak	\N	39.55	18.6	\N	\N	37	\N	2016-07-19 12:30:23+05:30	2016-07-19 12:30:23+05:30	output	\N	t	f	6.30000019	48.4500008	4
+KPI sno (3) gimjeak	\N	39.55	18.6	\N	\N	43	\N	2016-07-19 12:32:42+05:30	2016-07-19 12:32:42+05:30	output	\N	t	f	6.30000019	48.4500008	4
+KPI sno (3) gimjeak	\N	39.55	18.6	\N	\N	49	\N	2016-07-19 12:33:18+05:30	2016-07-19 12:33:18+05:30	output	\N	t	f	6.30000019	48.4500008	4
+KPI sno (3) gimjeak	\N	39.55	18.6	\N	\N	55	\N	2016-07-19 12:34:07+05:30	2016-07-19 12:34:07+05:30	output	\N	t	f	6.30000019	48.4500008	4
+\N	\N	\N	\N	\N	\N	61	\N	2016-07-19 12:39:15+05:30	2016-07-19 12:39:15+05:30	\N	\N	\N	\N	\N	\N	\N
+KPI sno (3) gimjeak	\N	39.55	18.6	\N	\N	62	\N	2016-07-19 12:39:44+05:30	2016-07-19 12:39:44+05:30	output	\N	t	f	6.30000019	48.4500008	4
+KPI sno (3) gimjeak	\N	39.55	18.6	\N	\N	68	\N	2016-07-19 12:42:01+05:30	2016-07-19 12:42:01+05:30	output	\N	t	f	6.30000019	48.4500008	4
+KPI sno (3) gimjeak	\N	39.55	18.6	\N	\N	74	\N	2016-07-28 15:07:42+05:30	2016-07-28 15:07:42+05:30	output	\N	t	f	6.30000019	48.4500008	4
+test	count	\N	\N	\N	\N	88	\N	2016-07-28 15:49:53+05:30	2016-07-28 15:49:53+05:30	\N	1	\N	\N	\N	\N	\N
+KPI sno (3) gimjeak	\N	39.55	18.6	\N	\N	80	\N	2016-07-28 15:49:18+05:30	2016-07-28 15:49:18+05:30	output	\N	t	f	6.30000019	48.4500008	4
+\.
+
+
+--
+-- Name: kpi_sno_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('kpi_sno_seq', 79, true);
+
+
+--
+-- Data for Name: post; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY post (id, "createdAt", "updatedAt", mainfield) FROM stdin;
+\.
+
+
+--
+-- Name: post_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('post_id_seq', 1, false);
+
+
+--
+-- Data for Name: sails_session_store; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY sails_session_store (sid, data, created_at) FROM stdin;
+SeATRYY_wZ70518LZnt_W7I5EOcmY4f8	{"cookie":{"originalMaxAge":1800000,"expires":"2016-07-28T11:30:31.673Z","httpOnly":true,"path":"/"},"passport":{"user":1},"csrfSecret":"KR-aAgpH4pBnONG1J9zqfqGB"}	2016-07-28 16:30:31.673916
+\.
+
+
+--
+-- Data for Name: sessions; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY sessions (session_id, expires, data) FROM stdin;
+6OF6IRjslYJ72geFnoRuVYfAvcDs--z_	1466522254	{"cookie":{"originalMaxAge":1800000,"expires":"2016-06-21T15:17:33.876Z","httpOnly":true,"path":"/"},"passport":{"user":1},"csrfSecret":"LOuqzXHJoOjVgsHUx1M3mHsN"}
+Zs2u51fxSo3NePsRjuiHqric-Rl-eme4	1466572306	{"cookie":{"originalMaxAge":1800000,"expires":"2016-06-22T05:11:45.980Z","httpOnly":true,"path":"/"},"passport":{"user":1},"csrfSecret":"W4-lu5kakeJFZKB9R5J-rXRN","_garbage":"Wed Jun 22 2016 10:11:44 GMT+0530 (IST)"}
+\.
+
+
+--
+-- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY "user" (email, name, department, role, password, id, "createdAt", "updatedAt", ispasswordreset, temppassword, viewall, updatealloutcomekpis, updatealloutputkpis, updateallissuelogs, updateallactivities, updateallexecutivesummaries, crudartifacts, crudusers, viewparentage) FROM stdin;
+admin@test.com	Admin	Test	A	$2a$10$7gwhcsH/j7xHMonbAt.OseZck09IypnYLK20.bHhKVKRd1aYT0VZm	1	2016-06-21 20:17:10+05:30	2016-07-19 12:27:44+05:30	f	\N	t	t	t	t	t	t	t	t	f
+user1@test.com	User	B	user	$2a$10$7gwhcsH/j7xHMonbAt.OseZck09IypnYLK20.bHhKVKRd1aYT0VZm	2	2016-06-21 20:17:10+05:30	2016-07-19 12:27:44+05:30	f	\N	f	f	f	f	f	f	f	t	f
+user2@test.com	User	B	user	$2a$10$7gwhcsH/j7xHMonbAt.OseZck09IypnYLK20.bHhKVKRd1aYT0VZm	3	2016-06-21 20:17:10+05:30	2016-07-19 12:27:44+05:30	f	\N	f	f	f	f	f	f	t	f	f
+user3@test.com	User	B	user	$2a$10$7gwhcsH/j7xHMonbAt.OseZck09IypnYLK20.bHhKVKRd1aYT0VZm	4	2016-06-21 20:17:10+05:30	2016-07-19 12:27:44+05:30	f	\N	f	f	f	f	f	t	f	f	f
+user4@test.com	User	B	user	$2a$10$7gwhcsH/j7xHMonbAt.OseZck09IypnYLK20.bHhKVKRd1aYT0VZm	5	2016-06-21 20:17:10+05:30	2016-07-19 12:27:44+05:30	f	\N	f	f	f	f	t	f	f	f	f
+user5@test.com	User	B	user	$2a$10$7gwhcsH/j7xHMonbAt.OseZck09IypnYLK20.bHhKVKRd1aYT0VZm	6	2016-06-21 20:17:10+05:30	2016-07-19 12:27:44+05:30	f	\N	f	f	f	t	f	f	f	f	f
+user6@test.com	User	C	user	$2a$10$7gwhcsH/j7xHMonbAt.OseZck09IypnYLK20.bHhKVKRd1aYT0VZm	7	2016-06-21 20:17:10+05:30	2016-07-19 12:27:44+05:30	f	\N	f	f	t	f	f	f	f	f	f
+user7@test.com	User	B	user	$2a$10$7gwhcsH/j7xHMonbAt.OseZck09IypnYLK20.bHhKVKRd1aYT0VZm	8	2016-06-21 20:17:10+05:30	2016-07-19 12:27:44+05:30	f	\N	f	t	f	f	f	f	f	f	f
+user8@test.com	User	B	user	$2a$10$7gwhcsH/j7xHMonbAt.OseZck09IypnYLK20.bHhKVKRd1aYT0VZm	9	2016-06-21 20:17:10+05:30	2016-07-19 12:27:44+05:30	f	\N	t	f	f	f	f	f	f	f	f
+general@test.com	User	B	user	$2a$10$7gwhcsH/j7xHMonbAt.OseZck09IypnYLK20.bHhKVKRd1aYT0VZm	10	2016-06-21 20:17:10+05:30	2016-07-19 12:27:44+05:30	f	\N	f	f	f	f	f	f	f	f	f
+metwe@zi.co.uk	Jay Peters	A	user	$2a$10$7gwhcsH/j7xHMonbAt.OseZck09IypnYLK20.bHhKVKRd1aYT0VZm	11	2016-06-21 20:17:10+05:30	2016-07-19 12:27:44+05:30	f	\N	f	f	f	f	f	f	f	f	f
+fupcuti@osrom.io	Leroy Schneider	C	user	$2a$10$7gwhcsH/j7xHMonbAt.OseZck09IypnYLK20.bHhKVKRd1aYT0VZm	12	2016-06-21 20:17:10+05:30	2016-07-19 12:27:44+05:30	f	\N	f	f	f	f	f	f	f	f	f
+cap@jacis.io	Lora Mann	B	user	$2a$10$7gwhcsH/j7xHMonbAt.OseZck09IypnYLK20.bHhKVKRd1aYT0VZm	13	2016-06-21 20:17:10+05:30	2016-07-19 12:27:44+05:30	f	\N	f	f	f	f	f	f	f	f	f
+sufzojoj@bup.com	Andre Higgins	C	user	$2a$10$7gwhcsH/j7xHMonbAt.OseZck09IypnYLK20.bHhKVKRd1aYT0VZm	14	2016-06-21 20:17:10+05:30	2016-07-19 12:27:44+05:30	f	\N	f	f	f	f	f	f	f	f	f
+\.
+
+
+--
+-- Name: user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('user_id_seq', 14, true);
+
+
+--
+-- Name: Activites_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "Activites"
+    ADD CONSTRAINT "Activites_pkey" PRIMARY KEY (sno);
+
+
+--
+-- Name: AppView_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "AppView"
+    ADD CONSTRAINT "AppView_pkey" PRIMARY KEY (sno);
+
+
+--
+-- Name: Budget_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "Budget"
+    ADD CONSTRAINT "Budget_pkey" PRIMARY KEY (sno);
+
+
+--
+-- Name: Issues_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "Issues"
+    ADD CONSTRAINT "Issues_pkey" PRIMARY KEY (sno);
+
+
+--
+-- Name: KPI Milestone_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "KPI Milestone"
+    ADD CONSTRAINT "KPI Milestone_pkey" PRIMARY KEY (sno);
+
+
+--
+-- Name: Risk_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "Risk"
+    ADD CONSTRAINT "Risk_pkey" PRIMARY KEY (sno);
+
+
+--
+-- Name: activitycount_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY activitycount
+    ADD CONSTRAINT activitycount_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: appViews_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "appViews"
+    ADD CONSTRAINT "appViews_pkey" PRIMARY KEY (sno);
+
+
+--
+-- Name: evidence_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY evidence
+    ADD CONSTRAINT evidence_pkey PRIMARY KEY (sno);
+
+
+--
+-- Name: executivesummary_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY executivesummary
+    ADD CONSTRAINT executivesummary_pkey PRIMARY KEY (sno);
+
+
+--
+-- Name: initiative_participants__user_participatedinitiatives_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY initiative_participants__user_participatedinitiatives
+    ADD CONSTRAINT initiative_participants__user_participatedinitiatives_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: initiative_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY initiative
+    ADD CONSTRAINT initiative_pkey PRIMARY KEY (initiativeid);
+
+
+--
+-- Name: kpi_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY kpi
+    ADD CONSTRAINT kpi_pkey PRIMARY KEY (sno);
+
+
+--
+-- Name: post_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY post
+    ADD CONSTRAINT post_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sails_session_store_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY sails_session_store
+    ADD CONSTRAINT sails_session_store_pkey PRIMARY KEY (sid);
+
+
+--
+-- Name: sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY sessions
+    ADD CONSTRAINT sessions_pkey PRIMARY KEY (session_id);
+
+
+--
+-- Name: user_email_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "user"
+    ADD CONSTRAINT user_email_key UNIQUE (email);
+
+
+--
+-- Name: user_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "user"
+    ADD CONSTRAINT user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: KPI Milestone_initiativeid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "KPI Milestone_initiativeid" ON "KPI Milestone" USING btree (initiativeid);
+
+
+--
+-- Name: KPI Milestone_parentid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "KPI Milestone_parentid" ON "KPI Milestone" USING btree (parentid);
+
+
+--
+-- Name: appViews_sno; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "appViews_sno" ON "appViews" USING btree (sno);
+
+
+--
+-- Name: evidence_initiativeid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX evidence_initiativeid ON evidence USING btree (initiativeid);
+
+
+--
+-- Name: evidence_sno; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX evidence_sno ON evidence USING btree (sno);
+
+
+--
+-- Name: initiative_initiativeid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX initiative_initiativeid ON initiative USING btree (initiativeid);
+
+
+--
+-- Name: initiative_owner; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX initiative_owner ON initiative USING btree (owner);
+
+
+--
+-- Name: initiative_parentid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX initiative_parentid ON initiative USING btree (parentid);
+
+
+--
+-- Name: kpi_initiativeid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX kpi_initiativeid ON kpi USING btree (initiativeid);
+
+
+--
+-- Name: kpi_parentkpi; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX kpi_parentkpi ON kpi USING btree (parentkpi);
+
+
+--
+-- Name: kpi_sno; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX kpi_sno ON kpi USING btree (sno);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: -
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

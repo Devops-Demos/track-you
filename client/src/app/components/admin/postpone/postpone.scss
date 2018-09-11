@@ -1,0 +1,31 @@
+.postpone-container{
+  width: 75%;
+  margin: 30px auto;
+  .page-title{
+
+  }
+  .initiatives-container{
+    padding: 30px 0;
+  }
+  .initiative-name, .submit-button{
+    margin: 15px 0;
+  }
+  .days-picker{
+    width: 115px;
+    padding-right: 4px;
+    box-sizing: content-box;
+    margin-left: 20px;
+  }
+  .date-picker{
+    width: 147px;
+    box-sizing: content-box;
+    margin-left: 20px;
+  }
+  .submit-button{
+    display: block;
+    background-color: $primary-card-header-color;
+  }
+  .status-text{
+    margin-bottom: 20px;
+  }
+}

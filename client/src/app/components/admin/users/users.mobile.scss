@@ -1,0 +1,25 @@
+@media screen and (max-width:500px) {
+  .body-tag {
+    .users-container {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      .list-btn {
+        margin-left: 5px;
+      }
+    }
+    .create-form .field .rights-wrapper .rights{
+      width: 100%;
+      label{
+        padding: 0 10px 0 25px;
+      }
+      input[type=checkbox] + label:before{
+          width: 20px;
+          height: 20px;
+      }
+      input[type=checkbox]:checked + label:before{
+        line-height: 19px;
+      }
+    }
+  }
+}

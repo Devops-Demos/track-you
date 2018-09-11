@@ -1,0 +1,22 @@
+.unsupported-browser {
+  background: url('../assets/images/not-supported.svg') no-repeat top center;
+  background-size: 100px;
+  text-align: center;
+  padding: 100px 0 0 0;
+  margin: 100px 0 0 0;
+
+  .title {
+    padding: 30px 0 20px;
+  }
+
+  .text {
+    padding-bottom: 10px;
+    span{
+      display: block;
+    }
+  }
+  ul li{
+    padding: 0 0 5px 0;
+  }
+
+}

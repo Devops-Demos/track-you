@@ -1,0 +1,35 @@
+.kpi-container(ng-controller="OutcomeController as outcome")
+  .legend.clearfix(rtl, is-rtl="{{main.isRtl}}")
+    ul.tabs.f16.pointer.pull-left
+      li.tab.pull-left(ng-class="{'tab--active': outcome.selectedPeriod === 'current'}", ng-click="outcome.selectedPeriod = 'current'; outcome.periodChanged()" translate="CURRENT")
+      li.tab.pull-left(ng-class="{'tab--active': outcome.selectedPeriod === 'trend'}", ng-click="outcome.selectedPeriod = 'trend'; outcome.periodChanged()" translate="TRENDLINE")
+    ul.legend-container.f12.pull-right
+      li.add-card.pointer(ng-click="outcome.addCards()", ng-if="main.getUserRights().crudArtifacts && main.isOnline()" translate="OUTCOME_KPI")
+      li.target-legend.hidden-xs
+      li.mobile-legend.target-mobile(translate="TARGET")
+      li.actual-legend.hidden-xs
+      li.mobile-legend.actual-mobile(translate="ACTUAL")
+      li.completed-legend
+      li(translate="COMPLETED")
+      li.on-track-legend
+      li(translate="ON_TRACK")
+      li.delayed-legend
+      li(translate="DELAYED")
+      li.unknown-legend
+      li(translate="UNKNOWN")
+  .no-data(ng-if="!outcome.initiative" translate="INITIATIVE_PAGE.NO_INITIATIVE_FOUND")
+  .no-data(ng-if="outcome.kpis.length === 0" translate="INITIATIVE_PAGE.NO_KPI_FOUND")
+  .cards
+    .cards-full
+      .card.card-half(ng-repeat="kpi in outcome.fullWidthkpis track by $index")
+        .card__container
+          div(ng-include="'app/components/cards/outcome-kpi/outcome-kpi.html'")
+    .cards-left.pull-left
+      .card.card-half(ng-repeat="kpi in outcome.leftkpis track by $index")
+        .card__container
+          div(ng-include="'app/components/cards/outcome-kpi/outcome-kpi.html'")
+
+    .cards-right.pull-right
+      .card.card-half(ng-repeat="kpi in outcome.rightkpis track by $index")
+        .card__container
+          div(ng-include="'app/components/cards/outcome-kpi/outcome-kpi.html'")

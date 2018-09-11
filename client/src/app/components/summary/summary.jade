@@ -1,0 +1,6 @@
+div(ng-controller="SummaryController as summary")
+  .no-data(ng-if="!summary.initiativeId && summary.initiativeId != 0" translate="INITIATIVE_PAGE.NO_INITIATIVE_FOUND")
+  .initiative-summary(rtl , data-is-rtl="{{main.isRtl}}" ng-show="summary.initiativeId")
+    div(ng-include="'app/components/summary/initiative-summary.html'")
+  .landing-summary-wrap(rtl , data-is-rtl="{{main.isRtl}}" ng-init="isSummaryEditable = false; isCollapsed = true" ng-show="summary.initiativeId == 0")
+    div(ng-include="'app/components/summary/landing-summary.html'")

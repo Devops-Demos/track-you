@@ -1,0 +1,127 @@
+.card {
+  .owner {
+    text-align: left;
+    width: 30%;
+    .mail {
+      padding-top: 6px;
+    }
+    .person, .dept {
+      padding: 0 5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .dept {
+      font-family: $secondary-font;
+      padding: 2px 5px 0;
+    }
+
+  }
+  .activity,
+  .kpi,
+  .outcome {
+    position: relative;
+    text-align: center;
+    width: 50%;
+    .drilldown {
+      &:after {
+        border-bottom: 8px solid #ccc;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        content: '';
+        height: 0;
+        position: absolute;
+        right: -2px;
+        top: -8px;
+        transform: rotate(45deg);
+        width: 0;
+      }
+    }
+    &--no-data {
+      min-height: 165px;
+      padding-top: 35px;
+      text-align: center;
+    }
+    &__heading {
+      overflow: hidden;
+      padding: 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .no-data__image {
+      margin-top: 20px;
+      padding: 5px;
+    }
+    .no-data__link {
+      border: 1px solid $secondary-card-header-color;
+      border-radius: 5px;
+      color: $primary-font-color;
+      display: inline-block;
+      margin: 20px 20px 0;
+      min-width: 100px;
+      padding: 10px 15px;
+      text-decoration: none;
+    }
+    .no-data__link__add {
+      color: $primary-font-color;
+      display: inline-block;
+      margin: 25px 0 0;
+      min-width: 50px;
+      padding: 5px;
+      text-align: left;
+      text-decoration: none;
+    }
+  }
+  .kpi-right {
+    width: 40%;
+  }
+  .kpi-left {
+    width: 60%;
+  }
+  .kpi__inner {
+    margin: 0 auto;
+    width: 100%;
+  }
+  .activity__chart,
+  .kpi__chart {
+    height: 200px;
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+    .chart-wrap {
+      height: 200px;
+    }
+    .highcharts-container {
+      margin: 0 auto;
+    }
+  }
+  .kpi .kpi__chart svg {
+    cursor: pointer;
+  }
+  .issue-log {
+    color: $primary-font-color;
+    line-height: 30px;
+    text-decoration: none;
+    .issue-icon {
+      padding: 6px 0 0 10px;
+    }
+  }
+  .add-log {
+    color: $primary-font-color;
+    min-width: 90px;
+    text-decoration: none;
+    text-align: left;
+  }
+  .plus-icon {
+    padding: 2px 5px 0;
+  }
+}
+.activity--no-data {
+  @include clearfix();
+}
+.evidence-heading {
+  margin-bottom: 15px;
+}
+.add-new-evidence {
+  margin-left: 5px;
+}

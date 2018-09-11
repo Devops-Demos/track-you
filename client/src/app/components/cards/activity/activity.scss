@@ -1,0 +1,38 @@
+.card {
+  position: relative;
+  .activity__table {
+    margin: 20px 0;
+    width: 100%;
+    td {
+      height: 35px;
+      text-align: center;
+      vertical-align: bottom;
+      width: 33.333%;
+      &:first-child {
+        font-family: $secondary-font;
+      }
+    }
+    thead {
+      td {
+        font-family: $secondary-font;
+        height: 25px;
+      }
+    }
+  }
+}
+.card__delay {
+  border-right: 1px solid rgb(255, 255, 255);
+  border-right: 1px solid rgba(255, 255, 255, .52);
+  box-sizing: border-box;
+  color: #fff;
+  margin-top: 10px;
+  padding-left: 10px;
+  text-align: center;
+  width: 15%;
+}
+.activity__card {
+  .card__title__text {
+    width: 60%;
+  }
+}
+ 

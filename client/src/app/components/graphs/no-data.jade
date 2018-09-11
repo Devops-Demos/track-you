@@ -1,0 +1,4 @@
+.outcome-no-data.kpi--no-data
+  img.no-data__image(src="assets/images/dummy-graph.svg", width="100px")
+  p.no-data__text(translate="INCOMPLETE_DATA")
+  a.no-data__link(ng-if="kpi.hasDrillDown" ng-click="chartNavigation(kpi)" translate="VIEW_KPI")

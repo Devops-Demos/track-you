@@ -1,0 +1,8 @@
+{
+  "newUser" : {
+    "usernameMessage" : "Hi {name}\n\n\r\rYour account has been set with the following credentials:\n\n\r\remail : {email}. \n\r\n\rPlease follow this link to access the app: {link}\n\r\n\r Your temporary password will be sent to you shortly.",
+    "passwordMessage" : "Hi {name}\n\n\r\rYour account has been set with the following temporary password : {password}\n\r\n\rPlease reset your password on login.",
+    "userSubject" : "Your Account Username",
+    "passwordSubject" : "Your Account Password"
+  }
+}

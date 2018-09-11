@@ -1,0 +1,139 @@
+@media screen and (max-width: 950px) {
+  .body-tag {
+    .card__title__arrow__icon {
+      padding: 0 15px;
+    }
+    .edit-click {
+      padding: 10px 15px 12px 0;
+    }
+    .rtl {
+      .edit-click {
+        padding: 10px 0 12px 15px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 736px) {
+  .body-tag {
+    .landing-title {
+      padding: 5px;
+      margin-top: 5px;
+    }
+    .edit-click {
+      padding-left: 10px;
+    }
+    .card__title__text{
+      width: 70%;
+    }
+    .card__title__arrow{
+      width: 30%;
+    }
+    .card__title__arrow__icon {
+      padding: 0 15px;
+    }
+    .summary--isCollapsed,
+    .summary,
+    .card__container {
+      box-shadow: 0 2px 2px #A7A7A7;
+      border-radius: 2px;
+    }
+    .card__title--collapsed {
+      border-radius: 2px;
+    }
+    .block-title {
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
+      padding: 20px 15px;
+    }
+    .card__title {
+      border-radius: 2px;
+    }
+    .cards {
+      padding: 0 2px;
+      .cards-left,
+      .cards-right {
+        width: 100%;
+      }
+    }
+    .card-half {
+      padding: 4px 2px;
+    }
+    .priority__property {
+      float: left;
+      width: 33%;
+      &:last-child a {
+        border-bottom: 1px solid #ccc;
+      }
+      &__link {
+        padding: 0 4px;
+      }
+      .priority__property__text {
+        font-size: 10px;
+      }
+    }
+    .legend-container {
+      background: $default-bg-color;
+      float: none;
+      font-size: 12px;
+      padding: 10px 0 5px;
+      text-align: center;
+      margin: 0 5px 10px;
+      border-radius: 2px;
+      font-weight: lighter;
+      li {
+        margin-right: 5px;
+        margin-left: 4px;
+        margin-bottom: 5px;
+      }
+    }
+    .legend {
+      padding: 10px 0 0;
+      margin-bottom: 0;
+      .tabs-container {
+        margin-bottom: 0;
+        float: none;
+      }
+      .landing-tabs{
+        .tab{
+          width: 50%;
+          margin: 0;
+          padding-top: 0;
+          padding-bottom: 5px;
+        }
+      }
+    }
+    .block-container {
+      padding: 0 4px 4px;
+      margin-bottom: 10px;
+    }
+    .tabs {
+      width: 80%;
+      margin: 0 10% 5px 10%;
+      float: none;
+      .tab {
+        width: 25%;
+        margin: 0 4%;
+        border-bottom: none;
+        box-sizing: border-box;
+        text-align: center;
+        &--active {
+          border-bottom: 2px solid #018754;
+          max-height: none;
+        }
+      }
+    }
+    .top-padding{
+      padding-top: 85px;
+    }
+    .top-padding-less {
+      padding-top: 48px;
+    }
+    .top-margin{
+      margin-top: 85px;
+    }
+    .top-margin-less{
+      margin-top: 48px;
+    }
+  }
+}

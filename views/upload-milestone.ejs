@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Milestone upload</title>
+</head>
+
+<body>
+  <a target="_blank" href="/milestoneformat"><input type="button" value="Download Format" /></a>
+  <form enctype="multipart/form-data" method="post" action="/uploadmilestone">
+    <div class="row">
+      <label for="milestoneData">Select a File to Upload</label>
+      <br />
+      <input type="file" name="milestoneData" id="milestoneData" onchange="fileSelected();" />
+    </div>
+    <div id="fileSize"></div>
+    <div class="row">
+      <input type="button" onclick="uploadFile()" value="Upload" />
+    </div>
+    <div id="progress-number"></div>
+  </form>
+  <!-- <div id="upload-status"></div> -->
+  <pre id="upload-status" class="prettyprint"></pre>
+</body>
+
+<script type="text/javascript">
+  var csrfValue = 'not initialised';
+
+  var fileSelected = function() {
+    var file = document.getElementById('milestoneData').files[0];
+    if (file) {
+      var fileSize = 0;
+      if (file.size > 1024 * 1024) {
+        fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+      } else {
+        fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+      }
+      document.getElementById('fileSize').innerHTML = 'Size: ' + fileSize;
+    }
+  };
+
+  var uploadFile = function() {
+    getCsrf(function() {
+      var fd = new FormData();
+      fd.append("milestoneData", document.getElementById('milestoneData').files[0]);
+      var xhr = new XMLHttpRequest();
+      xhr.upload.addEventListener("progress", uploadProgress, false);
+      xhr.addEventListener("load", uploadComplete, false);
+      xhr.addEventListener("error", uploadFailed, false);
+      xhr.addEventListener("abort", uploadCanceled, false);
+      xhr.open("POST", "/uploadmilestone");
+      xhr.setRequestHeader('x-csrf-token', csrfValue);
+      xhr.send(fd);
+    });
+  };
+
+  var uploadProgress = function(evt) {
+    if (evt.lengthComputable) {
+      var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+      document.getElementById('progress-number').innerHTML = percentComplete.toString() + '%';
+    } else {
+      document.getElementById('progress-number').innerHTML = 'unable to compute';
+    }
+  };
+  var uploadComplete = function(evt) {
+    document.getElementById('upload-status').innerHTML = evt.target.responseText;
+  };
+  var uploadFailed = function(evt) {
+    document.getElementById('upload-status').innerHTML = ("There was an error attempting to upload the file.");
+  };
+  var uploadCanceled = function(evt) {
+    document.getElementById('upload-status').innerHTML = ("The upload has been canceled by the user or the browser dropped the connection.");
+  };
+
+  var getCsrf = function(cb) {
+    var gotCsrf = function(evt) {
+      var csrfText = evt.target.responseText;
+      if (csrfText.length > 1) {
+        csrfValue = JSON.parse(csrfText)._csrf;
+      }
+      cb();
+    };
+    var xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', gotCsrf, false);
+    xhr.open('get', '/csrfToken');
+    xhr.send();
+  };
+</script>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</html>

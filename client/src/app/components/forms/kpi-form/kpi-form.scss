@@ -1,0 +1,96 @@
+.kpi-form {
+  .field-half-width {
+    width: 50%;
+    box-sizing: border-box;
+  }
+  .parent-kpi {
+    .field-one-third-padding {
+      padding-left: 2%;
+    }
+  }
+  .milestones {
+    clear: both;
+    .field-one-third:not(:nth-child(3n+1)) {
+      padding-left: 2%;
+    }
+    .milestone-details {
+      @include clearfix();
+      .field-one-third {
+        width: 31%;
+      }
+    }
+    .pagination-wrapper {
+      padding-top: 25px;
+      .pagination-status {
+        padding: 0 10px;
+      }
+      .button-white {
+        color: black;
+        background: white;
+      }
+    }
+  }
+  .cross-btn {
+    display: inline-block;
+    margin: 32px 0 0 10px;
+    position: absolute;
+  }
+  .child-kpis {
+    .target {
+      padding-left: 20px;
+    }
+    .child-kpi-details {
+      padding-bottom: 35px;
+      @include clearfix();
+      .input-80 {
+        width: 80%;
+      }
+      .edit-button {
+        display: inline-block;
+        img {
+          padding: 0 5px;
+        }
+        span {
+          vertical-align: text-top;
+        }
+      }
+    }
+  }
+  .add-new {
+    padding: 10px 0;
+    display: inline-block;
+    img {
+      width: 20px;
+    }
+    span {
+      vertical-align: text-top;
+      padding: 0 5px;
+    }
+  }
+  input[type=checkbox] + label:before {
+    background-color: #FFFFFF;
+  }
+  .checkbox-container {
+    clear: both;
+    padding: 10px 0 0;
+  }
+  .field-checkbox {
+    display: inline-block;
+    padding-right: 30px;
+  }
+  ::-webkit-calendar-picker-indicator {
+    color: rgba(0, 0, 0, 0);
+    opacity: 1;
+    background-color: #FFFFFF;
+  }
+  ::-webkit-calendar-picker-indicator::after {
+    content: '';
+    display: block;
+    background: url("../assets/images/calendar.svg") no-repeat;
+    background-size: 16px;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    transform: translateY(-3px);
+  }
+}

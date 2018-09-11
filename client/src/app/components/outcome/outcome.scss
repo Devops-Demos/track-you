@@ -1,0 +1,42 @@
+.kpi-container {
+  .legend-container {
+    margin-top: 10px;
+  }
+  .tabs .tab {
+    padding: 0 10px 5px;
+  }
+}
+.actual-legend,
+.target-legend {
+  background-color: $actual-color;
+  height: 2px;
+  vertical-align: super;
+  width: 50px;
+}
+.target-legend {
+  background-color: $target-color;
+}
+.rolling-legend {
+  border: 1px dashed $unknown-color;
+  width: 50px;
+  box-sizing: border-box;
+  vertical-align: super;
+}
+.chart-dir {
+  position: relative;
+}
+.drilldown {
+  cursor: pointer;
+  &:after {
+    content: '';
+    position: absolute;
+    height: 0;
+    width: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #ccc;
+    top: 2px;
+    right: -2px;
+    transform: rotate(45deg);
+  }
+}

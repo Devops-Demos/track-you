@@ -1,0 +1,16 @@
+{
+  "name": "translate-tool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "excel": "^0.1.4",
+    "excel-export": "^0.5.1",
+    "exceljs": "^0.2.4"
+  }
+}

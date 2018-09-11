@@ -1,0 +1,16 @@
+{
+  "name": "iTrack",
+  "short_name": "iTrack",
+  "lang": "en-US",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#002B5C",
+  "icons": [
+    {
+      "src": "assets/images/appIcon.png",
+      "sizes": "120X120",
+      "type": "image/png",
+      "density": 1
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+div.search-wrapper(ng-controller="SearchController as search")
+  form.search-box-container(name="searchForm" novalidate ng-submit="searchForm.$valid ? search.searchOnline() : _" rtl is-rtl="{{main.isRtl}}")
+    input.search-input.f20(type="text" placeholder="{{'SEARCH.ENTER_SEARCH_QUERY' | translate}}", ng-change='search.getSearchResults()',ng-model='search.queryString', required, ng-minlength="3")
+    .search-btn.pull-right(ng-if="search.queryString.length > 2 ")
+      .search.pointer(ng-click='search.searchOnline()', ng-if='search.isOnline()')
+    .filters-wrapper
+      span.filter(ng-repeat='filter in search.searchFilters track by $index')
+        input(id='cb{{$index}}', name='cb', type='checkbox',ng-model='filter.value', ng-change='search.getSearchResults()')
+        label(for='cb{{$index}}') {{search.getDisplayNames(filter.name)}}
+  div(rtl is-rtl="{{main.isRtl}}")
+    .search-requirement * {{'SEARCH.SEARCH_QUERY_MIN_3_CHARACTERS' | translate}}
+  div.legends(rtl is-rtl="{{main.isRtl}}")
+    ul.legend-container.f12
+      li.completed-legend
+      li {{'COMPLETED' | translate}}
+      li.on-track-legend
+      li {{'ON_TRACK' | translate}}
+      li.delayed-legend
+      li {{'DELAYED' | translate}}
+      li.unknown-legend
+      li(translate="UNKNOWN")
+
+  .results-container(rtl is-rtl="{{main.isRtl}}")
+    div(ng-repeat='filterValue in search.keysToBeSearched.keys track by $index')
+      div.f20.result-type {{search.getDisplayNames(filterValue)}} ({{search.results[filterValue].length}})&#x200E;
+      .result-list(ng-if='search.results[filterValue]')
+        .results.pointer(ng-repeat='foundResult in search.results[filterValue] track by $index', ng-click='search.navigateTo(filterValue,foundResult)', ng-class='foundResult.status ? foundResult.status : "unknown"')
+          span(ng-if='filterValue!=="Owners"', ng-bind-html='foundResult.name | highlight:search.highlightQueryString')
+          span(ng-if='filterValue==="Owners"')
+            .found-name(ng-bind-html='foundResult.initiative')
+            .found-owner(ng-bind-html='foundResult.name | highlight:search.queryString')

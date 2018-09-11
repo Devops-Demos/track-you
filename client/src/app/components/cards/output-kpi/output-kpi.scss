@@ -1,0 +1,72 @@
+.last__update-wrap {
+  text-align: right;
+}
+
+.card__wrap {
+  @include clearfix();
+  position: relative;
+}
+
+.output__kpi {
+  .kpi__chart {
+    border-right: 1px solid #ccc;
+    box-sizing: border-box;
+    width: 70%;
+  }
+
+  .drilldown:after {
+    right: 0;
+  }
+
+  .kpi__hierarchy {
+    box-sizing: border-box;
+    opacity: .6;
+    padding: 0 10px;
+    width: 30%;
+  }
+
+  .hierarchy__title {
+    margin: 10px 0 5px;
+  }
+
+  .hierarchy__text {
+    color: $primary-font-color;
+    text-decoration: none;
+  }
+
+  .kpi--no-data {
+    box-sizing: border-box;
+    padding-top: 50px;
+    width: 70%;
+    margin: 0 auto;
+    display: block;
+    .no-data__image{
+      width: 50px;
+    }
+  }
+
+  .no-data__link {
+    border: 1px solid $secondary-card-header-color;
+    border-radius: 5px;
+    color: $primary-font-color;
+    display: inline-block;
+    margin: 20px;
+    min-width: 100px;
+    padding: 10px 15px;
+    text-decoration: none;
+  }
+
+}
+
+.kpi-footer{
+  text-align: center;
+  position: relative;
+  .last-update-date{
+    padding-bottom: 5px;
+  }
+
+  .last__milestone-wrap{
+    position: absolute;
+    text-align: left;
+  }
+}

@@ -1,0 +1,71 @@
+.issues(ng-controller="IssuesController as Issues")
+  rtl(is-rtl="{{main.isRtl}}")
+    .breadcrumbs(breadcrumb data-crumbs="Issues.breadCrumb" ng-if="Issues.breadCrumb" data-is-rtl="main.isRtl")
+  .toggle.f20.pointer(ng-class="Issues.breadCrumb ? (Issues.breadCrumb.length > 1 ?'top-margin': 'top-margin-less' ): ''")
+    .toggle__state(ng-click="Issues.showIssueLog = true", ng-class="{'selected-toggle': Issues.showIssueLog}" translate="CARD.ISSUE_LOG")
+    .toggle__state(ng-click="Issues.showIssueLog = false", ng-class="{'selected-toggle': !Issues.showIssueLog}" translate="CARD.RISK_LOG")
+  .issue(ng-if="Issues.showIssueLog", ng-init="isIssuesEditable = false", rtl, is-rtl="{{main.isRtl}}")
+    .edit-container.pull-right.pointer(rtl is-rtl="{{main.isRtl}}" ng-show="(main.getUserRights().updateAllIssueLogs || Issues.initiative.isEditable)")
+      .edit-icon(ng-click="isIssuesEditable = !isIssuesEditable; Issues.setOld(['issue', 'nextSteps', 'keyMilestones'], 'issues')" ng-show="!isIssuesEditable")
+      ul.save-close-container.pointer(ng-hide="!isIssuesEditable")
+        li(ng-click="Issues.deleteModelIssue = true; isIssuesEditable = !isIssuesEditable", ng-if="Issues.issues.sno !== undefined")
+          img(src="assets/images/delete.svg", width="20px")
+        li(ng-click="Issues.getOld(['issue', 'nextSteps', 'keyMilestones'], 'issues'); isIssuesEditable = !isIssuesEditable")
+          img(src="assets/images/close-edit.svg", width="20px")
+        li(ng-click="Issues.setIssues(['issue', 'nextSteps', 'keyMilestones']); isIssuesEditable=false")
+          img(src="assets/images/save-edit.svg", width="20px")
+    .issue__description.f18
+      h3.issue__description__subheading(translate="ISSUE.ISSUES")
+      .issue__description__detail(ng-show="!isIssuesEditable", ng-class="{'f12': !Issues.issues.issue, 'f18': Issues.issues.issue}") {{Issues.issues.issue ? Issues.issues.issue : 'ISSUE.NO_DATA_AVAILABLE' | translate }}
+      textarea.textarea(ng-model="Issues.issues.issue" ng-show="isIssuesEditable")
+
+      h3.issue__description__subheading(translate="ISSUE.NEXT_STEPS")
+      .issue__description__detail(ng-show="!isIssuesEditable", ng-class="{'f12': !Issues.issues.nextSteps, 'f18': Issues.issues.nextSteps}") {{Issues.issues.nextSteps ? Issues.issues.nextSteps :'ISSUE.NO_DATA_AVAILABLE' | translate}}
+      textarea.textarea(ng-model="Issues.issues.nextSteps" ng-show="isIssuesEditable")
+
+      h3.issue__description__subheading(translate="ISSUE.KEY_MILESTONES")
+      .issue__description__detail(ng-show="!isIssuesEditable", ng-class="{'f12': !Issues.issues.keyMilestones, 'f18': Issues.issues.keyMilestones}") {{Issues.issues.keyMilestones? Issues.issues.keyMilestones :'ISSUE.NO_DATA_AVAILABLE' | translate}}
+      textarea.textarea(ng-model="Issues.issues.keyMilestones" ng-show="isIssuesEditable")
+
+  .risk(ng-if="!Issues.showIssueLog", ng-init="isRiskEditable = false", rtl, is-rtl="{{main.isRtl}}")
+    .edit-container.pointer.pull-right(ng-show="(main.getUserRights().updateAllIssueLogs || Issues.initiative.isEditable)")
+      .edit-icon(ng-click="isRiskEditable = !isRiskEditable; Issues.setOld(['risk', 'nextSteps', 'keyMilestones'], 'risk')" ng-show="!isRiskEditable")
+      ul.save-close-container.pointer(ng-hide="!isRiskEditable")
+        li(ng-click="Issues.deleteModelRisk = true; isRiskEditable = !isRiskEditable", ng-if="Issues.risk.sno !== undefined")
+          img(src="assets/images/delete.svg", width="20px")
+        li(ng-click="Issues.getOld(['risk', 'nextSteps', 'keyMilestones'], 'risk'); isRiskEditable = !isRiskEditable")
+          img(src="assets/images/close-edit.svg", width="20px")
+        li(ng-click="Issues.setRisk(['risk', 'nextSteps', 'keyMilestones'], 'risk'); isRiskEditable=false")
+          img(src="assets/images/save-edit.svg", width="20px")
+    .issue__description.f18
+      h3.issue__description__subheading(translate="ISSUE.RISKS")
+      .issue__description__detail(ng-show="!isRiskEditable", ng-class="{'f12': !Issues.risk.risk, 'f18': Issues.risk.risk}") {{Issues.risk.risk ? Issues.risk.risk : 'ISSUE.NO_DATA_AVAILABLE' | translate}}
+      textarea.textarea(ng-model="Issues.risk.risk" ng-show="isRiskEditable")
+
+      h3.issue__description__subheading(translate="ISSUE.NEXT_STEPS")
+      .issue__description__detail(ng-show="!isRiskEditable", ng-class="{'f12': !Issues.risk.nextSteps, 'f18': Issues.risk.nextSteps}") {{Issues.risk.nextSteps ? Issues.risk.nextSteps : 'ISSUE.NO_DATA_AVAILABLE' | translate}}
+      textarea.textarea(ng-model="Issues.risk.nextSteps" ng-show="isRiskEditable")
+
+      h3.issue__description__subheading(translate="ISSUE.KEY_MILESTONES")
+      .issue__description__detail(ng-show="!isRiskEditable", ng-class="{'f12': !Issues.risk.keyMilestones, 'f18': Issues.risk.keyMilestones}") {{Issues.risk.keyMilestones ? Issues.risk.keyMilestones :'ISSUE.NO_DATA_AVAILABLE' | translate}}
+      textarea.textarea(ng-model="Issues.risk.keyMilestones" ng-show="isRiskEditable")
+  .delete-modal(ng-if="Issues.deleteModelIssue")
+    .delete-container
+      .delete-title.f24(translate="ISSUE.DELETE_ISSUES")
+      form.delete-form(name="deleteForm" novalidate)
+        .warning-text(translate="FORM.WARNING_CANNOT_BE_UNDONE")
+        .buttom-wrap
+          button.delete-button.f16(ng-click="Issues.deleteIssue()" ng-class="{'pointer': !deleteForm.$invalid}" translate="ISSUE.YES_DELETE_ISSUES")
+          button.cancel-button.f16(ng-click="Issues.deleteModelIssue=false" translate="CANCEL")
+  .delete-modal(ng-if="Issues.deleteModelRisk")
+    .delete-container
+      .delete-title.f24(translate="ISSUE.DELETE_RISK")
+      form.delete-form(name="deleteForm" novalidate)
+        .warning-text(translate="FORM.WARNING_CANNOT_BE_UNDONE")
+        .buttom-wrap
+          button.delete-button.f16(ng-click="Issues.deleteRisk()" ng-class="{'pointer': !deleteForm.$invalid}" translate="ISSUE.YES_DELETE_RISK")
+          button.cancel-button.f16(ng-click="Issues.deleteModelRisk=false" translate="CANCEL")
+  .status-modal(ng-if="Issues.statusModel")
+    .delete-container
+      .status-update.f20(ng-class="{'error-msg': Issues.isError}") {{Issues.statusMsg}}
+      .button.status-button.f16(ng-click="Issues.backTo()" translate="FORM.CLOSE")

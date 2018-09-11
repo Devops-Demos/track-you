@@ -1,0 +1,35 @@
+.sync-wrap{
+  @include clearfix();
+  padding: 10px 20px;
+}
+.sync-container{
+  max-width: 400px;
+  margin: 50px auto 0;
+  text-align: center;
+  line-height: 1.5em;
+}
+.sync-links{
+  @include clearfix();
+  max-width: 500px;
+  margin: 50px auto;
+}
+.sync-upload, .sync-download{
+  width: 200px;
+  text-align: center;
+  line-height: 1.2em;
+  cursor: pointer;
+  img{
+    width: 80px;
+    margin: 0 0 -10px 0;
+  }
+}
+.button-wrap{
+  text-align: center;
+  .status-button{
+    display: inline-block;
+  }
+  .highlight{
+    background: $form-button-color;
+    color: #ffffff;
+  }
+}
