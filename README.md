@@ -15,6 +15,11 @@ ID: admin@test.com
 Pwd: password
 ```
 
+### Run Unit Tests
+```sh
+npm run test:unit
+```
+
 ### Run Tests Only
 ```sh
 docker-compose build postgresqldb
