@@ -22,18 +22,16 @@ pipeline {
         }
 
         stage('Test') {
-            stages {
-                stage('Unit testing') {
-                    steps {
+            steps {
+                parallel(
+                    "Unit testing": {
                         echo 'Executing Unit tests...'
                         sh 'npm run test:unit'
-                    }
-                }
-                stage('Integration testing') {
-                    steps {
+                    },
+                    "Integration testing": {
                         echo 'Executing Integration tests...'
                     }
-                }
+                )
             }
         }
     }
