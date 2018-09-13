@@ -1,9 +1,9 @@
 pipeline {
     agent {
-        docker {
-            image 'node:4.4.7' 
-            args '-p 4999:4010 -u 0:0' 
-        }
+      node {
+          label 'ansible'
+          customWorkspace '/home/ec2-user'
+      }
     }
     stages {
 
@@ -18,11 +18,11 @@ pipeline {
             steps {
                 parallel(
                     "Frontend": {
-                         echo 'Installing Dependencies...'
-                         sh 'npm install'
+                         echo 'Installing Dependencies...'    
                     },
                     "Backend": {
                          echo 'Installing Dependencies...'
+                         sh 'npm install'
                     }
                 )
             }
