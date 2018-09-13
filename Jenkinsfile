@@ -2,7 +2,6 @@ pipeline {
     agent {
         node {
             label 'ansible'
-            customWorkspace '/home/ec2-user' 
         }
     }
     stages {
