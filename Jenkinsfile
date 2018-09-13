@@ -19,7 +19,7 @@ pipeline {
                 parallel(
                     "Frontend": {
                          echo 'Installing Dependencies...'
-                        // sh 'npm run test:unit'
+                         sh 'npm install'
                     },
                     "Backend": {
                          echo 'Installing Dependencies...'
@@ -33,7 +33,7 @@ pipeline {
                 parallel(
                     "Unit testing": {
                         echo 'Executing Unit tests...'
-                        // sh 'npm run test:unit'
+                        sh 'npm run test:unit'
                     },
                     "Integration testing": {
                         echo 'Executing Integration tests...'
