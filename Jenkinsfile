@@ -1,8 +1,7 @@
 pipeline {
     agent {
-        docker {
-            image 'node:8'
-            args '-p 4999:4010 -u 0:0' 
+        node {
+            label 'ansible'
         }
     }
     stages {
