@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'node:4.4.7' 
+            image 'node:8'
             args '-p 4999:4010 -u 0:0' 
         }
     }
@@ -19,10 +19,10 @@ pipeline {
                 parallel(
                     "Frontend": {
                          echo 'Installing Dependencies...'
-                        // sh 'npm run test:unit'
                     },
                     "Backend": {
                          echo 'Installing Dependencies...'
+                         sh 'npm i'
                     }
                 )
             }
@@ -33,11 +33,11 @@ pipeline {
                 parallel(
                     "Unit testing": {
                         echo 'Executing Unit tests...'
-                        // sh 'npm run test:unit'
+                        sh 'npm run test:unit'
                     },
                     "Integration testing": {
                         echo 'Executing Integration tests...'
-                    }
+                    },
                     "E2E testing": {
                         echo 'Executing Integration tests...'
                     }
