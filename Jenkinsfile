@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:8'
-            args '-p 4999:4010 -u 0:0' 
-        }
-    }
+    agent any
     stages {
 
         stage('Checkout') {
@@ -22,7 +17,7 @@ pipeline {
                     },
                     "Backend": {
                          echo 'Installing Dependencies...'
-                         sh 'npm i'
+                         sh 'sudo npm i'
                     }
                 )
             }
@@ -33,7 +28,7 @@ pipeline {
                 parallel(
                     "Unit testing": {
                         echo 'Executing Unit tests...'
-                        sh 'npm run test:unit'
+                        sh 'sudo npm run test:unit'
                     },
                     "Integration testing": {
                         echo 'Executing Integration tests...'
