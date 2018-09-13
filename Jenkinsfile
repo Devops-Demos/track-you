@@ -16,24 +16,32 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Installing Dependencies...'
-                sh 'npm i'
+                parallel(
+                    "Frontend": {
+                         echo 'Installing Dependencies...'
+                        // sh 'npm run test:unit'
+                    },
+                    "Backend": {
+                         echo 'Installing Dependencies...'
+                    }
+                )
             }
         }
 
         stage('Test') {
-            stages {
-                stage('Unit testing') {
-                    steps {
+            steps {
+                parallel(
+                    "Unit testing": {
                         echo 'Executing Unit tests...'
-                        sh 'npm run test:unit'
-                    }
-                }
-                stage('Integration testing') {
-                    steps {
+                        // sh 'npm run test:unit'
+                    },
+                    "Integration testing": {
                         echo 'Executing Integration tests...'
                     }
-                }
+                    "E2E testing": {
+                        echo 'Executing Integration tests...'
+                    }
+                )
             }
         }
     }
