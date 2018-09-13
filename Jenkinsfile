@@ -37,7 +37,7 @@ pipeline {
                     },
                     "Integration testing": {
                         echo 'Executing Integration tests...'
-                    }
+                    },
                     "E2E testing": {
                         echo 'Executing Integration tests...'
                     }
