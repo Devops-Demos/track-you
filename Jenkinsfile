@@ -18,11 +18,11 @@ pipeline {
             steps {
                 parallel(
                     "Frontend": {
-                         echo 'Installing Dependencies...'    
+                         echo 'Installing Dependencies...'
                     },
                     "Backend": {
                          echo 'Installing Dependencies...'
-                         sh 'npm install'
+                         sh 'npm i'
                     }
                 )
             }
