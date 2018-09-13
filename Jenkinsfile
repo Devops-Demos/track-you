@@ -17,10 +17,10 @@ pipeline {
             steps {
                 parallel(
                     "Frontend": {
-                         echo 'Installing Dependencies...'
+                         echo 'Installing Frontend Dependencies...'
                     },
                     "Backend": {
-                         echo 'Installing Dependencies...'
+                         echo 'Installing Backend Dependencies...'
                          sh 'npm i'
                     }
                 )
@@ -38,7 +38,7 @@ pipeline {
                         echo 'Executing Integration tests...'
                     },
                     "E2E testing": {
-                        echo 'Executing Integration tests...'
+                        echo 'Executing E2E tests...'
                     }
                 )
             }
