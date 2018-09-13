@@ -31,3 +31,4 @@ docker-compose up app_test
 ### Seed Data
 When you run the tests, ```npm run migrate``` runs this command behind the sceen. This step seeds the database.
 
+#testing
