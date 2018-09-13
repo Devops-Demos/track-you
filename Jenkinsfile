@@ -21,7 +21,7 @@ pipeline {
                     },
                     "Backend": {
                          echo 'Installing Backend Dependencies...'
-                         sh 'npm i'
+                         sh 'npm install --ignore-scripts'
                     }
                 )
             }
