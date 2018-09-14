@@ -19,6 +19,7 @@ pipeline {
                     "Frontend": {
                          echo 'Installing Dependencies...'
                     },
+                    
                     "Backend": {
                          echo 'Installing Dependencies...'
                          sh 'npm i'
